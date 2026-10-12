@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 150" fill="none">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,900&amp;display=swap');
+    .vital-text {
+      font-family: 'Fraunces', 'Cooper Black', 'Georgia', serif;
+      font-weight: 900;
+      font-size: 68px;
+      fill: #F7F5EE;
+      letter-spacing: 1.5px;
+    }
+  </style>
+  <!-- VITAL -->
+  <text x="160" y="66" text-anchor="middle" class="vital-text">VITAL</text>
+  <!-- CLUB -->
+  <text x="160" y="132" text-anchor="middle" class="vital-text">CLUB</text>
+  <!-- Lightning Bolt inside the 'C' of CLUB -->
+  <path d="M77 95 L66 111 L74 111 L69 124 L84 107 L75 107 Z" fill="#E87A24"/>
+</svg>

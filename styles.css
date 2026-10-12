@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700..900;1,9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --vital-green-950: #0c1f16;
+  --vital-green-900: #132d20;
+  --vital-green-800: #1b3f2d;
+  --vital-green-700: #25543c;
+  --vital-cream: #f7f5ee;
+  --vital-cream-dark: #ebe6d8;
+  --vital-lime: #c5e827;
+  --vital-lime-hover: #b3d618;
+  --vital-orange: #e87a24;
+  --vital-orange-light: #fff3e8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--vital-cream);
+  color: var(--vital-green-950);
+}
+
+.font-brand {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+}
+
+/* Custom Brand Logo with Lightning inside C */
+.vital-logo-mark {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0.86;
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+
+.vital-logo-mark .club-row {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.vital-logo-mark .c-bolt {
+  position: relative;
+  display: inline-block;
+}
+
+.vital-logo-mark .c-bolt svg {
+  position: absolute;
+  top: 52%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+  width: 0.42em;
+  height: 0.42em;
+  pointer-events: none;
+}
+
+/* Subtle Padel Court Lines Pattern */
+.court-grid-bg {
+  background-color: var(--vital-green-900);
+  background-image: 
+    linear-gradient(to right, rgba(247, 245, 238, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(247, 245, 238, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Turf Texture Card */
+.turf-surface {
+  background: radial-gradient(circle at 50% 30%, #24523b 0%, #153324 100%);
+  position: relative;
+}
+
+.turf-surface::after {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 2px solid rgba(247, 245, 238, 0.28);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #ebe6d8;
+}
+::-webkit-scrollbar-thumb {
+  background: #25543c;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #132d20;
+}
+
+/* Animations */
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.06); opacity: 0.85; }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2.5s infinite ease-in-out;
+}
+
+@keyframes float-ball {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(8deg); }
+}
+
+.animate-float {
+  animation: float-ball 3.5s ease-in-out infinite;
+}
+
+/* Slot Pill Transitions */
+.slot-card {
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.slot-card:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+/* Glassmorphism */
+.glass-panel {
+  background: rgba(19, 45, 32, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(247, 245, 238, 0.14);
+}
+
+.glass-light {
+  background: rgba(247, 245, 238, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Print receipt support */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-receipt, #printable-receipt * {
+    visibility: visible;
+  }
+  #printable-receipt {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none !important;
+  }
+}

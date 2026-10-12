@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vital Club · Pádel Techado, Clases, Torneos y Zona de Comida | Zitácuaro</title>
+  <meta name="description" content="Vital Club en Zitácuaro, Michoacán. 2 canchas de pádel techadas, ambiente 100% familiar para todas las edades, clases, torneos y zona de comida con sándwiches y bebidas." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            vital: {
+              950: '#0c1f16',
+              900: '#132d20',
+              800: '#1b3f2d',
+              700: '#25543c',
+              600: '#316d4f',
+              cream: '#f7f5ee',
+              sand: '#ebe6d8',
+              lime: '#c5e827',
+              orange: '#e87a24',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-vital-cream text-vital-950 antialiased selection:bg-vital-lime selection:text-vital-950 min-h-screen flex flex-col">
+
+  <!-- TOP ANNOUNCEMENT BAR -->
+  <div class="bg-vital-950 text-vital-cream text-xs sm:text-sm py-2.5 px-4 border-b border-white/10">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2 font-medium">
+        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-vital-lime text-vital-950 font-bold text-[11px] uppercase tracking-wider">
+          <i data-lucide="umbrella" class="w-3 h-3"></i> 2 Canchas Techadas
+        </span>
+        <span class="text-vital-cream/90">¡Sin pretexto si llueve! Ambiente 100% familiar en Zitácuaro · Lun–Vie 8am–8pm y Fines de Semana</span>
+      </div>
+      <div class="flex items-center gap-4 text-xs">
+        <a href="tel:7151317443" class="hover:text-vital-lime transition flex items-center gap-1">
+          <i data-lucide="phone" class="w-3.5 h-3.5 text-vital-orange"></i> 715 131 7443
+        </a>
+        <a href="https://www.instagram.com/vitalclub.zit/" target="_blank" rel="noopener noreferrer" class="hover:text-vital-lime transition flex items-center gap-1">
+          <i data-lucide="instagram" class="w-3.5 h-3.5 text-[#E1306C]"></i> @vitalclub.zit
+        </a>
+        <a href="https://web.facebook.com/profile.php?id=61584920653779&sk=about" target="_blank" rel="noopener noreferrer" class="hover:text-vital-lime transition flex items-center gap-1">
+          <i data-lucide="facebook" class="w-3.5 h-3.5 text-[#1877F2] fill-current"></i> Facebook
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN STICKY HEADER -->
+  <header class="sticky top-0 z-40 bg-vital-900/95 backdrop-blur-md text-vital-cream border-b border-white/10 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo (Matches the official VITAL CLUB graphic with orange lightning bolt inside C) -->
+      <a href="#" onclick="switchMainMode('client'); return false;" class="flex items-center gap-3.5 group">
+        <div class="w-12 h-12 rounded-2xl bg-vital-800 border border-white/15 flex items-center justify-center shadow-inner group-hover:border-vital-lime/50 transition overflow-hidden">
+          <div class="vital-logo-mark text-[15px] text-vital-cream">
+            <span>VITAL</span>
+            <span class="club-row">
+              <span class="c-bolt">C<svg viewBox="0 0 24 24" fill="#E87A24"><path d="M13 2L4 14h7l-2 8 10-12h-7l2-8z"/></svg></span>LUB
+            </span>
+          </div>
+        </div>
+        <div>
+          <div class="vital-logo-mark items-start text-xl sm:text-2xl text-vital-cream tracking-wide">
+            <span>VITAL <span class="c-bolt">C<svg viewBox="0 0 24 24" fill="#E87A24"><path d="M13 2L4 14h7l-2 8 10-12h-7l2-8z"/></svg></span>LUB</span>
+          </div>
+          <p class="text-[11px] text-vital-cream/70 tracking-wider uppercase font-semibold mt-0.5">Pádel · Social · Familiar</p>
+        </div>
+      </a>
+
+      <!-- CLIENT NAVIGATION LINKS -->
+      <nav id="client-nav" class="hidden lg:flex items-center gap-1 text-sm font-semibold">
+        <a href="#reservar" class="px-3.5 py-2 rounded-xl hover:bg-white/10 transition flex items-center gap-1.5 text-vital-lime">
+          <i data-lucide="calendar-check" class="w-4 h-4"></i> Reservar Cancha
+        </a>
+        <a href="#clases" class="px-3.5 py-2 rounded-xl hover:bg-white/10 transition flex items-center gap-1.5">
+          <i data-lucide="graduation-cap" class="w-4 h-4 text-vital-orange"></i> Clases y Torneos
+        </a>
+        <a href="#comida" class="px-3.5 py-2 rounded-xl hover:bg-white/10 transition flex items-center gap-1.5">
+          <i data-lucide="sandwich" class="w-4 h-4 text-vital-lime"></i> Zona de Comida
+        </a>
+        <a href="#nosotros" class="px-3.5 py-2 rounded-xl hover:bg-white/10 transition flex items-center gap-1.5">
+          <i data-lucide="users" class="w-4 h-4 text-vital-orange"></i> Nosotros y Coaches
+        </a>
+      </nav>
+
+      <!-- ADMIN NAVIGATION PILLS (Shown when in Admin mode) -->
+      <nav id="admin-nav" class="hidden items-center gap-1.5 bg-vital-950/80 p-1.5 rounded-2xl border border-white/10 text-xs sm:text-sm font-semibold overflow-x-auto">
+        <button onclick="switchAdminTab('dashboard')" data-admin-tab="dashboard" class="admin-tab-btn px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition bg-vital-lime text-vital-950 font-bold">
+          <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Dashboard
+        </button>
+        <button onclick="switchAdminTab('pos')" data-admin-tab="pos" class="admin-tab-btn px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition text-vital-cream/80 hover:text-white">
+          <i data-lucide="shopping-bag" class="w-4 h-4"></i> Punto de Venta (POS)
+        </button>
+        <button onclick="switchAdminTab('registro')" data-admin-tab="registro" class="admin-tab-btn px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition text-vital-cream/80 hover:text-white">
+          <i data-lucide="calendar-clock" class="w-4 h-4"></i> Control Canchas
+        </button>
+        <button onclick="switchAdminTab('ingresos')" data-admin-tab="ingresos" class="admin-tab-btn px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition text-vital-cream/80 hover:text-white">
+          <i data-lucide="wallet" class="w-4 h-4"></i> Ingresos y Catálogo
+        </button>
+      </nav>
+
+      <!-- MODE SWITCHER & QUICK ACTIONS -->
+      <div class="flex items-center gap-2.5">
+        <!-- Switch Mode Pill -->
+        <div class="bg-vital-950 p-1 rounded-2xl border border-white/15 flex items-center text-xs font-bold">
+          <button id="btn-mode-client" onclick="switchMainMode('client')" class="px-3 py-1.5 rounded-xl bg-vital-lime text-vital-950 transition flex items-center gap-1.5 shadow">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Vista Cliente
+          </button>
+          <button id="btn-mode-coach" onclick="switchMainMode('coach')" class="px-3 py-1.5 rounded-xl text-vital-cream/80 hover:text-white transition flex items-center gap-1.5">
+            <i data-lucide="clipboard-check" class="w-3.5 h-3.5 text-vital-lime"></i> Vista Coach
+          </button>
+          <button id="btn-mode-admin" onclick="switchMainMode('admin')" class="px-3 py-1.5 rounded-xl text-vital-cream/80 hover:text-white transition flex items-center gap-1.5">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-vital-orange"></i> Admin / POS
+          </button>
+        </div>
+
+        <!-- Client Pre-order Cart Badge -->
+        <button id="client-cart-btn" onclick="openClientFoodCart()" class="relative p-2.5 rounded-xl bg-vital-800 hover:bg-vital-700 border border-white/15 text-vital-cream transition" title="Mi Pedido de Comida / Reserva">
+          <i data-lucide="utensils" class="w-5 h-5 text-vital-lime"></i>
+          <span id="client-cart-count" class="hidden absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-vital-orange text-white text-[11px] font-extrabold flex items-center justify-center">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- 1. CLIENT VIEW (PUBLIC EXPERIENCE: RESERVATIONS, CLASSES, FOOD, US)   -->
+  <!-- ===================================================================== -->
+  <main id="view-client" class="flex-1">
+    
+    <!-- HERO SECTION WITH OFFICIAL ART & LIVE COURT STATUS -->
+    <section class="relative bg-vital-900 text-vital-cream overflow-hidden court-grid-bg">
+      <!-- Ambient Glow -->
+      <div class="absolute -top-24 -left-24 w-96 h-96 bg-vital-lime/15 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute bottom-0 right-0 w-[28rem] h-[28rem] bg-vital-orange/15 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 relative z-10">
+        <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          
+          <!-- Left Column: Brand Message -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="inline-flex flex-wrap items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs sm:text-sm font-semibold">
+              <span class="w-2.5 h-2.5 rounded-full bg-vital-lime animate-pulse"></span>
+              <span>Zitácuaro, Michoacán · Ambiente 100% Familiar</span>
+              <span class="text-vital-orange font-bold">· Niños a Adultos Mayores</span>
+            </div>
+
+            <h1 class="font-brand text-4xl sm:text-6xl lg:text-[64px] leading-[1.03] tracking-tight text-vital-cream">
+              El punto de encuentro para jugar <span class="text-vital-lime">pádel sin límites.</span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-vital-cream/85 max-w-2xl leading-relaxed">
+              Contamos con <strong>2 canchas 100% techadas</strong> —así que no hay pretexto si está lloviendo—, academia y torneos desde niños muy pequeños hasta adultos mayores, y nuestra <strong>Zona de Comida</strong> para disfrutar sándwiches artesanales y bebidas.
+            </p>
+
+            <!-- Primary CTAs -->
+            <div class="flex flex-wrap items-center gap-3.5 pt-2">
+              <a href="#reservar" class="px-6 py-4 rounded-2xl bg-vital-lime hover:bg-vital-lime/90 text-vital-950 font-extrabold text-base shadow-xl shadow-vital-lime/15 flex items-center gap-2.5 transition transform hover:-translate-y-0.5">
+                <i data-lucide="calendar-plus" class="w-5 h-5"></i>
+                Apartar Cancha Ahora
+              </a>
+              <a href="#clases" class="px-6 py-4 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 text-vital-cream font-bold text-base flex items-center gap-2 transition">
+                <i data-lucide="trophy" class="w-5 h-5 text-vital-orange"></i>
+                Ver Clases y Torneos
+              </a>
+              <a href="https://wa.me/527151317443?text=Hola%20Vital%20Club%2C%20me%20gustar%C3%ADa%20pedir%20informes%20de%20canchas%20y%20clases" target="_blank" rel="noopener noreferrer" class="px-4 py-4 rounded-2xl bg-[#25D366]/20 hover:bg-[#25D366]/30 border border-[#25D366]/40 text-vital-cream font-bold text-sm flex items-center gap-2 transition">
+                <i data-lucide="message-circle" class="w-5 h-5 text-[#25D366]"></i>
+                WhatsApp
+              </a>
+            </div>
+
+            <!-- Key Amenity Badges -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-white/10">
+              <div class="bg-white/5 rounded-2xl p-3 border border-white/10">
+                <div class="flex items-center gap-2 text-vital-lime font-bold text-sm">
+                  <i data-lucide="cloud-rain-wind" class="w-4 h-4"></i> 2 Techadas
+                </div>
+                <p class="text-xs text-vital-cream/70 mt-0.5">Juega llueva o truene</p>
+              </div>
+              <div class="bg-white/5 rounded-2xl p-3 border border-white/10">
+                <div class="flex items-center gap-2 text-vital-orange font-bold text-sm">
+                  <i data-lucide="heart-handshake" class="w-4 h-4"></i> 100% Familiar
+                </div>
+                <p class="text-xs text-vital-cream/70 mt-0.5">Niños a Adultos Mayores</p>
+              </div>
+              <div class="bg-white/5 rounded-2xl p-3 border border-white/10">
+                <div class="flex items-center gap-2 text-vital-lime font-bold text-sm">
+                  <i data-lucide="sandwich" class="w-4 h-4"></i> Zona Comida
+                </div>
+                <p class="text-xs text-vital-cream/70 mt-0.5">Sándwiches y Bebidas</p>
+              </div>
+              <div class="bg-white/5 rounded-2xl p-3 border border-white/10">
+                <div class="flex items-center gap-2 text-vital-orange font-bold text-sm">
+                  <i data-lucide="clock" class="w-4 h-4"></i> 8am – 8pm
+                </div>
+                <p class="text-xs text-vital-cream/70 mt-0.5">Lun–Vie y Fin de Semana</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Editorial Brand Photo Collage + Live Availability Widget -->
+          <div class="lg:col-span-5 relative">
+            <div class="relative rounded-3xl overflow-hidden border-2 border-white/15 shadow-2xl aspect-[4/5] max-h-[540px] mx-auto">
+              <img src="assets/vital-hero-ball.jpg" alt="Vital Club Pádel Oficial" class="w-full h-full object-cover object-center" />
+              <div class="absolute inset-0 bg-gradient-to-t from-vital-950/90 via-vital-950/20 to-transparent"></div>
+              
+              <!-- Floating Live Status Card inside Photo -->
+              <div class="absolute bottom-4 left-4 right-4 glass-panel rounded-2xl p-4 text-vital-cream shadow-xl">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-xs uppercase tracking-wider font-extrabold text-vital-lime flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-vital-lime animate-ping"></span>
+                    Estado de Canchas Hoy
+                  </span>
+                  <span id="hero-live-date" class="text-xs text-vital-cream/75 font-medium">Hoy</span>
+                </div>
+                <div id="hero-courts-status" class="grid grid-cols-2 gap-2.5 text-xs">
+                  <!-- Populated dynamically by app.js -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FACEBOOK VISION & AMENITIES BANNER -->
+    <section class="bg-vital-sand/70 border-y border-vital-900/10 py-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-vital-900/10 flex flex-col lg:flex-row items-center justify-between gap-6">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-vital-900 text-vital-lime flex items-center justify-center shrink-0 mt-1">
+              <i data-lucide="sparkles" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-vital-orange/15 text-vital-orange">Visión Vital Club</span>
+                <span class="text-xs text-vital-900/60 font-semibold">Zitácuaro, Michoacán</span>
+              </div>
+              <blockquote class="font-brand text-lg sm:text-xl text-vital-900 mt-1.5">
+                “Actualmente contamos con canchas de pádel abiertas y estamos trabajando en la integración de nuevas experiencias como cocina, barre y gym.”
+              </blockquote>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 shrink-0">
+            <span class="px-3.5 py-2 rounded-xl bg-vital-900 text-vital-lime text-xs font-bold flex items-center gap-1.5">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i> 2 Canchas Techadas Activas
+            </span>
+            <span class="px-3.5 py-2 rounded-xl bg-vital-900 text-vital-cream text-xs font-bold flex items-center gap-1.5">
+              <i data-lucide="utensils" class="w-4 h-4 text-vital-orange"></i> Zona de Sándwiches y Bebidas
+            </span>
+            <span class="px-3.5 py-2 rounded-xl bg-vital-cream border border-vital-900/15 text-vital-900/80 text-xs font-bold flex items-center gap-1.5">
+              <i data-lucide="dumbbell" class="w-4 h-4 text-vital-orange"></i> Próximamente: Cocina · Barre · Gym
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 1: CONTROL DE REGISTRO Y RESERVACIÓN DE CANCHAS             -->
+    <!-- =================================================================== -->
+    <section id="reservar" class="py-16 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div>
+          <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-vital-orange bg-vital-orange/10 px-3 py-1 rounded-full">
+            <i data-lucide="calendar-clock" class="w-3.5 h-3.5"></i> Disponibilidad en Tiempo Real
+          </span>
+          <h2 class="font-brand text-3xl sm:text-4xl text-vital-900 mt-2">
+            Aparta tu Horario · 2 Canchas Techadas
+          </h2>
+          <p class="text-vital-900/70 text-sm sm:text-base mt-1 max-w-2xl">
+            Consulta qué horarios están disponibles o apartados, revisa la tarifa por hora y reserva tu cancha al instante con tarjeta o pago en club.
+          </p>
+        </div>
+
+        <!-- Legend -->
+        <div class="flex flex-wrap items-center gap-3 text-xs font-bold bg-white p-3 rounded-2xl border border-vital-900/10 shadow-sm">
+          <span class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-emerald-500"></span> Disponible (Clic para reservar)
+          </span>
+          <span class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-vital-orange"></span> En Clase / Torneo
+          </span>
+          <span class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-stone-400"></span> Apartada / Ocupada
+          </span>
+          <span class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-amber-600"></span> En Mantenimiento (No disponible)
+          </span>
+        </div>
+      </div>
+
+      <!-- Date Bar & Filters -->
+      <div class="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-vital-900/10 mb-8">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <!-- Quick 7-day strip -->
+          <div id="date-strip" class="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0">
+            <!-- Populated by app.js -->
+          </div>
+
+          <!-- Custom date picker & Court filter -->
+          <div class="flex flex-wrap items-center gap-3">
+            <div class="flex items-center gap-2 bg-vital-cream px-3.5 py-2 rounded-xl border border-vital-900/15">
+              <i data-lucide="calendar" class="w-4 h-4 text-vital-900/70"></i>
+              <input type="date" id="booking-date-input" onchange="handleDateInputChange(this.value)" class="bg-transparent text-sm font-bold text-vital-900 focus:outline-none" />
+            </div>
+            <select id="court-filter-select" onchange="renderClientCourtsGrid()" class="bg-vital-cream px-3.5 py-2.5 rounded-xl border border-vital-900/15 text-sm font-bold text-vital-900 focus:outline-none">
+              <option value="all">Ver Ambas Canchas Techadas (1 y 2)</option>
+              <option value="cancha-1">Solo Cancha Techada 1 · Vital Central</option>
+              <option value="cancha-2">Solo Cancha Techada 2 · Vital Familiar</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Courts Availability Grid -->
+      <div id="client-courts-container" class="grid lg:grid-cols-2 gap-8">
+        <!-- Populated dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 2: INFORMACIÓN DE CLASES, ACADEMIA FAMILIAR Y TORNEOS       -->
+    <!-- =================================================================== -->
+    <section id="clases" class="py-16 sm:py-20 bg-vital-900 text-vital-cream relative overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        <div class="grid lg:grid-cols-12 gap-8 items-end mb-12">
+          <div class="lg:col-span-8">
+            <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-vital-lime bg-white/10 px-3 py-1 rounded-full">
+              <i data-lucide="award" class="w-3.5 h-3.5"></i> Academia & Torneos Vital Club
+            </span>
+            <h2 class="font-brand text-3xl sm:text-5xl mt-3">
+              Clases y Torneos para <span class="text-vital-lime">toda la familia</span>
+            </h2>
+            <p class="text-vital-cream/80 text-base sm:text-lg mt-2 max-w-2xl">
+              Desde niños dando sus primeros golpes hasta adultos mayores manteniéndose activos. Revisa los horarios disponibles e inscríbete en línea con <strong>opción de pago con tarjeta</strong>.
+            </p>
+          </div>
+          <div class="lg:col-span-4 flex flex-wrap lg:justify-end gap-2">
+            <button onclick="filterPrograms('all')" data-prog-filter="all" class="prog-filter-btn px-4 py-2 rounded-xl text-xs font-extrabold bg-vital-lime text-vital-950 transition">Todos</button>
+            <button onclick="filterPrograms('Niños y Familia')" data-prog-filter="Niños y Familia" class="prog-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-white/10 text-vital-cream hover:bg-white/20 transition">Niños y Familia</button>
+            <button onclick="filterPrograms('Adultos y Seniors')" data-prog-filter="Adultos y Seniors" class="prog-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-white/10 text-vital-cream hover:bg-white/20 transition">Adultos / Mayores</button>
+            <button onclick="filterPrograms('Torneos')" data-prog-filter="Torneos" class="prog-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-white/10 text-vital-cream hover:bg-white/20 transition">Torneos</button>
+          </div>
+        </div>
+
+        <!-- Editorial Banner Image for Family Classes -->
+        <div class="mb-10 rounded-3xl overflow-hidden border border-white/15 bg-vital-950/60 grid md:grid-cols-12 items-center">
+          <div class="md:col-span-5 h-64 md:h-72">
+            <img src="assets/family-classes.jpg" alt="Clases familiares en Vital Club" class="w-full h-full object-cover" />
+          </div>
+          <div class="md:col-span-7 p-6 sm:p-8 space-y-3">
+            <div class="inline-flex items-center gap-2 text-xs font-bold text-vital-orange uppercase tracking-wider">
+              <i data-lucide="users" class="w-4 h-4"></i> Ambiente 100% Familiar y Seguro
+            </div>
+            <h3 class="font-brand text-2xl sm:text-3xl text-vital-cream">
+              ¿Primera vez jugando pádel? Nosotros te prestamos equipo en tu clase muestra
+            </h3>
+            <p class="text-sm text-vital-cream/80 leading-relaxed">
+              Nuestros entrenadores adaptan la dinámica según la edad y nivel: psicomotricidad y diversión para niños pequeños, técnica y cardio para jóvenes y adultos, y movilidad segura de bajo impacto para adultos mayores.
+            </p>
+            <div class="flex flex-wrap items-center gap-4 pt-2 text-xs font-bold text-vital-lime">
+              <span class="flex items-center gap-1.5"><i data-lucide="credit-card" class="w-4 h-4"></i> Inscripción con Tarjeta Visa / Mastercard / Amex</span>
+              <span class="flex items-center gap-1.5"><i data-lucide="shield-check" class="w-4 h-4"></i> Cupo garantizado al instante</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Programs & Tournaments Cards Grid -->
+        <div id="client-programs-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Populated dynamically by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 3: ZONA DE COMIDA (SÁNDWICHES, BEBIDAS & SNACK BAR)         -->
+    <!-- =================================================================== -->
+    <section id="comida" class="py-16 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-12 gap-10 items-center mb-12">
+        <div class="lg:col-span-6 space-y-4">
+          <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-vital-900 bg-vital-lime px-3 py-1 rounded-full">
+            <i data-lucide="sandwich" class="w-3.5 h-3.5"></i> Zona de Comida & Lounge
+          </span>
+          <h2 class="font-brand text-3xl sm:text-5xl text-vital-900">
+            El tercer set se juega con un buen sándwich y tu bebida favorita.
+          </h2>
+          <p class="text-vital-900/75 text-base leading-relaxed">
+            Mientras los niños toman clase o al terminar tu partido en nuestras canchas techadas, relájate en nuestra área gastronómica. Puedes <strong>pre-ordenar desde aquí</strong> para que esté listo al salir de cancha.
+          </p>
+          <div class="flex flex-wrap gap-2 pt-2">
+            <button onclick="filterFoodMenu('all')" data-food-filter="all" class="food-filter-btn px-4 py-2 rounded-xl text-xs font-extrabold bg-vital-900 text-vital-cream transition">Todo el Menú</button>
+            <button onclick="filterFoodMenu('Sándwiches y Comida')" data-food-filter="Sándwiches y Comida" class="food-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-white border border-vital-900/15 text-vital-900 hover:bg-vital-sand transition">Sándwiches y Comida</button>
+            <button onclick="filterFoodMenu('Bebidas y Café')" data-food-filter="Bebidas y Café" class="food-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-white border border-vital-900/15 text-vital-900 hover:bg-vital-sand transition">Bebidas y Smoothies</button>
+            <button onclick="filterFoodMenu('Renta y Accesorios')" data-food-filter="Renta y Accesorios" class="food-filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-white border border-vital-900/15 text-vital-900 hover:bg-vital-sand transition">Palas y Pelotas</button>
+          </div>
+        </div>
+        <div class="lg:col-span-6">
+          <div class="rounded-3xl overflow-hidden shadow-xl border-2 border-vital-900/10 aspect-[16/10] relative">
+            <img src="assets/food-zone.jpg" alt="Zona de Comida Vital Club Sándwiches y Bebidas" class="w-full h-full object-cover" />
+            <div class="absolute bottom-3 left-3 right-3 glass-panel rounded-2xl p-3.5 text-vital-cream flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <i data-lucide="coffee" class="w-5 h-5 text-vital-lime"></i>
+                <span class="text-xs sm:text-sm font-bold">Preparados al momento · Vista directa a las canchas</span>
+              </div>
+              <span class="text-xs bg-vital-orange text-white px-2.5 py-1 rounded-lg font-extrabold">Pide en línea o en barra</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Food & Drinks Cards Grid -->
+      <div id="client-food-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Populated dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SECTION 4: NOSOTROS, ENTRENADORES, AMENIDADES Y UBICACIÓN           -->
+    <!-- =================================================================== -->
+    <section id="nosotros" class="py-16 sm:py-20 bg-vital-sand/60 border-t border-vital-900/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        
+        <!-- About Vital Club & Indoor Courts Showcase -->
+        <div class="grid lg:grid-cols-12 gap-10 items-center">
+          <div class="lg:col-span-6">
+            <div class="rounded-3xl overflow-hidden shadow-xl border border-vital-900/15">
+              <img src="assets/indoor-courts.jpg" alt="2 Canchas Techadas en Vital Club Zitácuaro" class="w-full h-80 sm:h-96 object-cover" />
+            </div>
+          </div>
+          <div class="lg:col-span-6 space-y-5">
+            <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-vital-orange bg-vital-orange/15 px-3 py-1 rounded-full">
+              <i data-lucide="building-2" class="w-3.5 h-3.5"></i> Sobre Nosotros · Vital Club
+            </span>
+            <h2 class="font-brand text-3xl sm:text-4xl text-vital-900">
+              Deporte, bienestar y convivencia familiar bajo un mismo techo en Zitácuaro.
+            </h2>
+            <p class="text-vital-900/80 leading-relaxed text-sm sm:text-base">
+              <strong>Vital Club</strong> nació con la misión de crear un espacio seguro, moderno y <strong>100% familiar</strong> donde niños pequeños, jóvenes, padres y adultos mayores puedan compartir la pasión por el pádel sin importar el clima gracias a nuestras <strong>2 canchas techadas</strong>.
+            </p>
+            <div class="bg-white p-4 rounded-2xl border border-vital-900/10 space-y-2">
+              <p class="text-xs font-extrabold uppercase tracking-wider text-vital-700">Nuestra Evolución Continua</p>
+              <p class="text-sm text-vital-900/85 italic">
+                “Actualmente contamos con canchas de pádel abiertas y estamos trabajando en la integración de nuevas experiencias como cocina, barre y gym.”
+              </p>
+            </div>
+            <!-- Amenities Pill List -->
+            <div class="grid grid-cols-2 gap-3 pt-1 text-xs sm:text-sm font-bold text-vital-900">
+              <div class="flex items-center gap-2 bg-white p-3 rounded-xl border border-vital-900/10">
+                <i data-lucide="umbrella" class="w-4 h-4 text-vital-700 shrink-0"></i> 2 Canchas 100% Techadas
+              </div>
+              <div class="flex items-center gap-2 bg-white p-3 rounded-xl border border-vital-900/10">
+                <i data-lucide="sandwich" class="w-4 h-4 text-vital-orange shrink-0"></i> Zona de Comida y Bebidas
+              </div>
+              <div class="flex items-center gap-2 bg-white p-3 rounded-xl border border-vital-900/10">
+                <i data-lucide="baby" class="w-4 h-4 text-vital-700 shrink-0"></i> Ambiente Familiar (Todas las edades)
+              </div>
+              <div class="flex items-center gap-2 bg-white p-3 rounded-xl border border-vital-900/10">
+                <i data-lucide="credit-card" class="w-4 h-4 text-vital-orange shrink-0"></i> Pago con Tarjeta y Efectivo
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Our Coaches -->
+        <div>
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-widest text-vital-700">Equipo Profesional</span>
+              <h3 class="font-brand text-2xl sm:text-4xl text-vital-900 mt-1">Nuestros Entrenadores</h3>
+              <p class="text-sm text-vital-900/70">Conoce a los coaches encargados de guiarte en clases individuales, grupales y clínicas familiares.</p>
+            </div>
+          </div>
+          <div id="client-coaches-grid" class="grid md:grid-cols-3 gap-6">
+            <!-- Populated dynamically by app.js -->
+          </div>
+        </div>
+
+        <!-- Location, Schedule & Social Contact Card -->
+        <div class="bg-vital-900 text-vital-cream rounded-3xl p-6 sm:p-10 shadow-xl border border-white/10 grid lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-7 space-y-5">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-vital-lime text-vital-950 text-xs font-extrabold uppercase">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Ubicación y Contacto Directo
+            </div>
+            <h3 class="font-brand text-2xl sm:text-4xl">Visítanos en Vital Club Zitácuaro</h3>
+            
+            <div class="grid sm:grid-cols-2 gap-4 pt-2">
+              <div class="bg-white/5 p-4 rounded-2xl border border-white/10 space-y-1">
+                <div class="flex items-center gap-2 text-vital-lime font-bold text-sm">
+                  <i data-lucide="navigation" class="w-4 h-4"></i> Dirección
+                </div>
+                <p class="text-sm text-vital-cream/90 leading-snug" id="info-address">
+                  Andrés Landa y Piña Nte. 26, Col. Cuauhtémoc, Zitácuaro, Mich., México, 61506
+                </p>
+              </div>
+              <div class="bg-white/5 p-4 rounded-2xl border border-white/10 space-y-1">
+                <div class="flex items-center gap-2 text-vital-orange font-bold text-sm">
+                  <i data-lucide="clock-4" class="w-4 h-4"></i> Horarios de Operación
+                </div>
+                <p class="text-sm text-vital-cream/90" id="info-hours-weekday">Lunes a Viernes: 8:00 AM – 8:00 PM</p>
+                <p class="text-xs text-vital-cream/75" id="info-hours-weekend">Sábado y Domingo: 8:00 AM – 8:00 PM</p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3 pt-2">
+              <a href="tel:7151317443" class="px-5 py-3 rounded-2xl bg-vital-lime text-vital-950 font-extrabold text-sm flex items-center gap-2 hover:opacity-95 transition">
+                <i data-lucide="phone-call" class="w-4 h-4"></i> Llamar: 715 131 7443
+              </a>
+              <a href="https://wa.me/527151317443" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-2xl bg-[#25D366] text-vital-950 font-extrabold text-sm flex items-center gap-2 hover:opacity-95 transition">
+                <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Directo
+              </a>
+              <a href="https://www.instagram.com/vitalclub.zit/" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white font-extrabold text-sm flex items-center gap-2 hover:opacity-95 transition">
+                <i data-lucide="instagram" class="w-4 h-4"></i> Instagram @vitalclub.zit
+              </a>
+              <a href="https://web.facebook.com/profile.php?id=61584920653779&sk=about" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-2xl bg-[#1877F2] text-white font-extrabold text-sm flex items-center gap-2 hover:opacity-95 transition">
+                <i data-lucide="facebook" class="w-4 h-4"></i> Facebook Oficial
+              </a>
+              <a href="https://www.google.com/maps/search/?api=1&query=Andr%C3%A9s+Landa+y+Pi%C3%B1a+Nte.+26+Col.+Cuauht%C3%A9moc+Zit%C3%A1cuaro+Michoac%C3%A1n+61506" target="_blank" rel="noopener noreferrer" class="px-4 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-vital-cream font-bold text-sm flex items-center gap-2 transition">
+                <i data-lucide="external-link" class="w-4 h-4"></i> Abrir en Google Maps
+              </a>
+            </div>
+          </div>
+
+          <!-- Interactive Visual Map Preview Card -->
+          <div class="lg:col-span-5">
+            <div class="rounded-2xl overflow-hidden border border-white/15 bg-vital-950 p-2 shadow-inner">
+              <iframe
+                title="Mapa Vital Club Zitácuaro"
+                class="w-full h-64 rounded-xl"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps?q=Andr%C3%A9s+Landa+y+Pi%C3%B1a+Nte.+26,+Cuauht%C3%A9moc,+61506+Her%C3%B3ica+Zit%C3%A1cuaro,+Mich.,+Mexico&output=embed">
+              </iframe>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- 1B. COACH VIEW (HOURLY CALENDAR, CLASSES, STUDENTS & COURT STATUS)    -->
+  <!-- ===================================================================== -->
+  <main id="view-coach" class="hidden flex-1 bg-stone-100 pb-20">
+    <!-- Coach Subheader -->
+    <div class="bg-vital-900 text-vital-cream border-b border-white/10 py-6 px-4 sm:px-6 lg:px-8 court-grid-bg">
+      <div class="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-vital-lime bg-white/10 px-3 py-1 rounded-full">
+            <i data-lucide="calendar-clock" class="w-3.5 h-3.5"></i> Portal de Entrenadores · Sincronizado con Admin
+          </div>
+          <h1 class="font-brand text-2xl sm:text-4xl mt-2">Mi Calendario de Clases por Hora</h1>
+          <p class="text-xs sm:text-sm text-vital-cream/80 mt-0.5">
+            Revisa tus horas de clase, qué cancha techada tienes asignada, lista de alumnos y qué horarios están apartados o en mantenimiento.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="bg-vital-950/90 p-2 rounded-2xl border border-white/15 flex items-center gap-2">
+            <i data-lucide="user-check" class="w-4 h-4 text-vital-lime ml-1.5"></i>
+            <select id="coach-view-select" onchange="renderCoachView()" class="bg-transparent text-xs sm:text-sm font-extrabold text-vital-cream focus:outline-none pr-2">
+              <!-- Populated dynamically by app.js -->
+            </select>
+          </div>
+          <input type="date" id="coach-booking-date" onchange="handleDateInputChange(this.value)" class="px-3.5 py-2.5 rounded-2xl bg-vital-950/90 border border-white/15 text-xs sm:text-sm font-bold text-vital-cream focus:outline-none" />
+          <button onclick="openCoachClassModal()" class="px-4 py-2.5 rounded-2xl bg-vital-lime text-vital-950 text-xs sm:text-sm font-extrabold flex items-center gap-1.5 shadow-lg">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> + Programar Clase en Cancha
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-6">
+      <!-- Coach Daily KPIs -->
+      <div id="coach-kpi-cards" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Populated by app.js -->
+      </div>
+
+      <!-- Coach Date Strip -->
+      <div class="bg-white rounded-3xl p-4 shadow-sm border border-stone-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div id="coach-date-strip" class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
+          <!-- Populated by app.js -->
+        </div>
+        <div class="flex flex-wrap items-center gap-3 text-xs font-bold text-stone-600 shrink-0">
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-vital-orange"></span> Tu Clase Asignada</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Cancha Libre</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-stone-400"></span> Reserva Cliente</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span> En Mantenimiento</span>
+        </div>
+      </div>
+
+      <!-- Hourly Timeline for Coach (8:00 AM - 8:00 PM) -->
+      <div class="bg-white rounded-3xl p-6 shadow-sm border border-stone-200/80">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5 pb-4 border-b border-stone-200">
+          <div>
+            <h2 id="coach-schedule-heading" class="font-brand text-2xl text-vital-900">Agenda por Hora (8:00 AM – 8:00 PM)</h2>
+            <p class="text-xs text-stone-500">Visualiza ambas canchas techadas hora por hora y gestiona la asistencia de tus alumnos.</p>
+          </div>
+          <span id="coach-active-date-badge" class="text-xs font-extrabold px-3 py-1.5 rounded-xl bg-vital-cream text-vital-900 border border-vital-900/10">Hoy</span>
+        </div>
+        <div id="coach-hourly-timeline" class="space-y-3">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- 2. ADMIN VIEW (DASHBOARD, POS, COURT CONTROL, INCOME & CRUD CATALOG)  -->
+  <!-- ===================================================================== -->
+  <main id="view-admin" class="hidden flex-1 bg-stone-100 pb-20">
+    
+    <!-- Admin Subheader Banner -->
+    <div class="bg-vital-950 text-vital-cream border-b border-white/10 py-6 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-vital-lime">
+            <i data-lucide="shield" class="w-4 h-4"></i> Sistema de Administración · Vital Club Zitácuaro
+          </div>
+          <h1 id="admin-header-title" class="font-brand text-2xl sm:text-3xl mt-1">Dashboard y Números del Club</h1>
+        </div>
+        <div class="flex flex-wrap items-center gap-2.5">
+          <button onclick="openAdminNewModal('item')" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-vital-cream text-xs font-bold flex items-center gap-1.5 border border-white/15 transition">
+            <i data-lucide="plus-circle" class="w-4 h-4 text-vital-lime"></i> + Producto / Comida
+          </button>
+          <button onclick="openAdminNewModal('program')" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-vital-cream text-xs font-bold flex items-center gap-1.5 border border-white/15 transition">
+            <i data-lucide="graduation-cap" class="w-4 h-4 text-vital-orange"></i> + Clase / Torneo
+          </button>
+          <button onclick="switchAdminTab('pos')" class="px-4 py-2.5 rounded-xl bg-vital-lime text-vital-950 text-xs font-extrabold flex items-center gap-1.5 shadow transition">
+            <i data-lucide="calculator" class="w-4 h-4"></i> Ir a Punto de Venta (POS)
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Admin Navigation Bar -->
+      <div class="flex lg:hidden items-center gap-2 mt-4 overflow-x-auto pb-1">
+        <button onclick="switchAdminTab('dashboard')" data-admin-tab="dashboard" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-vital-lime text-vital-950 shrink-0">Dashboard</button>
+        <button onclick="switchAdminTab('pos')" data-admin-tab="pos" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 text-vital-cream shrink-0">Punto de Venta (POS)</button>
+        <button onclick="switchAdminTab('registro')" data-admin-tab="registro" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 text-vital-cream shrink-0">Control Canchas</button>
+        <button onclick="switchAdminTab('ingresos')" data-admin-tab="ingresos" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-white/10 text-vital-cream shrink-0">Ingresos y Catálogo</button>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      
+      <!-- TAB 1: DASHBOARD EJECUTIVO (NÚMEROS) -->
+      <section id="admin-tab-dashboard" class="space-y-8">
+        <!-- Top KPI Cards -->
+        <div id="dashboard-kpi-cards" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <!-- Populated by app.js -->
+        </div>
+
+        <!-- Revenue Breakdown by Stream + Occupancy Visuals -->
+        <div class="grid lg:grid-cols-12 gap-6">
+          <!-- Revenue by Stream -->
+          <div class="lg:col-span-7 bg-white rounded-3xl p-6 shadow-sm border border-stone-200/80 space-y-5">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-brand text-xl text-vital-900">Desglose de Ingresos por Flujo</h3>
+                <p class="text-xs text-stone-500">Reservaciones de Canchas vs. Clases/Torneos vs. Zona de Comida y POS</p>
+              </div>
+              <span class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">Actualizado en vivo</span>
+            </div>
+            <div id="dashboard-streams-bars" class="space-y-4">
+              <!-- Populated by app.js -->
+            </div>
+          </div>
+
+          <!-- Occupancy of Techadas 1 & 2 -->
+          <div class="lg:col-span-5 bg-white rounded-3xl p-6 shadow-sm border border-stone-200/80 space-y-5">
+            <div>
+              <h3 class="font-brand text-xl text-vital-900">Ocupación de Canchas Techadas</h3>
+              <p class="text-xs text-stone-500">Rendimiento del día seleccionado (8:00 AM – 8:00 PM)</p>
+            </div>
+            <div id="dashboard-court-occupancy" class="space-y-4">
+              <!-- Populated by app.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Transactions & Active Bookings Today -->
+        <div class="grid lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-7 bg-white rounded-3xl p-6 shadow-sm border border-stone-200/80">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-brand text-xl text-vital-900">Últimos Movimientos Registrados</h3>
+              <button onclick="switchAdminTab('ingresos')" class="text-xs font-bold text-vital-700 hover:underline">Ver todos los ingresos →</button>
+            </div>
+            <div id="dashboard-recent-tx" class="overflow-x-auto">
+              <!-- Populated by app.js -->
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 bg-white rounded-3xl p-6 shadow-sm border border-stone-200/80">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-brand text-xl text-vital-900">Próximos Partidos y Clases</h3>
+              <button onclick="switchAdminTab('registro')" class="text-xs font-bold text-vital-700 hover:underline">Ir a agenda →</button>
+            </div>
+            <div id="dashboard-upcoming-list" class="space-y-3">
+              <!-- Populated by app.js -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: PUNTO DE VENTA (POS) -->
+      <section id="admin-tab-pos" class="hidden">
+        <div class="grid lg:grid-cols-12 gap-6 items-start">
+          
+          <!-- Left: Fast POS Product & Service Selector -->
+          <div class="lg:col-span-8 bg-white rounded-3xl p-6 shadow-sm border border-stone-200/80 space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h2 class="font-brand text-2xl text-vital-900">Terminal Punto de Venta (POS)</h2>
+                <p class="text-xs text-stone-500">Registra ventas de sándwiches, bebidas, renta de canchas en mostrador, clases o accesorios.</p>
+              </div>
+              <div class="relative">
+                <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3.5 top-3"></i>
+                <input type="text" id="pos-search-input" oninput="renderPosCatalog()" placeholder="Buscar producto o servicio..." class="pl-9 pr-4 py-2 rounded-xl bg-stone-100 border border-stone-200 text-sm focus:outline-none focus:border-vital-700" />
+              </div>
+            </div>
+
+            <!-- POS Category Pills -->
+            <div class="flex flex-wrap gap-2">
+              <button onclick="setPosCategory('all')" data-pos-cat="all" class="pos-cat-btn px-3.5 py-2 rounded-xl text-xs font-extrabold bg-vital-900 text-vital-cream">Todos</button>
+              <button onclick="setPosCategory('Sándwiches y Comida')" data-pos-cat="Sándwiches y Comida" class="pos-cat-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200">🥪 Sándwiches y Comida</button>
+              <button onclick="setPosCategory('Bebidas y Café')" data-pos-cat="Bebidas y Café" class="pos-cat-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200">🥤 Bebidas y Café</button>
+              <button onclick="setPosCategory('Canchas y Clases')" data-pos-cat="Canchas y Clases" class="pos-cat-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200">🎾 Canchas y Clases Rápidas</button>
+              <button onclick="setPosCategory('Renta y Accesorios')" data-pos-cat="Renta y Accesorios" class="pos-cat-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200">🏓 Renta Palas y Pelotas</button>
+            </div>
+
+            <!-- POS Products Grid -->
+            <div id="pos-catalog-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
+              <!-- Populated by app.js -->
+            </div>
+          </div>
+
+          <!-- Right: Current Ticket / Cashier Checkout -->
+          <div class="lg:col-span-4 bg-white rounded-3xl p-6 shadow-md border border-stone-200/80 sticky top-24 space-y-5">
+            <div class="flex items-center justify-between border-b border-stone-200 pb-3">
+              <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-xl bg-vital-900 text-vital-lime flex items-center justify-center">
+                  <i data-lucide="receipt" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h3 class="font-extrabold text-vital-900 text-base">Cuenta Actual · POS</h3>
+                  <p class="text-[11px] text-stone-500">Vital Club Caja Recepción</p>
+                </div>
+              </div>
+              <button onclick="clearPosCart()" class="text-xs text-rose-600 hover:underline font-bold">Vaciar</button>
+            </div>
+
+            <!-- Customer / Court Reference -->
+            <div class="grid grid-cols-2 gap-2.5">
+              <div>
+                <label class="text-[11px] font-bold text-stone-500 uppercase">Cliente / Mesa / Cancha</label>
+                <input type="text" id="pos-customer-input" placeholder="Ej. Cancha 1 / Familia Ruiz" class="w-full mt-1 px-3 py-2 rounded-xl bg-stone-100 border border-stone-200 text-xs font-semibold focus:outline-none" />
+              </div>
+              <div>
+                <label class="text-[11px] font-bold text-stone-500 uppercase">Método de Pago</label>
+                <select id="pos-payment-method" onchange="updatePosCashChange()" class="w-full mt-1 px-3 py-2 rounded-xl bg-stone-100 border border-stone-200 text-xs font-bold focus:outline-none">
+                  <option value="Efectivo">💵 Efectivo</option>
+                  <option value="Tarjeta">💳 Tarjeta (Terminal)</option>
+                  <option value="Transferencia">📲 Transferencia</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Cart Items -->
+            <div id="pos-cart-items" class="space-y-2.5 max-h-64 overflow-y-auto pr-1">
+              <!-- Populated by app.js -->
+            </div>
+
+            <!-- Cash Received & Change Calculator -->
+            <div id="pos-cash-box" class="bg-stone-50 p-3 rounded-2xl border border-stone-200 flex items-center justify-between gap-3">
+              <div>
+                <label class="text-[11px] font-bold text-stone-500 block">Pago Recibido ($)</label>
+                <input type="number" id="pos-cash-received" oninput="updatePosCashChange()" placeholder="0.00" class="w-28 mt-0.5 px-2.5 py-1.5 rounded-lg bg-white border border-stone-300 text-sm font-bold" />
+              </div>
+              <div class="text-right">
+                <span class="text-[11px] font-bold text-stone-500 block">Cambio a entregar</span>
+                <span id="pos-cash-change" class="text-base font-extrabold text-emerald-700">$0.00</span>
+              </div>
+            </div>
+
+            <!-- Totals -->
+            <div class="border-t border-stone-200 pt-3 space-y-1.5">
+              <div class="flex justify-between text-xs text-stone-500">
+                <span>Artículos en cuenta</span>
+                <span id="pos-total-qty" class="font-bold">0</span>
+              </div>
+              <div class="flex justify-between items-baseline text-lg font-extrabold text-vital-900">
+                <span>Total a Cobrar</span>
+                <span id="pos-total-amount" class="text-2xl text-vital-900">$0.00 MXN</span>
+              </div>
+            </div>
+
+            <button onclick="completePosSale()" class="w-full py-4 rounded-2xl bg-vital-900 hover:bg-vital-800 text-vital-lime font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg transition">
+              <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+              Registrar Venta y Emitir Ticket
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- TAB 3: CONTROL DE REGISTRO DE CANCHAS (ADMIN AGENDA) -->
+      <section id="admin-tab-registro" class="hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-stone-200/80">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 class="font-brand text-2xl text-vital-900">Control Maestro de Canchas, Clases y Mantenimiento</h2>
+              <p class="text-xs text-stone-500">Visualiza reservas de clientes, clases de cada Coach y bloquea horarios por mantenimiento para que no se puedan apartar.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2.5">
+              <input type="date" id="admin-booking-date" onchange="handleDateInputChange(this.value)" class="px-3.5 py-2 rounded-xl bg-stone-100 border border-stone-200 text-xs sm:text-sm font-bold text-vital-900" />
+              <button onclick="openMaintenanceModal()" class="px-3.5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-extrabold flex items-center gap-1.5 shadow-sm transition">
+                <i data-lucide="wrench" class="w-4 h-4"></i> + Horario Mantenimiento
+              </button>
+              <button onclick="openCoachClassModal()" class="px-3.5 py-2.5 rounded-xl bg-vital-orange hover:bg-vital-orange/90 text-white text-xs font-extrabold flex items-center gap-1.5 shadow-sm transition">
+                <i data-lucide="graduation-cap" class="w-4 h-4"></i> + Asignar Clase Coach
+              </button>
+              <button onclick="openManualBookingModal()" class="px-3.5 py-2.5 rounded-xl bg-vital-900 text-vital-lime text-xs font-extrabold flex items-center gap-1.5 shadow-sm transition">
+                <i data-lucide="calendar-plus" class="w-4 h-4"></i> + Apartar Cancha
+              </button>
+            </div>
+          </div>
+
+          <!-- Admin Court Control Table / Grid -->
+          <div id="admin-courts-schedule" class="grid lg:grid-cols-2 gap-6">
+            <!-- Populated by app.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: CONTROL DE INGRESOS Y CATÁLOGO 100% GESTIONABLE -->
+      <section id="admin-tab-ingresos" class="hidden space-y-8">
+        
+        <!-- Ledger & Income Control -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-stone-200/80 space-y-5">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div>
+              <h2 class="font-brand text-2xl text-vital-900">Control de Ingresos (Reservaciones, Clases y Comida)</h2>
+              <p class="text-xs text-stone-500">Historial auditable de todos los ingresos del club. Puedes filtrar por flujo, método de pago o registrar un ingreso manual.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2.5">
+              <select id="income-filter-stream" onchange="renderAdminIncomeTable()" class="px-3.5 py-2 rounded-xl bg-stone-100 border border-stone-200 text-xs font-bold">
+                <option value="all">Todos los Flujos de Ingreso</option>
+                <option value="Reservaciones">🎾 Reservaciones de Canchas</option>
+                <option value="Clases y Torneos">🏆 Clases y Torneos</option>
+                <option value="Comida y Bebidas">🥪 Comida y Bebidas</option>
+                <option value="Accesorios y Otros">🏓 Accesorios y Otros</option>
+              </select>
+              <button onclick="openAdminNewModal('transaction')" class="px-4 py-2 rounded-xl bg-vital-900 text-vital-lime text-xs font-extrabold flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-4 h-4"></i> Registrar Ingreso Manual
+              </button>
+              <button onclick="exportIncomeCSV()" class="px-3.5 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold flex items-center gap-1.5">
+                <i data-lucide="download" class="w-4 h-4"></i> Exportar CSV
+              </button>
+            </div>
+          </div>
+
+          <div id="admin-income-table-wrap" class="overflow-x-auto">
+            <!-- Populated by app.js -->
+          </div>
+        </div>
+
+        <!-- Dynamic Catalog Manager (Add/Edit Food, Classes, Coaches, Court Prices) -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-stone-200/80 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-200 pb-4">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-vital-orange">100% Gestionable por el Administrador</span>
+              <h3 class="font-brand text-2xl text-vital-900">Gestor de Catálogo, Clases, Coaches y Tarifas</h3>
+              <p class="text-xs text-stone-500">Agrega más productos de comida, nuevas experiencias (como Barre, Gym o Cocina), clases, torneos o entrenadores.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="openAdminNewModal('item')" class="px-3.5 py-2 rounded-xl bg-vital-900 text-vital-cream text-xs font-bold">+ Nuevo Producto / Comida</button>
+              <button onclick="openAdminNewModal('program')" class="px-3.5 py-2 rounded-xl bg-vital-orange text-white text-xs font-bold">+ Nueva Clase / Torneo</button>
+              <button onclick="openAdminNewModal('coach')" class="px-3.5 py-2 rounded-xl bg-stone-800 text-white text-xs font-bold">+ Nuevo Entrenador</button>
+              <button onclick="resetDemoData()" class="px-3 py-2 rounded-xl bg-stone-100 hover:bg-rose-50 text-stone-600 hover:text-rose-700 text-xs font-bold">Restaurar Demo</button>
+            </div>
+          </div>
+
+          <!-- Court Rates & Hours Quick Editor -->
+          <div class="bg-stone-50 rounded-2xl p-4 border border-stone-200">
+            <h4 class="font-extrabold text-sm text-vital-900 mb-3 flex items-center gap-2">
+              <i data-lucide="settings-2" class="w-4 h-4 text-vital-700"></i> Configuración de Tarifas de Canchas Techadas y Horarios
+            </h4>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div>
+                <label class="text-[11px] font-bold text-stone-500 uppercase">Tarifa Hora Cancha 1 ($ MXN)</label>
+                <input type="number" id="setting-price-c1" onchange="saveCourtSettings()" class="w-full mt-1 px-3 py-2 rounded-xl bg-white border border-stone-300 text-sm font-bold" />
+              </div>
+              <div>
+                <label class="text-[11px] font-bold text-stone-500 uppercase">Tarifa Hora Cancha 2 ($ MXN)</label>
+                <input type="number" id="setting-price-c2" onchange="saveCourtSettings()" class="w-full mt-1 px-3 py-2 rounded-xl bg-white border border-stone-300 text-sm font-bold" />
+              </div>
+              <div>
+                <label class="text-[11px] font-bold text-stone-500 uppercase">Apertura (Hora)</label>
+                <select id="setting-open-hour" onchange="saveCourtSettings()" class="w-full mt-1 px-3 py-2 rounded-xl bg-white border border-stone-300 text-sm font-bold">
+                  <option value="7">7:00 AM</option>
+                  <option value="8">8:00 AM</option>
+                  <option value="9">9:00 AM</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-[11px] font-bold text-stone-500 uppercase">Cierre (Hora)</label>
+                <select id="setting-close-hour" onchange="saveCourtSettings()" class="w-full mt-1 px-3 py-2 rounded-xl bg-white border border-stone-300 text-sm font-bold">
+                  <option value="20">8:00 PM (20:00)</option>
+                  <option value="21">9:00 PM (21:00)</option>
+                  <option value="22">10:00 PM (22:00)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Editable Lists Grid -->
+          <div class="grid lg:grid-cols-3 gap-6">
+            <div>
+              <h4 class="font-bold text-sm text-vital-900 mb-3">🥪 Productos de Comida, Bebidas y POS</h4>
+              <div id="admin-catalog-list" class="space-y-2 max-h-80 overflow-y-auto pr-1"></div>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-vital-900 mb-3">🏆 Clases, Clínicas y Torneos</h4>
+              <div id="admin-programs-list" class="space-y-2 max-h-80 overflow-y-auto pr-1"></div>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-vital-900 mb-3">👟 Entrenadores (Coaches)</h4>
+              <div id="admin-coaches-list" class="space-y-2 max-h-80 overflow-y-auto pr-1"></div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- FOOTER WITH OFFICIAL SOCIAL LINKS & ADDRESS                           -->
+  <!-- ===================================================================== -->
+  <footer class="bg-vital-950 text-vital-cream border-t border-white/10 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-12 gap-8 items-center">
+      <div class="md:col-span-5 space-y-3">
+        <div class="vital-logo-mark items-start text-2xl text-vital-cream">
+          <span>VITAL <span class="c-bolt">C<svg viewBox="0 0 24 24" fill="#E87A24"><path d="M13 2L4 14h7l-2 8 10-12h-7l2-8z"/></svg></span>LUB</span>
+        </div>
+        <p class="text-xs text-vital-cream/70 max-w-sm leading-relaxed">
+          2 canchas de pádel 100% techadas, ambiente familiar para todas las edades y zona de comida. Próximamente integrando nuevas experiencias de cocina, barre y gym.
+        </p>
+        <p class="text-xs text-vital-lime font-semibold">
+          Andrés Landa y Piña Nte. 26, Col. Cuauhtémoc, Zitácuaro, Mich., México, 61506
+        </p>
+      </div>
+
+      <div class="md:col-span-4 space-y-2 text-xs text-vital-cream/80">
+        <p class="font-extrabold uppercase tracking-wider text-vital-orange">Horarios y Contacto</p>
+        <p>Lunes a Viernes: 8:00 AM – 8:00 PM (y Fines de Semana)</p>
+        <p>Teléfono y Reservaciones: <a href="tel:7151317443" class="text-vital-lime font-bold hover:underline">715 131 7443</a></p>
+      </div>
+
+      <div class="md:col-span-3 flex md:justify-end gap-3">
+        <a href="https://www.instagram.com/vitalclub.zit/" target="_blank" rel="noopener noreferrer" class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white flex items-center justify-center hover:scale-105 transition shadow" title="Instagram @vitalclub.zit">
+          <i data-lucide="instagram" class="w-5 h-5"></i>
+        </a>
+        <a href="https://web.facebook.com/profile.php?id=61584920653779&sk=about" target="_blank" rel="noopener noreferrer" class="w-11 h-11 rounded-2xl bg-[#1877F2] text-white flex items-center justify-center hover:scale-105 transition shadow" title="Facebook Vital Club">
+          <i data-lucide="facebook" class="w-5 h-5"></i>
+        </a>
+        <a href="https://wa.me/527151317443" target="_blank" rel="noopener noreferrer" class="w-11 h-11 rounded-2xl bg-[#25D366] text-vital-950 flex items-center justify-center hover:scale-105 transition shadow" title="WhatsApp Vital Club">
+          <i data-lucide="message-circle" class="w-5 h-5"></i>
+        </a>
+        <a href="tel:7151317443" class="w-11 h-11 rounded-2xl bg-vital-lime text-vital-950 flex items-center justify-center hover:scale-105 transition shadow" title="Llamar a Vital Club">
+          <i data-lucide="phone" class="w-5 h-5"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- UNIVERSAL INTERACTIVE MODAL (BOOKINGS, CARD CHECKOUT, ADMIN CRUD)     -->
+  <!-- ===================================================================== -->
+  <div id="universal-modal" class="fixed inset-0 z-50 hidden bg-vital-950/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div id="universal-modal-content" class="bg-white text-vital-950 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-vital-900/10 relative my-8">
+      <!-- Populated dynamically by app.js -->
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
