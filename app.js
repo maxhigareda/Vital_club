@@ -506,8 +506,6 @@ function switchMainMode(mode) {
   const coachView = document.getElementById('view-coach');
   const adminView = document.getElementById('view-admin');
   const clientNav = document.getElementById('client-nav');
-  const coachNav = document.getElementById('coach-nav');
-  const adminNav = document.getElementById('admin-nav');
   const clientCartBtn = document.getElementById('client-cart-btn');
 
   const btnClient = document.getElementById('btn-mode-client');
@@ -525,31 +523,29 @@ function switchMainMode(mode) {
   coachView?.classList.toggle('is-hidden', mode !== 'coach');
   adminView?.classList.toggle('is-hidden', mode !== 'admin');
 
+  if (clientView) clientView.style.display = mode === 'client' ? '' : 'none';
+  if (coachView) coachView.style.display = mode === 'coach' ? '' : 'none';
+  if (adminView) adminView.style.display = mode === 'admin' ? '' : 'none';
+
   if (mode === 'client') {
     clientNav?.classList.remove('is-hidden');
-    coachNav?.classList.add('is-hidden');
-    coachNav?.classList.remove('md:flex');
-    adminNav?.classList.add('is-hidden');
-    adminNav?.classList.remove('md:flex');
+    if (clientNav) clientNav.style.display = '';
     clientCartBtn?.classList.remove('is-hidden');
+    if (clientCartBtn) clientCartBtn.style.display = '';
     renderAllClientViews();
   } else if (mode === 'coach') {
     clientNav?.classList.add('is-hidden');
-    coachNav?.classList.remove('is-hidden');
-    coachNav?.classList.add('md:flex');
-    adminNav?.classList.add('is-hidden');
-    adminNav?.classList.remove('md:flex');
+    if (clientNav) clientNav.style.display = 'none';
     clientCartBtn?.classList.add('is-hidden');
+    if (clientCartBtn) clientCartBtn.style.display = 'none';
     populateCoachSelector();
     renderCoachView();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } else {
     clientNav?.classList.add('is-hidden');
-    coachNav?.classList.add('is-hidden');
-    coachNav?.classList.remove('md:flex');
-    adminNav?.classList.remove('is-hidden');
-    adminNav?.classList.add('md:flex');
+    if (clientNav) clientNav.style.display = 'none';
     clientCartBtn?.classList.add('is-hidden');
+    if (clientCartBtn) clientCartBtn.style.display = 'none';
     renderAllAdminViews();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -567,14 +563,17 @@ function switchAdminTab(tabName) {
   };
 
   tabs.forEach(t => {
-    document.getElementById(`admin-tab-${t}`)?.classList.toggle('is-hidden', t !== tabName);
+    const el = document.getElementById(`admin-tab-${t}`);
+    if (!el) return;
+    el.classList.toggle('is-hidden', t !== tabName);
+    el.style.display = t === tabName ? '' : 'none';
   });
 
   document.querySelectorAll('.admin-tab-btn').forEach(btn => {
     const isAct = btn.getAttribute('data-admin-tab') === tabName;
     btn.className = isAct
-      ? 'admin-tab-btn px-3.5 py-1.5 rounded-lg bg-vital-lime text-vital-950 font-bold transition shrink-0'
-      : 'admin-tab-btn px-3.5 py-1.5 rounded-lg text-vital-cream/75 hover:text-white transition shrink-0';
+      ? 'admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-vital-900 text-vital-cream transition'
+      : 'admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand transition';
   });
 
   const titleEl = document.getElementById('admin-header-title');

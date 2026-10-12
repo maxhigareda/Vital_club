@@ -26,7 +26,7 @@
     }
   </script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=5" />
 </head>
 <body class="bg-vital-cream text-vital-950 antialiased selection:bg-vital-lime selection:text-vital-950 min-h-screen flex flex-col">
 
@@ -44,25 +44,12 @@
         </span>
       </a>
 
-      <!-- 1. CLIENT NAVIGATION (Visible ONLY in Client Mode) -->
+      <!-- CLIENT NAVIGATION (Visible ONLY in Client Mode) -->
       <nav id="client-nav" class="hidden md:flex items-center gap-6 text-sm font-medium text-vital-cream/80">
         <a href="#reservar" class="hover:text-vital-lime transition">Canchas</a>
         <a href="#clases" class="hover:text-vital-lime transition">Clases y Torneos</a>
         <a href="#comida" class="hover:text-vital-lime transition">Comida</a>
         <a href="#nosotros" class="hover:text-vital-lime transition">Nosotros</a>
-      </nav>
-
-      <!-- 2. COACH NAVIGATION BADGE (Visible ONLY in Coach Mode) -->
-      <div id="coach-nav" class="is-hidden items-center gap-2 text-xs font-semibold text-vital-lime bg-white/5 px-3.5 py-1.5 rounded-full border border-white/10">
-        <span>👟 Portal de Entrenadores · Agenda por Hora</span>
-      </div>
-
-      <!-- 3. ADMIN NAVIGATION (Visible ONLY in Admin Mode) -->
-      <nav id="admin-nav" class="is-hidden items-center gap-1.5 bg-vital-950/80 p-1 rounded-xl border border-white/10 text-xs font-semibold overflow-x-auto">
-        <button onclick="switchAdminTab('dashboard')" data-admin-tab="dashboard" class="admin-tab-btn px-3.5 py-1.5 rounded-lg bg-vital-lime text-vital-950 font-bold transition shrink-0">Dashboard</button>
-        <button onclick="switchAdminTab('pos')" data-admin-tab="pos" class="admin-tab-btn px-3.5 py-1.5 rounded-lg text-vital-cream/75 hover:text-white transition shrink-0">Punto de Venta</button>
-        <button onclick="switchAdminTab('registro')" data-admin-tab="registro" class="admin-tab-btn px-3.5 py-1.5 rounded-lg text-vital-cream/75 hover:text-white transition shrink-0">Control Canchas</button>
-        <button onclick="switchAdminTab('ingresos')" data-admin-tab="ingresos" class="admin-tab-btn px-3.5 py-1.5 rounded-lg text-vital-cream/75 hover:text-white transition shrink-0">Ingresos y Catálogo</button>
       </nav>
 
       <!-- Right Actions: Mode Switcher & Client Cart -->
@@ -280,17 +267,17 @@
   <main id="view-admin" class="is-hidden flex-1 py-10">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
 
-      <!-- Clean Admin Title Bar (Mobile sub-tabs only on small screens) -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <!-- Admin Header Card (Single clean navigation bar) -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-vital-900/10 shadow-sm">
         <div>
-          <span class="text-xs font-bold uppercase tracking-widest text-vital-orange">Panel Administrador</span>
-          <h1 id="admin-header-title" class="font-brand text-3xl text-vital-900 mt-0.5">Dashboard y Números</h1>
+          <span class="text-xs font-bold uppercase tracking-widest text-vital-orange">Administración Vital Club</span>
+          <h1 id="admin-header-title" class="font-brand text-2xl sm:text-3xl text-vital-900 mt-0.5">Dashboard y Números</h1>
         </div>
-        <div class="flex md:hidden flex-wrap gap-1.5">
-          <button onclick="switchAdminTab('dashboard')" data-admin-tab="dashboard" class="admin-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-vital-lime text-vital-950">Dashboard</button>
-          <button onclick="switchAdminTab('pos')" data-admin-tab="pos" class="admin-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-vital-900">POS</button>
-          <button onclick="switchAdminTab('registro')" data-admin-tab="registro" class="admin-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-vital-900">Canchas</button>
-          <button onclick="switchAdminTab('ingresos')" data-admin-tab="ingresos" class="admin-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-vital-900">Ingresos</button>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="switchAdminTab('dashboard')" data-admin-tab="dashboard" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-vital-900 text-vital-cream transition">Dashboard</button>
+          <button onclick="switchAdminTab('pos')" data-admin-tab="pos" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand transition">Punto de Venta</button>
+          <button onclick="switchAdminTab('registro')" data-admin-tab="registro" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand transition">Control Canchas</button>
+          <button onclick="switchAdminTab('ingresos')" data-admin-tab="ingresos" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand transition">Ingresos y Catálogo</button>
         </div>
       </div>
 
@@ -445,6 +432,6 @@
   <!-- TOAST -->
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>
