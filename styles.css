@@ -71,6 +71,11 @@ html {
   box-shadow: 0 12px 32px -8px rgba(19, 45, 32, 0.1);
 }
 
+/* Force-hide helper so responsive flex classes never override hidden state */
+.is-hidden {
+  display: none !important;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

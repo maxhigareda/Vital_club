@@ -35,7 +35,7 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-4">
       
       <!-- Brand Logo -->
-      <a href="#" onclick="switchMainMode('client'); return false;" class="flex items-center gap-3 group">
+      <a href="#" onclick="switchMainMode('client'); return false;" class="flex items-center gap-3 group shrink-0">
         <div class="vital-logo-mark items-start text-2xl tracking-wide text-vital-cream">
           <span>VITAL <span class="c-bolt">C<svg viewBox="0 0 24 24" fill="#E87A24"><path d="M13 2L4 14h7l-2 8 10-12h-7l2-8z"/></svg></span>LUB</span>
         </div>
@@ -44,7 +44,7 @@
         </span>
       </a>
 
-      <!-- Client Navigation (Minimal) -->
+      <!-- 1. CLIENT NAVIGATION (Visible ONLY in Client Mode) -->
       <nav id="client-nav" class="hidden md:flex items-center gap-6 text-sm font-medium text-vital-cream/80">
         <a href="#reservar" class="hover:text-vital-lime transition">Canchas</a>
         <a href="#clases" class="hover:text-vital-lime transition">Clases y Torneos</a>
@@ -52,16 +52,21 @@
         <a href="#nosotros" class="hover:text-vital-lime transition">Nosotros</a>
       </nav>
 
-      <!-- Admin Sub-navigation (Only visible in Admin Mode) -->
-      <nav id="admin-nav" class="hidden items-center gap-1 bg-vital-950/70 p-1 rounded-xl border border-white/10 text-xs font-semibold">
-        <button onclick="switchAdminTab('dashboard')" data-admin-tab="dashboard" class="admin-tab-btn px-3 py-1.5 rounded-lg bg-vital-lime text-vital-950 font-bold transition">Dashboard</button>
-        <button onclick="switchAdminTab('pos')" data-admin-tab="pos" class="admin-tab-btn px-3 py-1.5 rounded-lg text-vital-cream/75 hover:text-white transition">POS</button>
-        <button onclick="switchAdminTab('registro')" data-admin-tab="registro" class="admin-tab-btn px-3 py-1.5 rounded-lg text-vital-cream/75 hover:text-white transition">Canchas</button>
-        <button onclick="switchAdminTab('ingresos')" data-admin-tab="ingresos" class="admin-tab-btn px-3 py-1.5 rounded-lg text-vital-cream/75 hover:text-white transition">Ingresos y Catálogo</button>
+      <!-- 2. COACH NAVIGATION BADGE (Visible ONLY in Coach Mode) -->
+      <div id="coach-nav" class="is-hidden items-center gap-2 text-xs font-semibold text-vital-lime bg-white/5 px-3.5 py-1.5 rounded-full border border-white/10">
+        <span>👟 Portal de Entrenadores · Agenda por Hora</span>
+      </div>
+
+      <!-- 3. ADMIN NAVIGATION (Visible ONLY in Admin Mode) -->
+      <nav id="admin-nav" class="is-hidden items-center gap-1.5 bg-vital-950/80 p-1 rounded-xl border border-white/10 text-xs font-semibold overflow-x-auto">
+        <button onclick="switchAdminTab('dashboard')" data-admin-tab="dashboard" class="admin-tab-btn px-3.5 py-1.5 rounded-lg bg-vital-lime text-vital-950 font-bold transition shrink-0">Dashboard</button>
+        <button onclick="switchAdminTab('pos')" data-admin-tab="pos" class="admin-tab-btn px-3.5 py-1.5 rounded-lg text-vital-cream/75 hover:text-white transition shrink-0">Punto de Venta</button>
+        <button onclick="switchAdminTab('registro')" data-admin-tab="registro" class="admin-tab-btn px-3.5 py-1.5 rounded-lg text-vital-cream/75 hover:text-white transition shrink-0">Control Canchas</button>
+        <button onclick="switchAdminTab('ingresos')" data-admin-tab="ingresos" class="admin-tab-btn px-3.5 py-1.5 rounded-lg text-vital-cream/75 hover:text-white transition shrink-0">Ingresos y Catálogo</button>
       </nav>
 
-      <!-- Right Actions: Mode Switcher & Cart -->
-      <div class="flex items-center gap-2.5">
+      <!-- Right Actions: Mode Switcher & Client Cart -->
+      <div class="flex items-center gap-2.5 shrink-0">
         <div class="bg-vital-950 p-1 rounded-xl border border-white/10 flex items-center text-xs font-semibold">
           <button id="btn-mode-client" onclick="switchMainMode('client')" class="px-3 py-1.5 rounded-lg bg-vital-lime text-vital-950 font-bold transition">
             Cliente
@@ -76,7 +81,7 @@
 
         <button id="client-cart-btn" onclick="openClientFoodCart()" class="relative p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-vital-cream transition" title="Mi Pedido de Comida">
           <i data-lucide="shopping-bag" class="w-4 h-4 text-vital-lime"></i>
-          <span id="client-cart-count" class="hidden absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-vital-orange text-white text-[10px] font-bold flex items-center justify-center">0</span>
+          <span id="client-cart-count" class="is-hidden absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-vital-orange text-white text-[10px] font-bold flex items-center justify-center">0</span>
         </button>
       </div>
 
@@ -121,9 +126,7 @@
           <div class="relative rounded-3xl overflow-hidden border border-white/15 shadow-2xl aspect-[4/4] max-h-[420px] mx-auto">
             <img src="assets/vital-hero-ball.jpg" alt="Vital Club Pádel" class="w-full h-full object-cover" />
             <div class="absolute inset-0 bg-gradient-to-t from-vital-950/80 via-transparent to-transparent"></div>
-            <div id="hero-courts-status" class="absolute bottom-4 left-4 right-4 grid grid-cols-2 gap-2">
-              <!-- Populated by app.js -->
-            </div>
+            <div id="hero-courts-status" class="absolute bottom-4 left-4 right-4 grid grid-cols-2 gap-2"></div>
           </div>
         </div>
 
@@ -139,7 +142,6 @@
           <p class="text-sm text-vital-900/60 mt-0.5">Selecciona un día y toca cualquier hora para reservar o ver detalles.</p>
         </div>
 
-        <!-- Minimal Legend -->
         <div class="flex items-center gap-4 text-xs font-semibold text-vital-900/70">
           <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Libre</span>
           <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-vital-orange"></span> Clase</span>
@@ -148,24 +150,22 @@
         </div>
       </div>
 
-      <!-- Sleek Date Strip -->
       <div class="flex items-center justify-between gap-3 mb-8">
         <div id="date-strip" class="flex items-center gap-2 overflow-x-auto pb-1"></div>
         <input type="date" id="booking-date-input" onchange="handleDateInputChange(this.value)" class="px-3.5 py-2.5 rounded-2xl bg-white border border-vital-900/10 text-xs font-bold text-vital-900 shrink-0 shadow-sm" />
       </div>
 
-      <!-- Clean 2-Court Grid (Minimal Hour Chips) -->
       <div id="client-courts-container" class="grid md:grid-cols-2 gap-6"></div>
     </section>
 
-    <!-- SECTION 2: CLASES Y TORNEOS (CLEAN CARDS -> DETAILS MODAL) -->
+    <!-- SECTION 2: CLASES Y TORNEOS -->
     <section id="clases" class="py-16 bg-vital-sand/50 border-y border-vital-900/5">
       <div class="max-w-6xl mx-auto px-4 sm:px-6">
         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
             <span class="text-xs font-bold uppercase tracking-widest text-vital-700">Academia Familiar</span>
             <h2 class="font-brand text-3xl sm:text-4xl text-vital-900 mt-1">Clases y Torneos</h2>
-            <p class="text-sm text-vital-900/60 mt-0.5">Para niños, familias y adultos mayores. Haz clic en cualquiera para ver detalles e inscribirte con tarjeta.</p>
+            <p class="text-sm text-vital-900/60 mt-0.5">Para niños, familias y adultos mayores. Toca cualquiera para ver detalles e inscribirte con tarjeta.</p>
           </div>
           <div class="flex flex-wrap gap-1.5">
             <button onclick="filterPrograms('all')" data-prog-filter="all" class="prog-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-vital-900 text-vital-cream transition">Todos</button>
@@ -179,7 +179,7 @@
       </div>
     </section>
 
-    <!-- SECTION 3: ZONA DE COMIDA (MINIMAL MENU CARDS -> MODAL) -->
+    <!-- SECTION 3: ZONA DE COMIDA -->
     <section id="comida" class="py-16 max-w-6xl mx-auto px-4 sm:px-6">
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
         <div>
@@ -198,7 +198,7 @@
       <div id="client-food-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
     </section>
 
-    <!-- SECTION 4: NOSOTROS Y ENTRENADORES (CLEAN & BREATHABLE) -->
+    <!-- SECTION 4: NOSOTROS Y ENTRENADORES -->
     <section id="nosotros" class="py-16 bg-vital-900 text-vital-cream">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-14">
         
@@ -230,7 +230,6 @@
           </div>
         </div>
 
-        <!-- Minimal Coaches Row (Click for Coach Modal) -->
         <div>
           <div class="flex items-center justify-between mb-6">
             <div>
@@ -249,10 +248,9 @@
   <!-- ===================================================================== -->
   <!-- 2. VISTA COACH (CLEAN HOURLY PILLS + CLASS DETAIL MODAL)              -->
   <!-- ===================================================================== -->
-  <main id="view-coach" class="hidden flex-1 py-10">
+  <main id="view-coach" class="is-hidden flex-1 py-10">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
       
-      <!-- Coach Top Bar -->
       <div class="bg-vital-900 text-vital-cream rounded-3xl p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
           <span class="text-xs font-bold uppercase tracking-widest text-vital-lime">Vista Entrenador</span>
@@ -269,35 +267,30 @@
         </div>
       </div>
 
-      <!-- Coach Minimal KPIs -->
       <div id="coach-kpi-cards" class="grid grid-cols-2 lg:grid-cols-4 gap-4"></div>
-
-      <!-- Coach Date Strip -->
       <div id="coach-date-strip" class="flex items-center gap-2 overflow-x-auto pb-1"></div>
-
-      <!-- Clean Hourly Matrix -->
       <div id="coach-hourly-timeline" class="grid md:grid-cols-2 gap-6"></div>
 
     </div>
   </main>
 
   <!-- ===================================================================== -->
-  <!-- 3. VISTA ADMIN (CLEAN DASHBOARD, POS, CALENDAR & MODAL CATALOG)       -->
+  <!-- 3. VISTA ADMIN (CLEAN SINGLE NAVIGATION, ZERO CROWDING)               -->
   <!-- ===================================================================== -->
-  <main id="view-admin" class="hidden flex-1 py-10">
+  <main id="view-admin" class="is-hidden flex-1 py-10">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
 
-      <!-- Admin Header -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-vital-900/10 shadow-sm">
+      <!-- Clean Admin Title Bar (Mobile sub-tabs only on small screens) -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span class="text-xs font-bold uppercase tracking-widest text-vital-orange">Administración Vital Club</span>
-          <h1 id="admin-header-title" class="font-brand text-2xl sm:text-3xl text-vital-900 mt-0.5">Dashboard y Números</h1>
+          <span class="text-xs font-bold uppercase tracking-widest text-vital-orange">Panel Administrador</span>
+          <h1 id="admin-header-title" class="font-brand text-3xl text-vital-900 mt-0.5">Dashboard y Números</h1>
         </div>
-        <div class="flex flex-wrap gap-2">
-          <button onclick="switchAdminTab('dashboard')" data-admin-tab="dashboard" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-vital-900 text-vital-cream">Dashboard</button>
-          <button onclick="switchAdminTab('pos')" data-admin-tab="pos" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900">Punto de Venta</button>
-          <button onclick="switchAdminTab('registro')" data-admin-tab="registro" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900">Control Canchas</button>
-          <button onclick="switchAdminTab('ingresos')" data-admin-tab="ingresos" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900">Ingresos y Catálogo</button>
+        <div class="flex md:hidden flex-wrap gap-1.5">
+          <button onclick="switchAdminTab('dashboard')" data-admin-tab="dashboard" class="admin-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-vital-lime text-vital-950">Dashboard</button>
+          <button onclick="switchAdminTab('pos')" data-admin-tab="pos" class="admin-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-vital-900">POS</button>
+          <button onclick="switchAdminTab('registro')" data-admin-tab="registro" class="admin-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-vital-900">Canchas</button>
+          <button onclick="switchAdminTab('ingresos')" data-admin-tab="ingresos" class="admin-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-vital-900">Ingresos</button>
         </div>
       </div>
 
@@ -326,11 +319,11 @@
       </section>
 
       <!-- TAB 2: PUNTO DE VENTA (POS) -->
-      <section id="admin-tab-pos" class="hidden">
+      <section id="admin-tab-pos" class="is-hidden">
         <div class="grid lg:grid-cols-12 gap-6 items-start">
           <div class="lg:col-span-8 card-luxury rounded-3xl p-6 space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <h2 class="font-brand text-2xl text-vital-900">Punto de Venta</h2>
+              <h2 class="font-brand text-2xl text-vital-900">Catálogo POS</h2>
               <input type="text" id="pos-search-input" oninput="renderPosCatalog()" placeholder="Buscar producto..." class="px-3.5 py-2 rounded-xl bg-vital-cream border border-vital-900/10 text-xs font-semibold focus:outline-none" />
             </div>
             <div class="flex flex-wrap gap-1.5">
@@ -378,12 +371,12 @@
         </div>
       </section>
 
-      <!-- TAB 3: CONTROL DE CANCHAS (CLEAN PILLS -> 1 MODAL FOR ALL ACTIONS) -->
-      <section id="admin-tab-registro" class="hidden space-y-6">
+      <!-- TAB 3: CONTROL DE CANCHAS -->
+      <section id="admin-tab-registro" class="is-hidden space-y-6">
         <div class="card-luxury rounded-3xl p-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
-              <h2 class="font-brand text-2xl text-vital-900">Calendario Maestro de Canchas</h2>
+              <h2 class="font-brand text-2xl text-vital-900">Disponibilidad, Clases y Mantenimiento</h2>
               <p class="text-xs text-stone-500">Toca cualquier hora para apartar cancha, asignar clase a un Coach o bloquear por mantenimiento.</p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
@@ -402,12 +395,12 @@
       </section>
 
       <!-- TAB 4: INGRESOS Y CATÁLOGO GESTIONABLE -->
-      <section id="admin-tab-ingresos" class="hidden space-y-6">
+      <section id="admin-tab-ingresos" class="is-hidden space-y-6">
         <div class="card-luxury rounded-3xl p-6 space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 class="font-brand text-2xl text-vital-900">Control de Ingresos</h2>
-              <p class="text-xs text-stone-500">Filtra por flujo o agrega nuevos productos, clases y entrenadores mediante modales limpios.</p>
+              <h2 class="font-brand text-2xl text-vital-900">Flujo de Ingresos y Catálogo</h2>
+              <p class="text-xs text-stone-500">Filtra por flujo o agrega nuevos productos, clases y entrenadores.</p>
             </div>
             <div class="flex flex-wrap gap-2">
               <select id="income-filter-stream" onchange="renderAdminIncomeTable()" class="px-3 py-2 rounded-xl bg-vital-cream text-xs font-bold">
@@ -445,7 +438,7 @@
   </footer>
 
   <!-- UNIVERSAL MODAL -->
-  <div id="universal-modal" class="fixed inset-0 z-50 hidden bg-vital-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+  <div id="universal-modal" class="fixed inset-0 z-50 is-hidden bg-vital-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
     <div id="universal-modal-content" class="bg-white text-vital-950 rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-vital-900/10 relative my-8"></div>
   </div>
 
