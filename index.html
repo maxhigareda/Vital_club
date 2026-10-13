@@ -52,17 +52,20 @@
         <a href="#nosotros" class="hover:text-vital-lime transition">Coaches</a>
       </nav>
 
-      <!-- Right Actions: Mode Switcher -->
+      <!-- Right Actions: WhatsApp for clients, or Staff Session controls when logged in -->
       <div class="flex items-center gap-2.5 shrink-0">
-        <div class="bg-vital-950 p-1 rounded-xl border border-white/10 flex items-center text-xs font-semibold">
-          <button id="btn-mode-client" onclick="switchMainMode('client')" class="px-3 py-1.5 rounded-lg bg-vital-lime text-vital-950 font-bold transition">
-            Cliente
-          </button>
-          <button id="btn-mode-coach" onclick="switchMainMode('coach')" class="px-3 py-1.5 rounded-lg text-vital-cream/75 hover:text-white transition">
-            Coach
-          </button>
-          <button id="btn-mode-admin" onclick="switchMainMode('admin')" class="px-3 py-1.5 rounded-lg text-vital-cream/75 hover:text-white transition">
-            Admin
+        <!-- Default public action -->
+        <div id="public-header-actions" class="flex items-center gap-2">
+          <a href="https://wa.me/527151317443" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-xl bg-vital-lime text-vital-950 text-xs font-bold hover:opacity-95 transition flex items-center gap-1.5 shadow-sm">
+            <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> WhatsApp
+          </a>
+        </div>
+
+        <!-- Authenticated Staff Action Badge (Hidden by default for clients) -->
+        <div id="staff-header-actions" class="is-hidden flex items-center gap-2">
+          <span id="staff-user-badge" class="px-3 py-1.5 rounded-lg bg-vital-950 border border-white/15 text-vital-lime text-xs font-bold"></span>
+          <button onclick="staffLogout()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-vital-cream text-xs font-semibold transition" title="Salir a Vista Cliente">
+            Salir
           </button>
         </div>
       </div>
@@ -515,6 +518,10 @@
       <div class="flex items-center gap-5">
         <a href="https://www.instagram.com/vitalclub.zit/" target="_blank" rel="noopener noreferrer" class="hover:text-vital-lime transition">Instagram</a>
         <a href="https://web.facebook.com/profile.php?id=61584920653779&sk=about" target="_blank" rel="noopener noreferrer" class="hover:text-vital-lime transition">Facebook</a>
+        <span class="text-white/20">·</span>
+        <button onclick="openStaffPinModal()" class="text-vital-cream/40 hover:text-vital-lime transition flex items-center gap-1.5 font-medium">
+          <i data-lucide="lock" class="w-3.5 h-3.5"></i> Acceso Staff
+        </button>
       </div>
     </div>
   </footer>

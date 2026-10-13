@@ -599,6 +599,126 @@ function showToast(message) {
 }
 
 // ============================================================================
+// SISTEMA DE ACCESO POR PIN (STAFF & DIRECCIÓN)
+// Lucas: 1111 · Leo: 2222 · Admin Jesús: 0000 o 9999
+// ============================================================================
+
+const STAFF_PINS = {
+  '1111': { role: 'coach', coachId: 'COACH-1', name: 'Lucas Morilla', title: 'Director Deportivo & Head Coach' },
+  '2222': { role: 'coach', coachId: 'COACH-2', name: 'Leo Marín', title: 'Coach Infantil & Juvenil' },
+  '0000': { role: 'admin', coachId: 'ADMIN', name: 'Jesús Higareda', title: 'Dirección General' },
+  '9999': { role: 'admin', coachId: 'ADMIN', name: 'Jesús Higareda', title: 'Dirección General' }
+};
+
+function getActiveStaffSession() {
+  try {
+    const raw = localStorage.getItem('vital_staff_session');
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function openStaffPinModal() {
+  openModal(`
+    <div class="space-y-5 text-center">
+      <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-vital-900 text-vital-lime font-brand font-bold text-xl mb-1 shadow-sm">
+        <i data-lucide="shield-check" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <span class="text-[10px] font-extrabold uppercase tracking-widest text-vital-orange block">Acceso Colaboradores & Dirección</span>
+        <h3 class="font-brand text-2xl text-vital-900 mt-1">Portal Staff Vital Club</h3>
+        <p class="text-xs text-stone-500 mt-1">Ingresa tu PIN de 4 dígitos para acceder a tu agenda o panel.</p>
+      </div>
+
+      <form id="staff-pin-form" onsubmit="handleStaffPinSubmit(event)" class="space-y-4 max-w-xs mx-auto">
+        <div>
+          <input type="password" id="staff-pin-input" inputmode="numeric" pattern="[0-9]*" maxlength="4" required autofocus
+            placeholder="••••"
+            class="w-full text-center tracking-[1em] text-2xl font-mono py-3 rounded-2xl bg-vital-cream border-2 border-vital-900/15 focus:border-vital-green focus:outline-none font-bold" />
+          <p id="staff-pin-error" class="text-xs text-red-600 font-bold mt-1.5 is-hidden">PIN no reconocido. Intenta de nuevo.</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button type="button" onclick="closeModal()" class="py-2.5 rounded-xl border border-vital-900/15 text-xs font-bold text-stone-600 hover:bg-stone-100">
+            Cancelar
+          </button>
+          <button type="submit" class="py-2.5 rounded-xl bg-vital-lime text-vital-950 text-xs font-bold hover:opacity-95 shadow-sm">
+            Entrar al Portal
+          </button>
+        </div>
+      </form>
+
+      <div class="p-3 rounded-xl bg-stone-100 text-[11px] text-stone-500 space-y-0.5 text-left border border-stone-200/80">
+        <span class="font-bold text-stone-700 block mb-0.5">PINs configurados:</span>
+        <p>• <strong>1111:</strong> Lucas Morilla (Agenda & Comisiones 40%)</p>
+        <p>• <strong>2222:</strong> Leo Marín (Agenda & Comisiones 50%)</p>
+        <p>• <strong>0000 / 9999:</strong> Administración General (Dashboard & POS)</p>
+      </div>
+    </div>
+  `);
+
+  setTimeout(() => {
+    document.getElementById('staff-pin-input')?.focus();
+  }, 100);
+}
+
+function handleStaffPinSubmit(e) {
+  e.preventDefault();
+  const input = document.getElementById('staff-pin-input');
+  const errorEl = document.getElementById('staff-pin-error');
+  if (!input) return;
+
+  const pin = input.value.trim();
+  const user = STAFF_PINS[pin];
+
+  if (!user) {
+    if (errorEl) errorEl.classList.remove('is-hidden');
+    input.value = '';
+    input.focus();
+    return;
+  }
+
+  // Guardar sesión persistente
+  localStorage.setItem('vital_staff_session', JSON.stringify(user));
+
+  closeModal();
+  showToast(`¡Bienvenido, ${user.name}!`);
+
+  if (user.role === 'coach') {
+    const sel = document.getElementById('coach-view-select');
+    if (sel) sel.value = user.coachId;
+    switchMainMode('coach');
+  } else {
+    switchMainMode('admin');
+  }
+}
+
+function staffLogout() {
+  localStorage.removeItem('vital_staff_session');
+  switchMainMode('client');
+  showToast('Sesión de staff cerrada. Modo público activado.');
+}
+
+function updateStaffHeaderUI(mode, session) {
+  const publicActions = document.getElementById('public-header-actions');
+  const staffActions = document.getElementById('staff-header-actions');
+  const userBadge = document.getElementById('staff-user-badge');
+
+  if (mode === 'client') {
+    if (publicActions) publicActions.classList.remove('is-hidden');
+    if (staffActions) staffActions.classList.add('is-hidden');
+  } else {
+    if (publicActions) publicActions.classList.add('is-hidden');
+    if (staffActions) staffActions.classList.remove('is-hidden');
+    if (userBadge) {
+      const activeUser = session || getActiveStaffSession();
+      userBadge.textContent = activeUser ? `👤 ${activeUser.name}` : (mode === 'coach' ? '👟 Coach' : '🛡️ Admin');
+    }
+  }
+}
+
+// ============================================================================
 // MODE SWITCHING (CLIENTE · COACH · ADMIN)
 // ============================================================================
 
@@ -608,16 +728,7 @@ function switchMainMode(mode) {
   const adminView = document.getElementById('view-admin');
   const clientNav = document.getElementById('client-nav');
 
-  const btnClient = document.getElementById('btn-mode-client');
-  const btnCoach = document.getElementById('btn-mode-coach');
-  const btnAdmin = document.getElementById('btn-mode-admin');
-
-  const activeCls = 'px-3 py-1.5 rounded-lg bg-vital-lime text-vital-950 font-bold transition';
-  const inactiveCls = 'px-3 py-1.5 rounded-lg text-vital-cream/75 hover:text-white transition';
-
-  if (btnClient) btnClient.className = mode === 'client' ? activeCls : inactiveCls;
-  if (btnCoach) btnCoach.className = mode === 'coach' ? activeCls : inactiveCls;
-  if (btnAdmin) btnAdmin.className = mode === 'admin' ? activeCls : inactiveCls;
+  const session = getActiveStaffSession();
 
   clientView?.classList.toggle('is-hidden', mode !== 'client');
   coachView?.classList.toggle('is-hidden', mode !== 'coach');
@@ -627,6 +738,8 @@ function switchMainMode(mode) {
   if (coachView) coachView.style.display = mode === 'coach' ? '' : 'none';
   if (adminView) adminView.style.display = mode === 'admin' ? '' : 'none';
 
+  updateStaffHeaderUI(mode, session);
+
   if (mode === 'client') {
     clientNav?.classList.remove('is-hidden');
     if (clientNav) clientNav.style.display = '';
@@ -635,6 +748,10 @@ function switchMainMode(mode) {
     clientNav?.classList.add('is-hidden');
     if (clientNav) clientNav.style.display = 'none';
     populateCoachSelector();
+    if (session && session.coachId) {
+      const sel = document.getElementById('coach-view-select');
+      if (sel) sel.value = session.coachId;
+    }
     renderCoachView();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } else {
@@ -1977,6 +2094,14 @@ function closeModal() {
 document.addEventListener('DOMContentLoaded', () => {
   renderAllClientViews();
   populateCoachSelector();
+
+  const savedSession = getActiveStaffSession();
+  if (savedSession && savedSession.role) {
+    switchMainMode(savedSession.role);
+  } else {
+    switchMainMode('client');
+  }
+
   if (window.lucide) lucide.createIcons();
   syncFromSupabase();
 });
