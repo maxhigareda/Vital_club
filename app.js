@@ -184,7 +184,7 @@ const COACHES_DATA = [
     hasBaseSalary: true,
     schemeLabel: '40% Prestador / 60% Club',
     specialty: 'Táctica, Torneos y Clínicas de Alto Rendimiento',
-    bio: 'Prestador principal con amplia trayectoria formando jugadores en pista techada y coordinando clínicas integrales.',
+    bio: 'Director deportivo con amplia trayectoria formando jugadores en pista techada y coordinando clínicas integrales.',
     schedule: 'Lunes a Sábado · 8:00 AM – 8:00 PM'
   },
   {
@@ -233,7 +233,7 @@ const OFFICIAL_SERVICES = [
     name: 'Renta Cancha Techada (1 Hora)',
     price: 350,
     badge: 'Cualquier horario',
-    description: 'Uso de cancha techada con cristal panorámico e iluminación LED. No genera comisión al prestador.'
+    description: 'Uso de cancha techada con cristal panorámico e iluminación LED profesional.'
   },
   {
     id: 'SERV-RENTA-2',
@@ -261,7 +261,7 @@ const OFFICIAL_SERVICES = [
     name: 'Clase Muestra (1 Persona)',
     price: 250,
     badge: 'Primera sesión',
-    description: '1 hora de duración con cancha incluida. $100 Prestador / $150 Club con Lucas; $125 / $125 con Leo.'
+    description: 'Sesión diagnóstica de 1 hora con cancha techada y pelotas incluidas.'
   },
   {
     id: 'SERV-CLASE-1P',
@@ -269,7 +269,7 @@ const OFFICIAL_SERVICES = [
     name: 'Clase Particular (1 Persona)',
     price: 500,
     badge: '1 hora · Cancha incluida',
-    description: 'Atención 100% personalizada. $200 Prestador / $300 Club (Lucas) o $250 / $250 (Leo).'
+    description: 'Entrenamiento 100% personalizado enfocado en técnica, control y golpes clave.'
   },
   {
     id: 'SERV-CLASE-2P',
@@ -277,7 +277,7 @@ const OFFICIAL_SERVICES = [
     name: 'Clase en Pareja (2 Personas)',
     price: 600,
     badge: '$300 por persona',
-    description: 'Trabajo táctico en pareja. $240 Prestador / $360 Club (Lucas) o $300 / $300 (Leo).'
+    description: 'Trabajo táctico en pareja, posicionamiento en pista y salidas de pared.'
   },
   {
     id: 'SERV-CLASE-3P',
@@ -285,7 +285,7 @@ const OFFICIAL_SERVICES = [
     name: 'Clase Grupal (3 Personas)',
     price: 750,
     badge: '$250 por persona',
-    description: 'Dinámica de juego y salidas de pared. $300 Prestador / $450 Club (Lucas) o $375 / $375 (Leo).'
+    description: 'Dinámica de juego guiada, volea y transiciones de defensa a ataque.'
   },
   {
     id: 'SERV-CLASE-4P',
@@ -293,7 +293,7 @@ const OFFICIAL_SERVICES = [
     name: 'Clase Grupal (4 Personas)',
     price: 800,
     badge: '$200 por persona',
-    description: 'Partido táctico guiado y volea. $320 Prestador / $480 Club (Lucas) o $400 / $400 (Leo).'
+    description: 'Partido táctico supervisado con corrección de jugadas en tiempo real.'
   },
 
   // 4. CLÍNICAS
@@ -303,7 +303,7 @@ const OFFICIAL_SERVICES = [
     name: 'Clínica Mensual Adultos (8 Sesiones)',
     price: 1500,
     badge: '2 veces por semana',
-    description: 'Mensualidad de 8 horas de entrenamiento. $600 Prestador / $900 Club (Lucas) o $750 / $750 (Leo).'
+    description: 'Mensualidad de 8 horas de entrenamiento continuo con técnica, físico y táctica.'
   },
   {
     id: 'SERV-CLINICA-NINO',
@@ -311,7 +311,7 @@ const OFFICIAL_SERVICES = [
     name: 'Clínica Mensual Niños (8 Sesiones)',
     price: 1200,
     badge: '2 veces por semana',
-    description: 'Formación para niños y jóvenes. $480 Prestador / $720 Club (Lucas) o $600 / $600 (Leo).'
+    description: 'Formación continua para niños y jóvenes con psicomotricidad, diversión y fundamentos.'
   },
   {
     id: 'SERV-CLINICA-ADULTO-DESC',
@@ -319,7 +319,7 @@ const OFFICIAL_SERVICES = [
     name: 'Clínica Adultos Familias Vital (-10%)',
     price: 1350,
     badge: 'Descuento Familiar',
-    description: 'Tarifa con 10% de descuento al inscribirse 3+ familiares. $540 Prestador / $810 Club (Lucas).'
+    description: 'Tarifa preferencial con 10% de descuento al inscribirse 3 o más familiares.'
   },
   {
     id: 'SERV-CLINICA-NINO-DESC',
@@ -327,7 +327,7 @@ const OFFICIAL_SERVICES = [
     name: 'Clínica Niños Familias Vital (-10%)',
     price: 1080,
     badge: 'Descuento Familiar',
-    description: 'Tarifa infantil con 10% descuento Familias Vital. $432 Prestador / $648 Club (Lucas).'
+    description: 'Tarifa infantil con 10% de descuento al inscribirse 3 o más familiares.'
   }
 ];
 
@@ -651,8 +651,8 @@ function openStaffPinModal() {
 
       <div class="p-3 rounded-xl bg-stone-100 text-[11px] text-stone-500 space-y-0.5 text-left border border-stone-200/80">
         <span class="font-bold text-stone-700 block mb-0.5">PINs configurados:</span>
-        <p>• <strong>1111:</strong> Lucas Morilla (Agenda & Comisiones 40%)</p>
-        <p>• <strong>2222:</strong> Leo Marín (Agenda & Comisiones 50%)</p>
+        <p>• <strong>1111:</strong> Lucas Morilla (Head Coach · Portal)</p>
+        <p>• <strong>2222:</strong> Leo Marín (Coach · Portal)</p>
         <p>• <strong>0000 / 9999:</strong> Administración General (Dashboard & POS)</p>
       </div>
     </div>
@@ -1188,8 +1188,8 @@ function openClassBookingModal(classId) {
         <div>
           <label class="block font-bold text-vital-900 uppercase tracking-wider mb-1">Selecciona tu Coach</label>
           <select id="modal-cls-coach" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream border border-vital-900/10 font-bold text-vital-900">
-            <option value="COACH-1">Lucas Morilla (Head Coach · 40% com.)</option>
-            <option value="COACH-2">Leo Marín (Coach Infantil/Principiantes · 50% com.)</option>
+            <option value="COACH-1">Lucas Morilla · Head Coach</option>
+            <option value="COACH-2">Leo Marín · Coach Infantil y Principiantes</option>
           </select>
         </div>
 
@@ -1318,8 +1318,8 @@ function openClinicBookingModal(clinicId) {
         <div>
           <label class="block font-bold text-vital-900 uppercase tracking-wider mb-1">Entrenador Titular</label>
           <select id="modal-cln-coach" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream border border-vital-900/10 font-bold text-vital-900">
-            <option value="COACH-1">Lucas Morilla (Director Deportivo · 40% com.)</option>
-            <option value="COACH-2">Leo Marín (Infantil & Juvenil · 50% com.)</option>
+            <option value="COACH-1">Lucas Morilla · Director Deportivo</option>
+            <option value="COACH-2">Leo Marín · Especialista Infantil & Juvenil</option>
           </select>
         </div>
 
