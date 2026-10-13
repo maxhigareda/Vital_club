@@ -6,6 +6,149 @@
 
 const STORAGE_KEY = 'vital_club_zitacuaro_anexo2_v2';
 
+// ----------------------------------------------------------------------------
+// CONFIGURACIÓN DE SUPABASE (CLOUD DATABASE)
+// ----------------------------------------------------------------------------
+const SUPABASE_URL = 'https://uuevnudtaegjkmobcjkv.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1ZXZudWR0YWVnamttb2Jjamt2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE5MTkyMTEsImV4cCI6MjEwNzQ5NTIxMX0.ufFn2yW9WMCHkdt7kQ8tfMBDm976SU-CzLIF2e4bTHs';
+let supabaseClient = null;
+
+try {
+  if (window.supabase && typeof window.supabase.createClient === 'function') {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log('⚡ Conexión con Supabase inicializada correctamente.');
+  }
+} catch (e) {
+  console.warn('Supabase JS en modo local fallback:', e);
+}
+
+async function dbInsertReservation(res) {
+  if (!supabaseClient) return;
+  try {
+    await supabaseClient.from('reservations').upsert({
+      id: res.id,
+      date: res.date,
+      court_id: res.courtId,
+      hour: res.hour,
+      duration: res.duration || 1,
+      service: res.service,
+      customer: res.customer,
+      phone: res.phone || '-',
+      amount: res.amount,
+      prestador_amount: res.prestadorAmount,
+      cliente_amount: res.clienteAmount,
+      coach_id: res.coachId,
+      coach_name: res.coachName,
+      students: res.students || [],
+      attendance_checked: !!res.attendanceChecked,
+      payment_method: res.paymentMethod || 'Tarjeta',
+      notes: res.notes || ''
+    });
+  } catch (err) {
+    console.warn('Supabase dbInsertReservation:', err);
+  }
+}
+
+async function dbInsertTransaction(tx) {
+  if (!supabaseClient) return;
+  try {
+    await supabaseClient.from('transactions').upsert({
+      id: tx.id,
+      date: tx.date,
+      time: tx.time,
+      service: tx.service,
+      concept: tx.concept,
+      customer: tx.customer,
+      coach_id: tx.coachId,
+      coach_name: tx.coachName,
+      payment_method: tx.paymentMethod,
+      amount: tx.amount,
+      prestador_amount: tx.prestadorAmount,
+      cliente_amount: tx.clienteAmount
+    });
+  } catch (err) {
+    console.warn('Supabase dbInsertTransaction:', err);
+  }
+}
+
+async function dbDeleteReservation(resId) {
+  if (!supabaseClient) return;
+  try {
+    await supabaseClient.from('reservations').delete().eq('id', resId);
+  } catch (err) {
+    console.warn('Supabase dbDeleteReservation:', err);
+  }
+}
+
+async function dbUpdateAttendance(resId, isChecked) {
+  if (!supabaseClient) return;
+  try {
+    await supabaseClient.from('reservations').update({ attendance_checked: isChecked }).eq('id', resId);
+  } catch (err) {
+    console.warn('Supabase dbUpdateAttendance:', err);
+  }
+}
+
+async function syncFromSupabase() {
+  if (!supabaseClient) return;
+  try {
+    const { data: resData, error: resErr } = await supabaseClient
+      .from('reservations')
+      .select('*');
+
+    if (!resErr && Array.isArray(resData) && resData.length > 0) {
+      state.reservations = resData.map(r => ({
+        id: r.id,
+        date: r.date,
+        courtId: r.court_id,
+        hour: r.hour,
+        duration: r.duration || 1,
+        service: r.service,
+        customer: r.customer,
+        phone: r.phone || '-',
+        amount: Number(r.amount || 0),
+        prestadorAmount: Number(r.prestador_amount || 0),
+        clienteAmount: Number(r.cliente_amount || 0),
+        coachId: r.coach_id || 'NONE',
+        coachName: r.coach_name || '-',
+        students: r.students || [],
+        attendanceChecked: !!r.attendance_checked,
+        paymentMethod: r.payment_method || 'Tarjeta',
+        notes: r.notes || ''
+      }));
+    }
+
+    const { data: txData, error: txErr } = await supabaseClient
+      .from('transactions')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (!txErr && Array.isArray(txData) && txData.length > 0) {
+      state.transactions = txData.map(t => ({
+        id: t.id,
+        date: t.date,
+        time: t.time,
+        service: t.service,
+        concept: t.concept,
+        customer: t.customer,
+        coachId: t.coach_id || 'NONE',
+        coachName: t.coach_name || '-',
+        paymentMethod: t.payment_method || 'Tarjeta',
+        amount: Number(t.amount || 0),
+        prestadorAmount: Number(t.prestador_amount || 0),
+        clienteAmount: Number(t.cliente_amount || 0)
+      }));
+    }
+
+    saveState();
+    renderAllClientViews();
+    if (typeof renderCoachView === 'function') renderCoachView();
+    if (typeof renderAllAdminViews === 'function') renderAllAdminViews();
+  } catch (e) {
+    console.info('Supabase syncing:', e);
+  }
+}
+
 function getTodayISO(offsetDays = 0) {
   const d = new Date();
   d.setDate(d.getDate() + offsetDays);
@@ -886,7 +1029,7 @@ function submitCourtBooking(e, courtId, hour) {
 
   state.reservations.push(newRes);
 
-  state.transactions.unshift({
+  const newTx = {
     id: 'VC-TX-' + Date.now().toString().slice(-4),
     date: selectedDate,
     time: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
@@ -899,7 +1042,12 @@ function submitCourtBooking(e, courtId, hour) {
     amount,
     prestadorAmount: 0,
     clienteAmount: amount
-  });
+  };
+
+  state.transactions.unshift(newTx);
+
+  dbInsertReservation(newRes);
+  dbInsertTransaction(newTx);
 
   saveState();
   closeModal();
@@ -990,7 +1138,7 @@ function submitClassBooking(e, classId) {
   const coach = COACHES_DATA.find(c => c.id === coachId) || COACHES_DATA[0];
   const split = calculateSplit('Clase', item.price, coachId);
 
-  state.reservations.push({
+  const newRes = {
     id: 'RES-' + Date.now().toString().slice(-5),
     date: selectedDate,
     courtId,
@@ -1008,9 +1156,11 @@ function submitClassBooking(e, classId) {
     attendanceChecked: false,
     paymentMethod: method,
     notes: item.name
-  });
+  };
 
-  state.transactions.unshift({
+  state.reservations.push(newRes);
+
+  const newTx = {
     id: 'VC-TX-' + Date.now().toString().slice(-4),
     date: selectedDate,
     time: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
@@ -1023,7 +1173,12 @@ function submitClassBooking(e, classId) {
     amount: item.price,
     prestadorAmount: split.prestador,
     clienteAmount: split.cliente
-  });
+  };
+
+  state.transactions.unshift(newTx);
+
+  dbInsertReservation(newRes);
+  dbInsertTransaction(newTx);
 
   saveState();
   closeModal();
@@ -1107,7 +1262,7 @@ function submitClinicBooking(e, clinicId) {
   const coach = COACHES_DATA.find(c => c.id === coachId) || COACHES_DATA[0];
   const split = calculateSplit('Clínica', finalPrice, coachId);
 
-  state.reservations.push({
+  const newRes = {
     id: 'RES-' + Date.now().toString().slice(-5),
     date: selectedDate,
     courtId: 'cancha-2',
@@ -1125,9 +1280,11 @@ function submitClinicBooking(e, clinicId) {
     attendanceChecked: true,
     paymentMethod: 'Tarjeta',
     notes: 'Inscripción a mensualidad 8 sesiones'
-  });
+  };
 
-  state.transactions.unshift({
+  state.reservations.push(newRes);
+
+  const newTx = {
     id: 'VC-TX-' + Date.now().toString().slice(-4),
     date: selectedDate,
     time: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
@@ -1140,7 +1297,12 @@ function submitClinicBooking(e, clinicId) {
     amount: finalPrice,
     prestadorAmount: split.prestador,
     clienteAmount: split.cliente
-  });
+  };
+
+  state.transactions.unshift(newTx);
+
+  dbInsertReservation(newRes);
+  dbInsertTransaction(newTx);
 
   saveState();
   closeModal();
@@ -1263,6 +1425,7 @@ function toggleAttendance(resId) {
   const r = state.reservations.find(x => x.id === resId);
   if (!r) return;
   r.attendanceChecked = !r.attendanceChecked;
+  dbUpdateAttendance(resId, r.attendanceChecked);
   saveState();
   renderCoachView();
   showToast(r.attendanceChecked ? 'Asistencia marcada.' : 'Asistencia desmarcada.');
@@ -1541,6 +1704,7 @@ function executePosCheckout() {
   };
 
   state.transactions.unshift(newTx);
+  dbInsertTransaction(newTx);
   posCart = [];
   if (document.getElementById('pos-customer-input')) document.getElementById('pos-customer-input').value = '';
   if (document.getElementById('pos-cash-input')) document.getElementById('pos-cash-input').value = '';
@@ -1675,7 +1839,7 @@ function submitAdminCreateSlot(e) {
   // Eliminar slot previo si existía en esa hora
   state.reservations = state.reservations.filter(r => !(r.date === selectedDate && r.courtId === courtId && r.hour === hour));
 
-  state.reservations.push({
+  const newSlot = {
     id: 'RES-' + Date.now().toString().slice(-5),
     date: selectedDate,
     courtId,
@@ -1691,7 +1855,10 @@ function submitAdminCreateSlot(e) {
     coachName,
     paymentMethod: 'Recepción',
     notes: 'Asignado desde panel admin'
-  });
+  };
+
+  state.reservations.push(newSlot);
+  dbInsertReservation(newSlot);
 
   saveState();
   closeModal();
@@ -1702,6 +1869,7 @@ function submitAdminCreateSlot(e) {
 
 function deleteReservationSlot(resId) {
   state.reservations = state.reservations.filter(r => r.id !== resId);
+  dbDeleteReservation(resId);
   saveState();
   renderAdminMasterCalendar();
   renderCourtsGrid();
@@ -1810,4 +1978,5 @@ document.addEventListener('DOMContentLoaded', () => {
   renderAllClientViews();
   populateCoachSelector();
   if (window.lucide) lucide.createIcons();
+  syncFromSupabase();
 });
