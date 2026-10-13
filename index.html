@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vital Club · Pádel Techado, Clases y Zona de Comida | Zitácuaro</title>
+  <title>Vital Club · Pádel Techado, Clases, Clínicas y Retas | Zitácuaro</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -26,7 +26,7 @@
     }
   </script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <link rel="stylesheet" href="styles.css?v=5" />
+  <link rel="stylesheet" href="styles.css?v=6" />
 </head>
 <body class="bg-vital-cream text-vital-950 antialiased selection:bg-vital-lime selection:text-vital-950 min-h-screen flex flex-col">
 
@@ -46,13 +46,13 @@
 
       <!-- CLIENT NAVIGATION (Visible ONLY in Client Mode) -->
       <nav id="client-nav" class="hidden md:flex items-center gap-6 text-sm font-medium text-vital-cream/80">
-        <a href="#reservar" class="hover:text-vital-lime transition">Canchas</a>
-        <a href="#clases" class="hover:text-vital-lime transition">Clases y Torneos</a>
-        <a href="#comida" class="hover:text-vital-lime transition">Comida</a>
-        <a href="#nosotros" class="hover:text-vital-lime transition">Nosotros</a>
+        <a href="#canchas" class="hover:text-vital-lime transition">Rentas y Retas</a>
+        <a href="#clases" class="hover:text-vital-lime transition">Clases</a>
+        <a href="#clinicas" class="hover:text-vital-lime transition">Clínicas</a>
+        <a href="#nosotros" class="hover:text-vital-lime transition">Coaches</a>
       </nav>
 
-      <!-- Right Actions: Mode Switcher & Client Cart -->
+      <!-- Right Actions: Mode Switcher -->
       <div class="flex items-center gap-2.5 shrink-0">
         <div class="bg-vital-950 p-1 rounded-xl border border-white/10 flex items-center text-xs font-semibold">
           <button id="btn-mode-client" onclick="switchMainMode('client')" class="px-3 py-1.5 rounded-lg bg-vital-lime text-vital-950 font-bold transition">
@@ -65,22 +65,17 @@
             Admin
           </button>
         </div>
-
-        <button id="client-cart-btn" onclick="openClientFoodCart()" class="relative p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-vital-cream transition" title="Mi Pedido de Comida">
-          <i data-lucide="shopping-bag" class="w-4 h-4 text-vital-lime"></i>
-          <span id="client-cart-count" class="is-hidden absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-vital-orange text-white text-[10px] font-bold flex items-center justify-center">0</span>
-        </button>
       </div>
 
     </div>
   </header>
 
   <!-- ===================================================================== -->
-  <!-- 1. VISTA CLIENTE (ELEGANT, SPACIOUS, MODAL-DRIVEN)                    -->
+  <!-- 1. VISTA CLIENTE (SERVICIOS OFICIALES: RENTA, RETA, CLASE, CLÍNICA) -->
   <!-- ===================================================================== -->
   <main id="view-client" class="flex-1">
 
-    <!-- CLEAN EDITORIAL HERO -->
+    <!-- EDITORIAL HERO -->
     <section class="bg-vital-900 text-vital-cream py-14 sm:py-20 border-b border-white/10">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 grid lg:grid-cols-12 gap-10 items-center">
         
@@ -92,140 +87,171 @@
           </div>
 
           <h1 class="font-brand text-4xl sm:text-6xl leading-[1.05] tracking-tight">
-            Juega pádel sin pretexto, <span class="text-vital-lime">llueva o truene.</span>
+            Juega. Come. <span class="text-vital-lime">Conecta.</span>
           </h1>
 
           <p class="text-vital-cream/75 text-base sm:text-lg max-w-xl leading-relaxed">
-            Desde niños pequeños hasta adultos mayores. Aparta tu cancha techada, inscríbete a clases o disfruta sándwiches y bebidas en nuestra zona de comida.
+            Pádel techado sin pretexto en Zitácuaro. Renta tu cancha, únete a retas organizadas o entrena en clases y clínicas con nuestros coaches.
           </p>
 
           <div class="flex flex-wrap items-center gap-3 pt-1">
-            <a href="#reservar" class="px-6 py-3.5 rounded-2xl bg-vital-lime hover:opacity-95 text-vital-950 font-bold text-sm transition shadow-lg">
-              Apartar Cancha
+            <a href="#canchas" class="px-6 py-3.5 rounded-2xl bg-vital-lime hover:opacity-95 text-vital-950 font-bold text-sm transition shadow-lg">
+              Apartar Cancha o Reta
             </a>
-            <button onclick="openClubInfoModal()" class="px-5 py-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-vital-cream font-semibold text-sm transition flex items-center gap-2">
-              <i data-lucide="info" class="w-4 h-4 text-vital-orange"></i> Horarios, Ubicación y Amenidades
+            <a href="#clases" class="px-5 py-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-vital-cream font-semibold text-sm transition">
+              Ver Clases y Tarifas
+            </a>
+            <button onclick="openClubInfoModal()" class="px-4 py-3.5 rounded-2xl text-xs text-vital-cream/70 hover:text-white transition flex items-center gap-1.5">
+              <i data-lucide="info" class="w-4 h-4 text-vital-orange"></i> Info & Ubicación
             </button>
           </div>
         </div>
 
-        <div class="lg:col-span-5">
-          <div class="relative rounded-3xl overflow-hidden border border-white/15 shadow-2xl aspect-[4/4] max-h-[420px] mx-auto">
-            <img src="assets/vital-hero-ball.jpg" alt="Vital Club Pádel" class="w-full h-full object-cover" />
-            <div class="absolute inset-0 bg-gradient-to-t from-vital-950/80 via-transparent to-transparent"></div>
-            <div id="hero-courts-status" class="absolute bottom-4 left-4 right-4 grid grid-cols-2 gap-2"></div>
+        <div class="lg:col-span-5 relative">
+          <div class="relative rounded-3xl overflow-hidden border border-white/15 shadow-2xl bg-vital-950">
+            <img src="assets/vital-hero-ball.jpg" alt="Pádel Vital Club" class="w-full h-80 sm:h-96 object-cover opacity-90 hover:scale-105 transition duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-vital-950 via-vital-950/20 to-transparent"></div>
+            
+            <div class="absolute bottom-5 left-5 right-5 space-y-2">
+              <span class="text-[10px] uppercase font-bold tracking-widest text-vital-orange">Tarifas Oficiales Club</span>
+              <div id="hero-courts-status" class="grid grid-cols-2 gap-2"></div>
+            </div>
           </div>
         </div>
 
       </div>
     </section>
 
-    <!-- SECTION 1: RESERVACIÓN DE CANCHAS (CLEAN PILLS + MODAL) -->
-    <section id="reservar" class="py-16 max-w-6xl mx-auto px-4 sm:px-6">
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+    <!-- SECTION 1: CANCHAS (RENTAS Y RETAS) -->
+    <section id="canchas" class="py-16 max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <span class="text-xs font-bold uppercase tracking-widest text-vital-orange">Reservaciones</span>
-          <h2 class="font-brand text-3xl sm:text-4xl text-vital-900 mt-1">Aparta tu Horario</h2>
-          <p class="text-sm text-vital-900/60 mt-0.5">Selecciona un día y toca cualquier hora para reservar o ver detalles.</p>
+          <span class="text-xs font-bold uppercase tracking-widest text-vital-orange">Servicios 1 y 2</span>
+          <h2 class="font-brand text-3xl sm:text-4xl text-vital-900 mt-1">Renta de Canchas y Retas</h2>
+          <p class="text-sm text-vital-900/60 mt-0.5">Misma tarifa fija día y noche. Canchas techadas de cristal panorámico.</p>
         </div>
 
-        <div class="flex items-center gap-4 text-xs font-semibold text-vital-900/70">
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Libre</span>
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-vital-orange"></span> Clase</span>
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-stone-300"></span> Ocupada</span>
-          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Mant.</span>
+        <!-- Tariff Quick Badges -->
+        <div class="flex flex-wrap gap-2 text-xs">
+          <span class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold">
+            Renta 1 hr: $350 MXN
+          </span>
+          <span class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold">
+            Renta 2 hrs: $700 MXN
+          </span>
+          <span class="px-3 py-1.5 rounded-xl bg-amber-50 text-amber-900 border border-amber-200 font-bold">
+            Reta organizada: $150 / persona
+          </span>
         </div>
       </div>
 
-      <div class="flex items-center justify-between gap-3 mb-8">
-        <div id="date-strip" class="flex items-center gap-2 overflow-x-auto pb-1"></div>
-        <input type="date" id="booking-date-input" onchange="handleDateInputChange(this.value)" class="px-3.5 py-2.5 rounded-2xl bg-white border border-vital-900/10 text-xs font-bold text-vital-900 shrink-0 shadow-sm" />
-      </div>
-
-      <div id="client-courts-container" class="grid md:grid-cols-2 gap-6"></div>
-    </section>
-
-    <!-- SECTION 2: CLASES Y TORNEOS -->
-    <section id="clases" class="py-16 bg-vital-sand/50 border-y border-vital-900/5">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6">
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
-          <div>
-            <span class="text-xs font-bold uppercase tracking-widest text-vital-700">Academia Familiar</span>
-            <h2 class="font-brand text-3xl sm:text-4xl text-vital-900 mt-1">Clases y Torneos</h2>
-            <p class="text-sm text-vital-900/60 mt-0.5">Para niños, familias y adultos mayores. Toca cualquiera para ver detalles e inscribirte con tarjeta.</p>
+      <!-- Quick Action: Apartar Reta Organizada -->
+      <div class="bg-gradient-to-r from-amber-500/10 via-amber-100/40 to-vital-cream border border-amber-200/80 rounded-3xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="space-y-1">
+          <div class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-900">
+            <span class="w-2 h-2 rounded-full bg-vital-orange"></span> Reta Organizada por Vital Club (2 Horas)
           </div>
-          <div class="flex flex-wrap gap-1.5">
-            <button onclick="filterPrograms('all')" data-prog-filter="all" class="prog-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-vital-900 text-vital-cream transition">Todos</button>
-            <button onclick="filterPrograms('Niños y Familia')" data-prog-filter="Niños y Familia" class="prog-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white text-vital-900/70 hover:text-vital-900 transition">Niños y Familia</button>
-            <button onclick="filterPrograms('Adultos y Seniors')" data-prog-filter="Adultos y Seniors" class="prog-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white text-vital-900/70 hover:text-vital-900 transition">Adultos / Mayores</button>
-            <button onclick="filterPrograms('Torneos')" data-prog-filter="Torneos" class="prog-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white text-vital-900/70 hover:text-vital-900 transition">Torneos</button>
-          </div>
+          <p class="text-xs text-stone-600 max-w-xl">
+            ¿Vienes solo o en pareja? El club organiza tu partido de 2 horas nivelado con pelotas e hidratación. Solo $150 pesos por persona.
+          </p>
         </div>
-
-        <div id="client-programs-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-      </div>
-    </section>
-
-    <!-- SECTION 3: ZONA DE COMIDA -->
-    <section id="comida" class="py-16 max-w-6xl mx-auto px-4 sm:px-6">
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
-        <div>
-          <span class="text-xs font-bold uppercase tracking-widest text-vital-orange">Snack & Lounge</span>
-          <h2 class="font-brand text-3xl sm:text-4xl text-vital-900 mt-1">Zona de Comida y Bebidas</h2>
-          <p class="text-sm text-vital-900/60 mt-0.5">Sándwiches artesanales, smoothies y café frío. Pide en línea para saliendo de tu partido.</p>
-        </div>
-        <div class="flex flex-wrap gap-1.5">
-          <button onclick="filterFoodMenu('all')" data-food-filter="all" class="food-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-vital-900 text-vital-cream transition">Todo</button>
-          <button onclick="filterFoodMenu('Sándwiches y Comida')" data-food-filter="Sándwiches y Comida" class="food-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white text-vital-900/70 hover:text-vital-900 transition">Sándwiches</button>
-          <button onclick="filterFoodMenu('Bebidas y Café')" data-food-filter="Bebidas y Café" class="food-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white text-vital-900/70 hover:text-vital-900 transition">Bebidas</button>
-          <button onclick="filterFoodMenu('Renta y Accesorios')" data-food-filter="Renta y Accesorios" class="food-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white text-vital-900/70 hover:text-vital-900 transition">Equipo</button>
-        </div>
+        <button onclick="openBookingModal('cancha-1', 18, 'Reta')" class="shrink-0 px-5 py-2.5 rounded-xl bg-vital-orange hover:bg-orange-600 text-white font-bold text-xs transition shadow-sm">
+          Unirme a Reta ($150 MXN)
+        </button>
       </div>
 
-      <div id="client-food-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+      <!-- Date strip -->
+      <div class="flex items-center justify-between gap-4 pb-2 border-b border-vital-900/10">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-vital-900/60 uppercase tracking-wider">Fecha:</span>
+          <div id="date-strip" class="flex items-center gap-2 overflow-x-auto pb-1 max-w-xl"></div>
+        </div>
+        <input type="date" id="booking-date-input" onchange="handleDateInputChange(this.value)" class="px-3 py-2 rounded-xl bg-white border border-vital-900/15 text-xs font-bold text-vital-900 focus:outline-none" />
+      </div>
+
+      <!-- Court Schedule Grid -->
+      <div id="courts-slots-container" class="grid lg:grid-cols-2 gap-8"></div>
+
     </section>
 
-    <!-- SECTION 4: NOSOTROS Y ENTRENADORES -->
-    <section id="nosotros" class="py-16 bg-vital-900 text-vital-cream">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-14">
+    <!-- SECTION 2: CLASES -->
+    <section id="clases" class="py-16 bg-white border-y border-vital-900/10">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-10">
         
-        <div class="grid md:grid-cols-12 gap-8 items-center">
-          <div class="md:col-span-7 space-y-4">
-            <span class="text-xs font-bold uppercase tracking-widest text-vital-lime">Sobre Vital Club</span>
-            <h2 class="font-brand text-3xl sm:text-4xl leading-tight">
-              Un club 100% familiar en Zitácuaro, diseñado para disfrutar dentro y fuera de la cancha.
-            </h2>
-            <p class="text-sm sm:text-base text-vital-cream/75 leading-relaxed">
-              “Actualmente contamos con canchas de pádel abiertas y estamos trabajando en la integración de nuevas experiencias como cocina, barre y gym.”
-            </p>
-            <div class="flex flex-wrap gap-2.5 pt-1">
-              <button onclick="openClubInfoModal()" class="px-4 py-2.5 rounded-xl bg-vital-lime text-vital-950 font-bold text-xs transition">
-                Ver Ubicación y Mapa
-              </button>
-              <a href="https://www.instagram.com/vitalclub.zit/" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-vital-cream font-semibold text-xs flex items-center gap-1.5 transition">
-                <i data-lucide="instagram" class="w-3.5 h-3.5 text-[#E1306C]"></i> @vitalclub.zit
-              </a>
-              <a href="https://web.facebook.com/profile.php?id=61584920653779&sk=about" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-vital-cream font-semibold text-xs flex items-center gap-1.5 transition">
-                <i data-lucide="facebook" class="w-3.5 h-3.5 text-[#1877F2]"></i> Facebook
-              </a>
-            </div>
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-vital-orange">Servicio 3 · Cancha Incluida</span>
+            <h2 class="font-brand text-3xl sm:text-4xl text-vital-900 mt-1">Clases Individuales y Grupales</h2>
+            <p class="text-sm text-vital-900/60 mt-0.5">Duración de 1 hora con cancha y pelotas incluidas. Entrena con Lucas Morilla o Leo Marín.</p>
           </div>
-
-          <div class="md:col-span-5 grid grid-cols-2 gap-3">
-            <img src="assets/indoor-courts.jpg" alt="Canchas Techadas" class="rounded-2xl h-44 w-full object-cover border border-white/10" />
-            <img src="assets/food-zone.jpg" alt="Zona de Comida" class="rounded-2xl h-44 w-full object-cover border border-white/10" />
-          </div>
+          <span class="text-xs font-bold text-stone-500 bg-stone-100 px-3 py-1.5 rounded-xl">
+            Tarifas oficiales Anexo 2
+          </span>
         </div>
 
+        <div id="client-classes-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 3: CLÍNICAS MENSUALES -->
+    <section id="clinicas" class="py-16 max-w-6xl mx-auto px-4 sm:px-6 space-y-10">
+      
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <div class="flex items-center justify-between mb-6">
-            <div>
-              <h3 class="font-brand text-2xl">Nuestros Entrenadores</h3>
-              <p class="text-xs text-vital-cream/60">Toca el perfil de cualquier coach para ver su experiencia y horarios.</p>
-            </div>
-          </div>
-          <div id="client-coaches-grid" class="grid sm:grid-cols-3 gap-5"></div>
+          <span class="text-xs font-bold uppercase tracking-widest text-vital-orange">Servicio 4 · 8 Sesiones al Mes</span>
+          <h2 class="font-brand text-3xl sm:text-4xl text-vital-900 mt-1">Clínicas Mensuales</h2>
+          <p class="text-sm text-vital-900/60 mt-0.5">Programadas 2 veces por semana (8 horas mensuales). Formación continua para adultos y niños.</p>
         </div>
+        <div class="p-3 bg-vital-lime/20 border border-vital-lime/40 rounded-2xl text-xs font-bold text-vital-900">
+          ★ Familias Vital: 10% de descuento inscribiendo a 3 o más familiares
+        </div>
+      </div>
+
+      <div id="client-clinics-grid" class="grid sm:grid-cols-2 gap-6"></div>
+
+    </section>
+
+    <!-- SECTION 4: COMING SOON BANNER (COCINA, BARRE & GYM) -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-12">
+      <div class="rounded-3xl bg-vital-900 text-vital-cream p-8 sm:p-12 border border-white/10 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="space-y-4 max-w-xl z-10">
+          <span class="inline-block px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-widest bg-vital-orange text-white">
+            COMING SOON
+          </span>
+          <h3 class="font-brand text-3xl sm:text-4xl text-vital-cream">
+            Juega. Come. Conecta.
+          </h3>
+          <p class="text-sm text-vital-cream/80 leading-relaxed">
+            “Actualmente contamos con canchas de pádel abiertas y estamos trabajando en la integración de nuevas experiencias como cocina, barre y gym.”
+          </p>
+          <p class="text-xs text-vital-lime font-semibold">
+            Muy pronto podrás disfrutar de snacks, smoothies, café de especialidad y zona wellness en Vital Club.
+          </p>
+        </div>
+        <div class="z-10 shrink-0 text-center bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm">
+          <p class="text-xs uppercase tracking-widest text-vital-cream/60 font-bold mb-1">Experiencia Vital</p>
+          <p class="font-brand text-2xl text-vital-lime font-bold">Cocina & Gym</p>
+          <span class="text-xs text-vital-cream/70 mt-2 block">Próxima apertura</span>
+        </div>
+        <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-vital-lime/10 blur-3xl pointer-events-none"></div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: COACHES -->
+    <section id="nosotros" class="py-16 bg-vital-900 text-vital-cream">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
+        
+        <div class="max-w-2xl space-y-3">
+          <span class="text-xs font-bold uppercase tracking-widest text-vital-lime">Equipo Deportivo</span>
+          <h2 class="font-brand text-3xl sm:text-4xl">Nuestros Entrenadores Oficiales</h2>
+          <p class="text-sm text-vital-cream/70">
+            Profesionales comprometidos con tu técnica, diversión y bienestar en Zitácuaro.
+          </p>
+        </div>
+
+        <div id="client-coaches-grid" class="grid sm:grid-cols-2 gap-8"></div>
 
       </div>
     </section>
@@ -233,23 +259,23 @@
   </main>
 
   <!-- ===================================================================== -->
-  <!-- 2. VISTA COACH (CLEAN HOURLY PILLS + CLASS DETAIL MODAL)              -->
+  <!-- 2. VISTA COACH (AGENDA POR HORA + COMISIONES PRESTADOR)               -->
   <!-- ===================================================================== -->
   <main id="view-coach" class="is-hidden flex-1 py-10">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
       
       <div class="bg-vital-900 text-vital-cream rounded-3xl p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
-          <span class="text-xs font-bold uppercase tracking-widest text-vital-lime">Vista Entrenador</span>
-          <h1 id="coach-schedule-heading" class="font-brand text-2xl sm:text-3xl mt-1">Mi Calendario por Hora</h1>
-          <p class="text-xs text-vital-cream/70 mt-0.5">Toca cualquier clase para pasar asistencia o toca una hora libre para asignar clase.</p>
+          <span class="text-xs font-bold uppercase tracking-widest text-vital-lime">Portal del Entrenador</span>
+          <h1 id="coach-schedule-heading" class="font-brand text-2xl sm:text-3xl mt-1">Agenda y Comisiones</h1>
+          <p class="text-xs text-vital-cream/70 mt-0.5">Control de clases, clínicas y comisiones acumuladas según el Anexo 2.</p>
         </div>
 
         <div class="flex flex-wrap items-center gap-2.5">
           <select id="coach-view-select" onchange="renderCoachView()" class="px-3.5 py-2.5 rounded-xl bg-vital-950 border border-white/15 text-xs font-bold text-vital-cream focus:outline-none"></select>
           <input type="date" id="coach-booking-date" onchange="handleDateInputChange(this.value)" class="px-3.5 py-2 rounded-xl bg-vital-950 border border-white/15 text-xs font-bold text-vital-cream focus:outline-none" />
           <button onclick="openCoachClassModal()" class="px-4 py-2.5 rounded-xl bg-vital-lime text-vital-950 text-xs font-bold">
-            + Nueva Clase
+            + Agendar Sesión
           </button>
         </div>
       </div>
@@ -262,7 +288,7 @@
   </main>
 
   <!-- ===================================================================== -->
-  <!-- 3. VISTA ADMIN (CLEAN SINGLE NAVIGATION, ZERO CROWDING)               -->
+  <!-- 3. VISTA ADMIN (DASHBOARD, POS, CONTROL CANCHAS & COMISIONES)         -->
   <!-- ===================================================================== -->
   <main id="view-admin" class="is-hidden flex-1 py-10">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
@@ -277,7 +303,7 @@
           <button onclick="switchAdminTab('dashboard')" data-admin-tab="dashboard" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-vital-900 text-vital-cream transition">Dashboard</button>
           <button onclick="switchAdminTab('pos')" data-admin-tab="pos" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand transition">Punto de Venta</button>
           <button onclick="switchAdminTab('registro')" data-admin-tab="registro" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand transition">Control Canchas</button>
-          <button onclick="switchAdminTab('ingresos')" data-admin-tab="ingresos" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand transition">Ingresos y Catálogo</button>
+          <button onclick="switchAdminTab('ingresos')" data-admin-tab="ingresos" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand transition">Ingresos y Comisiones</button>
         </div>
       </div>
 
@@ -287,7 +313,7 @@
 
         <div class="grid lg:grid-cols-12 gap-6">
           <div class="lg:col-span-7 card-luxury rounded-3xl p-6 space-y-4">
-            <h3 class="font-brand text-xl text-vital-900">Ingresos por Flujo</h3>
+            <h3 class="font-brand text-xl text-vital-900">Ingresos por Servicio Oficial</h3>
             <div id="dashboard-streams-bars" class="space-y-4"></div>
           </div>
           <div class="lg:col-span-5 card-luxury rounded-3xl p-6 space-y-4">
@@ -298,10 +324,25 @@
 
         <div class="card-luxury rounded-3xl p-6">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="font-brand text-xl text-vital-900">Movimientos Recientes</h3>
-            <button onclick="switchAdminTab('ingresos')" class="text-xs font-bold text-vital-700 hover:underline">Ver historial completo →</button>
+            <h3 class="font-brand text-xl text-vital-900">Movimientos Recientes con Desglose</h3>
+            <button onclick="switchAdminTab('ingresos')" class="text-xs font-bold text-vital-700 hover:underline">Ver desglose completo →</button>
           </div>
-          <div id="dashboard-recent-tx" class="overflow-x-auto"></div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-vital-cream text-vital-900/70 border-b border-vital-900/10 uppercase tracking-wider font-bold">
+                <tr>
+                  <th class="py-3 px-3">Hora</th>
+                  <th class="py-3 px-3">Servicio</th>
+                  <th class="py-3 px-3">Detalle / Cliente</th>
+                  <th class="py-3 px-3">Coach</th>
+                  <th class="py-3 px-3">Total</th>
+                  <th class="py-3 px-3 text-vital-orange">Coach (Prestador)</th>
+                  <th class="py-3 px-3 text-vital-green">Club (Cliente)</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-recent-txs" class="divide-y divide-vital-900/5"></tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -310,50 +351,76 @@
         <div class="grid lg:grid-cols-12 gap-6 items-start">
           <div class="lg:col-span-8 card-luxury rounded-3xl p-6 space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <h2 class="font-brand text-2xl text-vital-900">Catálogo POS</h2>
-              <input type="text" id="pos-search-input" oninput="renderPosCatalog()" placeholder="Buscar producto..." class="px-3.5 py-2 rounded-xl bg-vital-cream border border-vital-900/10 text-xs font-semibold focus:outline-none" />
+              <div>
+                <h2 class="font-brand text-2xl text-vital-900">Punto de Venta Oficial</h2>
+                <p class="text-xs text-stone-500">Tarifas del Anexo 2: Renta, Reta, Clase y Clínica.</p>
+              </div>
+              <input type="text" id="pos-search-input" oninput="renderPosCatalog()" placeholder="Buscar servicio..." class="px-3.5 py-2 rounded-xl bg-vital-cream border border-vital-900/10 text-xs font-semibold focus:outline-none" />
             </div>
+            
             <div class="flex flex-wrap gap-1.5">
-              <button onclick="setPosCategory('all')" data-pos-cat="all" class="pos-cat-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-vital-900 text-vital-cream">Todos</button>
-              <button onclick="setPosCategory('Sándwiches y Comida')" data-pos-cat="Sándwiches y Comida" class="pos-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900">Sándwiches</button>
-              <button onclick="setPosCategory('Bebidas y Café')" data-pos-cat="Bebidas y Café" class="pos-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900">Bebidas</button>
-              <button onclick="setPosCategory('Canchas y Clases')" data-pos-cat="Canchas y Clases" class="pos-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900">Canchas / Clases</button>
-              <button onclick="setPosCategory('Renta y Accesorios')" data-pos-cat="Renta y Accesorios" class="pos-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900">Equipo</button>
+              <button onclick="filterPosCatalog('all')" data-pos-cat="all" class="pos-cat-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-vital-900 text-vital-cream">Todo</button>
+              <button onclick="filterPosCatalog('Renta')" data-pos-cat="Renta" class="pos-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand">Rentas</button>
+              <button onclick="filterPosCatalog('Reta')" data-pos-cat="Reta" class="pos-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand">Retas</button>
+              <button onclick="filterPosCatalog('Clase')" data-pos-cat="Clase" class="pos-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand">Clases</button>
+              <button onclick="filterPosCatalog('Clínica')" data-pos-cat="Clínica" class="pos-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand">Clínicas</button>
             </div>
-            <div id="pos-catalog-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+
+            <!-- Pos Catalog Grid -->
+            <div id="pos-catalog-grid" class="grid sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
           </div>
 
-          <div class="lg:col-span-4 card-luxury rounded-3xl p-6 sticky top-24 space-y-4">
-            <div class="flex items-center justify-between border-b border-stone-100 pb-3">
-              <h3 class="font-brand text-xl text-vital-900">Ticket Actual</h3>
-              <button onclick="clearPosCart()" class="text-xs text-rose-600 font-bold">Vaciar</button>
+          <!-- Pos Ticket -->
+          <div class="lg:col-span-4 card-luxury rounded-3xl p-6 space-y-4 sticky top-24">
+            <div class="flex items-center justify-between border-b border-vital-900/10 pb-3">
+              <h3 class="font-brand text-lg text-vital-900">Cobro de Servicio</h3>
+              <button onclick="clearPosCart()" class="text-xs text-red-600 hover:underline font-semibold">Vaciar</button>
             </div>
-            <div class="grid grid-cols-2 gap-2">
-              <input type="text" id="pos-customer-input" placeholder="Cliente / Cancha" class="px-3 py-2 rounded-xl bg-vital-cream text-xs font-semibold focus:outline-none" />
-              <select id="pos-payment-method" onchange="updatePosCashChange()" class="px-3 py-2 rounded-xl bg-vital-cream text-xs font-bold focus:outline-none">
-                <option value="Efectivo">💵 Efectivo</option>
-                <option value="Tarjeta">💳 Tarjeta</option>
-                <option value="Transferencia">📲 Transferencia</option>
-              </select>
-            </div>
-            <div id="pos-cart-items" class="space-y-2 max-h-56 overflow-y-auto"></div>
-            <div id="pos-cash-box" class="bg-vital-cream p-3 rounded-2xl flex items-center justify-between text-xs">
+
+            <div id="pos-ticket-items" class="space-y-2 max-h-56 overflow-y-auto pr-1"></div>
+
+            <div class="space-y-3 pt-2 border-t border-vital-900/10">
+              <!-- Coach Selector for Commissions -->
               <div>
-                <span class="text-stone-500 block">Recibido ($)</span>
-                <input type="number" id="pos-cash-received" oninput="updatePosCashChange()" placeholder="0" class="w-24 mt-0.5 px-2 py-1 rounded-lg bg-white border border-stone-200 font-bold" />
+                <label class="block text-[11px] uppercase tracking-wider text-stone-400 font-bold mb-1">Entrenador asignado (Comisión)</label>
+                <select id="pos-coach-select" class="w-full px-3 py-2 rounded-xl bg-vital-cream border border-vital-900/10 text-xs font-bold text-vital-900">
+                  <option value="COACH-1">Lucas Morilla (40% comisión)</option>
+                  <option value="COACH-2">Leo Marín (50% comisión · Sin base)</option>
+                  <option value="NONE">Sin Coach / Renta Club</option>
+                </select>
               </div>
-              <div class="text-right">
-                <span class="text-stone-500 block">Cambio</span>
-                <span id="pos-cash-change" class="text-sm font-extrabold text-emerald-700">$0</span>
+
+              <div>
+                <label class="block text-[11px] uppercase tracking-wider text-stone-400 font-bold mb-1">Cliente / Jugador</label>
+                <input type="text" id="pos-customer-input" placeholder="Nombre del cliente" class="w-full px-3 py-2 rounded-xl bg-vital-cream border border-vital-900/10 text-xs font-semibold" />
               </div>
+
+              <div>
+                <label class="block text-[11px] uppercase tracking-wider text-stone-400 font-bold mb-1">Método de Pago</label>
+                <div class="grid grid-cols-3 gap-1.5">
+                  <button type="button" onclick="selectPosPaymentMethod('Tarjeta')" data-pos-method="Tarjeta" class="pos-method-btn px-2 py-1.5 rounded-lg border text-xs font-bold bg-vital-900 text-vital-cream">Tarjeta</button>
+                  <button type="button" onclick="selectPosPaymentMethod('Efectivo')" data-pos-method="Efectivo" class="pos-method-btn px-2 py-1.5 rounded-lg border text-xs font-semibold bg-white">Efectivo</button>
+                  <button type="button" onclick="selectPosPaymentMethod('Transferencia')" data-pos-method="Transferencia" class="pos-method-btn px-2 py-1.5 rounded-lg border text-xs font-semibold bg-white">SPEI</button>
+                </div>
+              </div>
+
+              <div id="pos-cash-container" class="is-hidden space-y-1">
+                <input type="number" id="pos-cash-input" oninput="calculatePosChange()" placeholder="Efectivo recibido" class="w-full px-3 py-2 rounded-xl bg-vital-cream border border-vital-900/10 text-xs font-mono" />
+                <div class="flex justify-between text-xs font-bold text-vital-green">
+                  <span>Cambio:</span>
+                  <span id="pos-cash-change">$0.00 MXN</span>
+                </div>
+              </div>
+
+              <div class="pt-2 border-t border-vital-900/10 flex justify-between items-baseline">
+                <span class="text-xs uppercase font-bold tracking-widest text-vital-900/60">Total</span>
+                <span id="pos-total-amount" class="text-2xl font-brand font-bold text-vital-900">$0 MXN</span>
+              </div>
+
+              <button onclick="executePosCheckout()" class="w-full py-3.5 rounded-2xl bg-vital-lime hover:opacity-95 text-vital-950 font-bold text-sm transition shadow-md">
+                Registrar y Cobrar
+              </button>
             </div>
-            <div class="flex justify-between items-baseline pt-2 border-t border-stone-100">
-              <span class="text-xs text-stone-500">Total (<span id="pos-total-qty">0</span>)</span>
-              <span id="pos-total-amount" class="font-brand text-2xl text-vital-900">$0 MXN</span>
-            </div>
-            <button onclick="completePosSale()" class="w-full py-3.5 rounded-2xl bg-vital-900 text-vital-lime font-bold text-xs shadow-md">
-              Cobrar y Emitir Ticket
-            </button>
           </div>
         </div>
       </section>
@@ -363,61 +430,89 @@
         <div class="card-luxury rounded-3xl p-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
-              <h2 class="font-brand text-2xl text-vital-900">Disponibilidad, Clases y Mantenimiento</h2>
-              <p class="text-xs text-stone-500">Toca cualquier hora para apartar cancha, asignar clase a un Coach o bloquear por mantenimiento.</p>
+              <h2 class="font-brand text-2xl text-vital-900">Calendario Maestro de Canchas</h2>
+              <p class="text-xs text-stone-500">Gestiona Rentas, Retas, Clases, Clínicas y Mantenimientos.</p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
-              <input type="date" id="admin-booking-date" onchange="handleDateInputChange(this.value)" class="px-3.5 py-2 rounded-xl bg-vital-cream text-xs font-bold text-vital-900" />
-              <button onclick="openMaintenanceModal()" class="px-3.5 py-2 rounded-xl bg-amber-600 text-white text-xs font-bold">
-                🔧 + Mantenimiento
-              </button>
-              <button onclick="openCoachClassModal()" class="px-3.5 py-2 rounded-xl bg-vital-orange text-white text-xs font-bold">
-                👟 + Clase Coach
+              <input type="date" id="admin-booking-date" onchange="handleDateInputChange(this.value)" class="px-3.5 py-2 rounded-xl bg-vital-cream text-xs font-bold" />
+              <button onclick="openAdminCreateSlotModal()" class="px-4 py-2 rounded-xl bg-vital-900 text-vital-cream text-xs font-bold hover:bg-vital-800">
+                + Nueva Asignación
               </button>
             </div>
           </div>
 
-          <div id="admin-courts-schedule" class="grid md:grid-cols-2 gap-6"></div>
+          <div id="admin-master-calendar-grid" class="grid lg:grid-cols-2 gap-6"></div>
         </div>
       </section>
 
-      <!-- TAB 4: INGRESOS Y CATÁLOGO GESTIONABLE -->
+      <!-- TAB 4: INGRESOS Y COMISIONES -->
       <section id="admin-tab-ingresos" class="is-hidden space-y-6">
         <div class="card-luxury rounded-3xl p-6 space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 class="font-brand text-2xl text-vital-900">Flujo de Ingresos y Catálogo</h2>
-              <p class="text-xs text-stone-500">Filtra por flujo o agrega nuevos productos, clases y entrenadores.</p>
+              <h2 class="font-brand text-2xl text-vital-900">Control de Ingresos y Liquidación de Comisiones</h2>
+              <p class="text-xs text-stone-500">Desglose exacto: Prestador (Lucas 40% / Leo 50%) y Cliente (Vital Club).</p>
             </div>
             <div class="flex flex-wrap gap-2">
               <select id="income-filter-stream" onchange="renderAdminIncomeTable()" class="px-3 py-2 rounded-xl bg-vital-cream text-xs font-bold">
-                <option value="all">Todos los Flujos</option>
-                <option value="Reservaciones">Reservaciones</option>
-                <option value="Clases y Torneos">Clases y Torneos</option>
-                <option value="Comida y Bebidas">Comida y Bebidas</option>
+                <option value="all">Todos los Servicios</option>
+                <option value="Renta">Rentas</option>
+                <option value="Reta">Retas</option>
+                <option value="Clase">Clases</option>
+                <option value="Clínica">Clínicas</option>
               </select>
-              <button onclick="openAdminNewModal('transaction')" class="px-3.5 py-2 rounded-xl bg-vital-900 text-vital-lime text-xs font-bold">+ Ingreso</button>
-              <button onclick="openCatalogManagerModal()" class="px-3.5 py-2 rounded-xl bg-vital-orange text-white text-xs font-bold">⚙️ Gestionar Catálogo y Tarifas</button>
-              <button onclick="exportIncomeCSV()" class="px-3 py-2 rounded-xl bg-vital-cream text-vital-900 text-xs font-bold">CSV</button>
+              <button onclick="exportIncomeToCSV()" class="px-3.5 py-2 rounded-xl bg-vital-cream hover:bg-vital-sand text-xs font-bold text-vital-900 flex items-center gap-1.5">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i> Exportar CSV
+              </button>
             </div>
           </div>
-          <div id="admin-income-table-wrap" class="overflow-x-auto"></div>
+
+          <!-- Coach Commission Balances -->
+          <div class="grid sm:grid-cols-2 gap-4 pt-2">
+            <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-amber-800 block">Comisión Acumulada · Lucas Morilla</span>
+              <p id="payout-lucas" class="text-2xl font-brand font-bold text-amber-950 mt-1">$0 MXN</p>
+              <span class="text-[11px] text-amber-700">Esquema 40% comisión</span>
+            </div>
+            <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-800 block">Comisión Acumulada · Leo Marín</span>
+              <p id="payout-leo" class="text-2xl font-brand font-bold text-emerald-950 mt-1">$0 MXN</p>
+              <span class="text-[11px] text-emerald-700">Esquema 50% comisión (Sin sueldo base)</span>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto pt-2">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-vital-cream text-vital-900/70 border-b border-vital-900/10 uppercase tracking-wider font-bold">
+                <tr>
+                  <th class="py-3 px-3">Folio</th>
+                  <th class="py-3 px-3">Fecha / Hora</th>
+                  <th class="py-3 px-3">Servicio</th>
+                  <th class="py-3 px-3">Concepto / Alumno</th>
+                  <th class="py-3 px-3">Coach</th>
+                  <th class="py-3 px-3">Pago</th>
+                  <th class="py-3 px-3">Total</th>
+                  <th class="py-3 px-3 text-vital-orange">Prestador</th>
+                  <th class="py-3 px-3 text-vital-green">Club</th>
+                </tr>
+              </thead>
+              <tbody id="admin-income-table-body" class="divide-y divide-vital-900/5"></tbody>
+            </table>
+          </div>
         </div>
       </section>
 
     </div>
   </main>
 
-  <!-- MINIMAL FOOTER -->
-  <footer class="bg-vital-950 text-vital-cream/70 border-t border-white/10 py-8 text-xs">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <span class="font-brand text-base text-vital-cream">VITAL CLUB</span>
-        <span>·</span>
-        <span>Andrés Landa y Piña Nte. 26, Col. Cuauhtémoc, Zitácuaro, Mich.</span>
+  <!-- FOOTER -->
+  <footer class="bg-vital-950 text-vital-cream/80 py-12 border-t border-white/10 mt-auto">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-xs">
+      <div>
+        <span class="font-brand font-bold text-lg text-vital-cream">VITAL CLUB</span>
+        <p class="text-vital-cream/60 mt-1">Andrés Landa y Piña Nte. 26, Col. Cuauhtémoc, Zitácuaro, Mich. · Tel. 715 131 7443</p>
       </div>
-      <div class="flex items-center gap-4">
-        <a href="tel:7151317443" class="hover:text-vital-lime transition">Tel: 715 131 7443</a>
+      <div class="flex items-center gap-5">
         <a href="https://www.instagram.com/vitalclub.zit/" target="_blank" rel="noopener noreferrer" class="hover:text-vital-lime transition">Instagram</a>
         <a href="https://web.facebook.com/profile.php?id=61584920653779&sk=about" target="_blank" rel="noopener noreferrer" class="hover:text-vital-lime transition">Facebook</a>
       </div>
@@ -432,6 +527,6 @@
   <!-- TOAST -->
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
 
-  <script src="app.js?v=5"></script>
+  <script src="app.js?v=6"></script>
 </body>
 </html>

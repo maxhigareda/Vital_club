@@ -1,8 +1,10 @@
 // ============================================================================
-// VITAL CLUB · PÁDEL, CLASES, ZONA DE COMIDA, COACH & ADMIN (MINIMAL LUXURY UI)
+// VITAL CLUB · PÁDEL TECHADO | ZITÁCUARO, MICHOACÁN
+// ANEXO 2: TARIFAS Y ESQUEMA DE COMISIONES OFICIAL
+// Servicios: Clínica, Clase, Renta y Reta (Únicamente)
 // ============================================================================
 
-const STORAGE_KEY = 'vital_club_zitacuaro_v2';
+const STORAGE_KEY = 'vital_club_zitacuaro_anexo2_v2';
 
 function getTodayISO(offsetDays = 0) {
   const d = new Date();
@@ -24,9 +26,170 @@ function formatHourLabel(hour24) {
   return h > 12 ? `${h - 12}:00 PM` : `${h}:00 AM`;
 }
 
+// ----------------------------------------------------------------------------
+// CONFIGURACIÓN DE COACHES Y COMISIONES (ANEXO 2)
+// Lucas Morilla (Prestador): 40% comisión / 60% Vital Club
+// Leo Marín (Coach 2): 50% comisión / 50% Vital Club (sin sueldo base)
+// ----------------------------------------------------------------------------
+const COACHES_DATA = [
+  {
+    id: 'COACH-1',
+    name: 'Lucas Morilla',
+    role: 'Director Deportivo & Head Coach',
+    commissionRate: 0.40,
+    clubRate: 0.60,
+    hasBaseSalary: true,
+    schemeLabel: '40% Prestador / 60% Club',
+    specialty: 'Táctica, Torneos y Clínicas de Alto Rendimiento',
+    bio: 'Prestador principal con amplia trayectoria formando jugadores en pista techada y coordinando clínicas integrales.',
+    schedule: 'Lunes a Sábado · 8:00 AM – 8:00 PM'
+  },
+  {
+    id: 'COACH-2',
+    name: 'Leo Marín',
+    role: 'Coach Infantil, Juvenil & Principiantes',
+    commissionRate: 0.50,
+    clubRate: 0.50,
+    hasBaseSalary: false,
+    schemeLabel: '50% Prestador / 50% Club (Sin sueldo base)',
+    specialty: 'Iniciación Infantil, Psicomotricidad y Clínicas Familiares',
+    bio: 'Especialista en desarrollo motriz y enseñanza dinámica para niños y jóvenes que inician en el pádel.',
+    schedule: 'Lunes a Sábado · Turnos Matutinos y Vespertinos'
+  }
+];
+
+function calculateSplit(serviceType, amount, coachId) {
+  const total = Number(amount || 0);
+  if (serviceType === 'Renta' || serviceType === 'Reta' || coachId === 'NONE' || !coachId) {
+    return {
+      total,
+      prestador: 0,
+      cliente: total,
+      rateLabel: '100% Club'
+    };
+  }
+  const coach = COACHES_DATA.find(c => c.id === coachId) || COACHES_DATA[0];
+  const prestador = Math.round(total * coach.commissionRate);
+  const cliente = total - prestador;
+  return {
+    total,
+    prestador,
+    cliente,
+    rateLabel: coach.schemeLabel
+  };
+}
+
+// ----------------------------------------------------------------------------
+// CATÁLOGO OFICIAL DE SERVICIOS SEGÚN ANEXO 2
+// ----------------------------------------------------------------------------
+const OFFICIAL_SERVICES = [
+  // 1. RENTAS
+  {
+    id: 'SERV-RENTA-1',
+    service: 'Renta',
+    name: 'Renta Cancha Techada (1 Hora)',
+    price: 350,
+    badge: 'Cualquier horario',
+    description: 'Uso de cancha techada con cristal panorámico e iluminación LED. No genera comisión al prestador.'
+  },
+  {
+    id: 'SERV-RENTA-2',
+    service: 'Renta',
+    name: 'Renta Cancha Techada (2 Horas)',
+    price: 700,
+    badge: 'Partido completo',
+    description: 'Bloque continuo de 2 horas en cualquier horario diurno o nocturno. Tarifa plana oficial.'
+  },
+
+  // 2. RETAS
+  {
+    id: 'SERV-RETA-1',
+    service: 'Reta',
+    name: 'Reta Organizada por Club (2 Horas)',
+    price: 150,
+    badge: 'Por persona',
+    description: 'Partido de 2 horas nivelado y organizado por Vital Club. Precio individual por participante.'
+  },
+
+  // 3. CLASES
+  {
+    id: 'SERV-CLASE-MUESTRA',
+    service: 'Clase',
+    name: 'Clase Muestra (1 Persona)',
+    price: 250,
+    badge: 'Primera sesión',
+    description: '1 hora de duración con cancha incluida. $100 Prestador / $150 Club con Lucas; $125 / $125 con Leo.'
+  },
+  {
+    id: 'SERV-CLASE-1P',
+    service: 'Clase',
+    name: 'Clase Particular (1 Persona)',
+    price: 500,
+    badge: '1 hora · Cancha incluida',
+    description: 'Atención 100% personalizada. $200 Prestador / $300 Club (Lucas) o $250 / $250 (Leo).'
+  },
+  {
+    id: 'SERV-CLASE-2P',
+    service: 'Clase',
+    name: 'Clase en Pareja (2 Personas)',
+    price: 600,
+    badge: '$300 por persona',
+    description: 'Trabajo táctico en pareja. $240 Prestador / $360 Club (Lucas) o $300 / $300 (Leo).'
+  },
+  {
+    id: 'SERV-CLASE-3P',
+    service: 'Clase',
+    name: 'Clase Grupal (3 Personas)',
+    price: 750,
+    badge: '$250 por persona',
+    description: 'Dinámica de juego y salidas de pared. $300 Prestador / $450 Club (Lucas) o $375 / $375 (Leo).'
+  },
+  {
+    id: 'SERV-CLASE-4P',
+    service: 'Clase',
+    name: 'Clase Grupal (4 Personas)',
+    price: 800,
+    badge: '$200 por persona',
+    description: 'Partido táctico guiado y volea. $320 Prestador / $480 Club (Lucas) o $400 / $400 (Leo).'
+  },
+
+  // 4. CLÍNICAS
+  {
+    id: 'SERV-CLINICA-ADULTO',
+    service: 'Clínica',
+    name: 'Clínica Mensual Adultos (8 Sesiones)',
+    price: 1500,
+    badge: '2 veces por semana',
+    description: 'Mensualidad de 8 horas de entrenamiento. $600 Prestador / $900 Club (Lucas) o $750 / $750 (Leo).'
+  },
+  {
+    id: 'SERV-CLINICA-NINO',
+    service: 'Clínica',
+    name: 'Clínica Mensual Niños (8 Sesiones)',
+    price: 1200,
+    badge: '2 veces por semana',
+    description: 'Formación para niños y jóvenes. $480 Prestador / $720 Club (Lucas) o $600 / $600 (Leo).'
+  },
+  {
+    id: 'SERV-CLINICA-ADULTO-DESC',
+    service: 'Clínica',
+    name: 'Clínica Adultos Familias Vital (-10%)',
+    price: 1350,
+    badge: 'Descuento Familiar',
+    description: 'Tarifa con 10% de descuento al inscribirse 3+ familiares. $540 Prestador / $810 Club (Lucas).'
+  },
+  {
+    id: 'SERV-CLINICA-NINO-DESC',
+    service: 'Clínica',
+    name: 'Clínica Niños Familias Vital (-10%)',
+    price: 1080,
+    badge: 'Descuento Familiar',
+    description: 'Tarifa infantil con 10% descuento Familias Vital. $432 Prestador / $648 Club (Lucas).'
+  }
+];
+
 function buildInitialState() {
   const today = getTodayISO(0);
-  const tomorrow = getTodayISO(1);
 
   return {
     settings: {
@@ -42,407 +205,203 @@ function buildInitialState() {
           id: 'cancha-1',
           name: 'Cancha Techada 1 · Vital Central',
           shortName: 'Cancha Techada 1',
-          badge: '100% Techada',
-          hourlyRate: 400,
-          description: 'Cancha principal techada con iluminación LED y cristal panorámico.'
+          hourlyRate: 350
         },
         {
           id: 'cancha-2',
           name: 'Cancha Techada 2 · Vital Familiar',
           shortName: 'Cancha Techada 2',
-          badge: '100% Techada',
-          hourlyRate: 400,
-          description: 'Cancha techada conectada a la zona de comida y lounge familiar.'
+          hourlyRate: 350
         }
       ]
     },
 
+    coaches: COACHES_DATA,
+
+    // Horarios ocupados del día
     reservations: [
       {
-        id: 'RES-101',
+        id: 'RES-201',
         date: today,
         courtId: 'cancha-1',
         hour: 9,
         duration: 1,
+        service: 'Renta',
         customer: 'Familia Hernández',
         phone: '715 112 3490',
-        type: 'Reserva',
-        amount: 400,
-        status: 'Pagado',
+        amount: 350,
+        prestadorAmount: 0,
+        clienteAmount: 350,
+        coachId: 'NONE',
+        coachName: 'Sin Coach',
         paymentMethod: 'Tarjeta',
-        notes: 'Partido familiar (2 adultos y 2 niños)'
+        notes: 'Renta 1 hora matutina'
       },
       {
-        id: 'RES-102',
+        id: 'RES-202',
         date: today,
         courtId: 'cancha-2',
         hour: 10,
         duration: 1,
-        customer: 'Vital Senior (Adultos Mayores)',
+        service: 'Clase',
+        customer: 'Clase Muestra · Carlos Piña',
         phone: '715 131 7443',
-        type: 'Clase',
-        coachId: 'COACH-3',
-        coachName: 'Roberto Domínguez',
-        students: ['Sra. Carmen', 'Don Jorge', 'Sra. Elena', 'Don Raúl'],
+        amount: 250,
+        prestadorAmount: 100,
+        clienteAmount: 150,
+        coachId: 'COACH-1',
+        coachName: 'Lucas Morilla',
+        students: ['Carlos Piña'],
         attendanceChecked: true,
-        amount: 550,
-        status: 'Pagado',
-        paymentMethod: 'Efectivo',
-        notes: 'Clínica matutina de bajo impacto'
+        paymentMethod: 'Tarjeta',
+        notes: 'Clase muestra individual'
       },
       {
-        id: 'RES-107',
+        id: 'RES-203',
         date: today,
         courtId: 'cancha-1',
         hour: 11,
         duration: 1,
-        customer: 'Clínica Técnica Parejas',
-        phone: '715 131 7443',
-        type: 'Clase',
-        coachId: 'COACH-1',
-        coachName: 'Alejandro "Alex" Vega',
-        students: ['Fernando Soto', 'Andrea Soto', 'Luis Mendoza', 'Carla Ruiz'],
-        attendanceChecked: false,
-        amount: 420,
-        status: 'Pagado',
-        paymentMethod: 'Tarjeta',
-        notes: 'Bandeja y salida de pared'
+        service: 'Clase',
+        customer: 'Clase Particular · Andrea Soto',
+        phone: '715 224 8899',
+        amount: 500,
+        prestadorAmount: 250,
+        clienteAmount: 250,
+        coachId: 'COACH-2',
+        coachName: 'Leo Marín',
+        students: ['Andrea Soto'],
+        attendanceChecked: true,
+        paymentMethod: 'Efectivo',
+        notes: '1 persona (50% comisión Leo)'
       },
       {
-        id: 'MANT-101',
+        id: 'MANT-201',
         date: today,
         courtId: 'cancha-2',
         hour: 13,
         duration: 1,
-        customer: 'Mantenimiento Preventivo',
-        phone: 'Staff Vital Club',
-        type: 'Mantenimiento',
+        service: 'Mantenimiento',
+        customer: 'Limpieza de Cristales y Cepillado',
+        phone: 'Staff',
         amount: 0,
-        status: 'Bloqueado',
-        paymentMethod: 'N/A',
-        notes: 'Cepillado de pasto sintético y revisión de red'
+        prestadorAmount: 0,
+        clienteAmount: 0,
+        coachId: 'NONE',
+        coachName: 'Staff',
+        paymentMethod: '-',
+        notes: 'Mantenimiento preventivo'
       },
       {
-        id: 'RES-103',
+        id: 'RES-204',
         date: today,
         courtId: 'cancha-1',
         hour: 16,
         duration: 1,
-        customer: 'Pádel Kids (Niños)',
+        service: 'Clínica',
+        customer: 'Clínica Niños · Grupo Kids',
         phone: '715 131 7443',
-        type: 'Clase',
+        amount: 1200,
+        prestadorAmount: 600,
+        clienteAmount: 600,
         coachId: 'COACH-2',
-        coachName: 'Sofía Morales',
-        students: ['Mateo Gómez', 'Valentina Piña', 'Santi Ruiz', 'Emilio Landa'],
-        attendanceChecked: false,
-        amount: 650,
-        status: 'Pagado',
+        coachName: 'Leo Marín',
+        students: ['Mateo R.', 'Valentina S.', 'Leo G.', 'Camila H.'],
+        attendanceChecked: true,
         paymentMethod: 'Tarjeta',
-        notes: 'Coordinación infantil y juegos'
+        notes: 'Mensualidad 8 sesiones (Leo Marín 50%)'
       },
       {
-        id: 'RES-104',
-        date: today,
-        courtId: 'cancha-2',
-        hour: 17,
-        duration: 1,
-        customer: 'Carlos Piña & Amigos',
-        phone: '715 204 8821',
-        type: 'Reserva',
-        amount: 480,
-        status: 'Pagado',
-        paymentMethod: 'Tarjeta',
-        notes: 'Incluye renta de 1 pala ($80)'
-      },
-      {
-        id: 'RES-108',
+        id: 'RES-205',
         date: today,
         courtId: 'cancha-2',
         hour: 18,
-        duration: 1,
-        customer: 'Academia Intermedios',
-        phone: '715 131 7443',
-        type: 'Clase',
-        coachId: 'COACH-1',
-        coachName: 'Alejandro "Alex" Vega',
-        students: ['Diego Navarro', 'Pablo Herrera', 'Miguel Ángel', 'Rodrigo Paz'],
-        attendanceChecked: false,
-        amount: 480,
-        status: 'Pagado',
-        paymentMethod: 'Tarjeta',
-        notes: 'Táctica de red y definición'
-      },
-      {
-        id: 'RES-106',
-        date: tomorrow,
-        courtId: 'cancha-1',
-        hour: 11,
-        duration: 1,
-        customer: 'Dr. Roberto Guzmán y Nieto',
-        phone: '715 301 1170',
-        type: 'Reserva',
-        amount: 400,
-        status: 'Pagado',
-        paymentMethod: 'Tarjeta',
-        notes: 'Partido familiar'
+        duration: 2,
+        service: 'Reta',
+        customer: 'Reta Vespertina 4 Jugadores',
+        phone: '715 334 1122',
+        amount: 600,
+        prestadorAmount: 0,
+        clienteAmount: 600,
+        coachId: 'NONE',
+        coachName: 'Organizada por Club',
+        students: ['Rodrigo K.', 'Luis M.', 'Daniela P.', 'Arturo G.'],
+        paymentMethod: 'Efectivo',
+        notes: 'Reta organizada 2 hrs ($150 x 4 personas)'
       }
     ],
 
-    programs: [
-      {
-        id: 'PROG-1',
-        title: 'Pádel Kids (4 a 12 años)',
-        category: 'Niños y Familia',
-        schedule: 'Lun, Mié y Vie · 4:00 PM',
-        coach: 'Coach Sofía Morales',
-        ageRange: 'Niños (4–12 años)',
-        price: 650,
-        priceLabel: 'Mensualidad o $180 por sesión',
-        spotsTotal: 12,
-        spotsTaken: 8,
-        court: 'Cancha Techada 1',
-        description: 'Coordinación, diversión y fundamentos del pádel en un ambiente 100% seguro y techado. Incluye préstamo de pala infantil.'
-      },
-      {
-        id: 'PROG-2',
-        title: 'Clínica 100% Familiar',
-        category: 'Niños y Familia',
-        schedule: 'Sábados y Domingos · 10:00 AM',
-        coach: 'Coach Alejandro "Alex" Vega',
-        ageRange: 'Todas las edades',
-        price: 420,
-        priceLabel: 'Pase familiar (hasta 4 integrantes)',
-        spotsTotal: 8,
-        spotsTaken: 5,
-        court: 'Cancha Techada 2',
-        description: 'Aprendan y jueguen juntos padres, hijos y abuelos con dinámicas diseñadas para convivir en familia.'
-      },
-      {
-        id: 'PROG-3',
-        title: 'Vital Senior · Adultos Mayores',
-        category: 'Adultos y Seniors',
-        schedule: 'Martes y Jueves · 10:00 AM',
-        coach: 'Coach Roberto Domínguez',
-        ageRange: 'Adultos Mayores (55+)',
-        price: 550,
-        priceLabel: 'Mensualidad · Bajo impacto',
-        spotsTotal: 10,
-        spotsTaken: 6,
-        court: 'Cancha Techada 2',
-        description: 'Movilidad, salud articular, convivencia y técnica de pádel a ritmo amigable.'
-      },
-      {
-        id: 'PROG-4',
-        title: 'Academia Adultos Intermedios',
-        category: 'Adultos y Seniors',
-        schedule: 'Martes y Jueves · 6:00 PM',
-        coach: 'Coach Alejandro "Alex" Vega',
-        ageRange: 'Jóvenes y Adultos',
-        price: 240,
-        priceLabel: 'Por sesión de 90 min',
-        spotsTotal: 8,
-        spotsTaken: 6,
-        court: 'Cancha Techada 1',
-        description: 'Perfecciona bandeja, salida de pared y táctica en pareja.'
-      },
-      {
-        id: 'PROG-5',
-        title: 'Torneo Relámpago Familiar',
-        category: 'Torneos',
-        schedule: 'Sábados · 4:00 PM – 8:00 PM',
-        coach: 'Staff Vital Club',
-        ageRange: 'Categoría Recreativa y Mixta',
-        price: 500,
-        priceLabel: 'Por pareja (3 partidos garantizados)',
-        spotsTotal: 16,
-        spotsTaken: 12,
-        court: 'Canchas Techadas 1 y 2',
-        description: 'Formato americano dinámico bajo techo con hidratación incluida y premios en nuestra Zona de Comida.'
-      },
-      {
-        id: 'PROG-6',
-        title: 'Pre-registro: Barre & Gym Vital',
-        category: 'Adultos y Seniors',
-        schedule: 'Próxima Apertura · Pase Fundador',
-        coach: 'Equipo Vital Wellness',
-        ageRange: 'Jóvenes y Adultos',
-        price: 350,
-        priceLabel: 'Tarifa preferencial de lanzamiento',
-        spotsTotal: 25,
-        spotsTaken: 14,
-        court: 'Nuevo Estudio Vital',
-        description: 'Forma parte de las nuevas experiencias que estamos integrando en Vital Club: Barre, Gym y Cocina.'
-      }
-    ],
-
-    catalog: [
-      {
-        id: 'FOOD-1',
-        name: 'Club Sándwich Vital',
-        category: 'Sándwiches y Comida',
-        price: 135,
-        badge: 'Favorito',
-        description: 'Pavo ahumado, tocino crujiente, queso gouda y aguacate en pan artesanal tostado.'
-      },
-      {
-        id: 'FOOD-2',
-        name: 'Baguette Serrano & Pesto',
-        category: 'Sándwiches y Comida',
-        price: 145,
-        badge: 'Gourmet',
-        description: 'Jamón serrano, mozzarella fresca, jitomate deshidratado y pesto de albahaca.'
-      },
-      {
-        id: 'FOOD-3',
-        name: 'Panini Pollo & Panela',
-        category: 'Sándwiches y Comida',
-        price: 125,
-        badge: 'Ligero',
-        description: 'Pechuga a la plancha, queso panela asado, espinaca baby y aderezo suave.'
-      },
-      {
-        id: 'FOOD-4',
-        name: 'Mini Sándwich Kids',
-        category: 'Sándwiches y Comida',
-        price: 85,
-        badge: 'Niños',
-        description: 'Sándwich suave de jamón y queso derretido acompañado de papas horneadas.'
-      },
-      {
-        id: 'DRINK-1',
-        name: 'Smoothie Match-Point',
-        category: 'Bebidas y Café',
-        price: 78,
-        badge: 'Natural',
-        description: 'Fruta natural recién licuada (Verde o Mango-Maracuyá).'
-      },
-      {
-        id: 'DRINK-2',
-        name: 'Cold Brew / Latte Frío',
-        category: 'Bebidas y Café',
-        price: 68,
-        badge: 'Café',
-        description: 'Café de especialidad frío o con leche a elegir.'
-      },
-      {
-        id: 'DRINK-3',
-        name: 'Hidratante / Electrolitos',
-        category: 'Bebidas y Café',
-        price: 45,
-        badge: 'Sport',
-        description: 'Hidratación deportiva bien fría.'
-      },
-      {
-        id: 'POS-RENT-1',
-        name: 'Renta de Pala Pro',
-        category: 'Renta y Accesorios',
-        price: 80,
-        badge: 'Por Partido',
-        description: 'Pala profesional para adulto o ligera para niño/adulto mayor.'
-      },
-      {
-        id: 'POS-RENT-2',
-        name: 'Tubo de 3 Pelotas Nuevas',
-        category: 'Renta y Accesorios',
-        price: 195,
-        badge: 'Oficial',
-        description: 'Bote nuevo de 3 pelotas de pádel.'
-      },
-      {
-        id: 'POS-COURT-1',
-        name: 'Hora Cancha Techada (POS)',
-        category: 'Canchas y Clases',
-        price: 400,
-        badge: 'Mostrador',
-        description: 'Cobro rápido de 1 hora de cancha en recepción.'
-      }
-    ],
-
-    coaches: [
-      {
-        id: 'COACH-1',
-        name: 'Alejandro "Alex" Vega',
-        role: 'Head Coach & Director Deportivo',
-        specialty: 'Clínicas Familiares, Táctica y Torneos',
-        experience: '8 años de experiencia · Certificado FMP',
-        bio: 'Especialista en integrar a familias completas dentro de la cancha y elevar el nivel competitivo de forma clara y dinámica.',
-        schedule: 'Lun a Sáb · 9:00 AM a 8:00 PM'
-      },
-      {
-        id: 'COACH-2',
-        name: 'Sofía Morales',
-        role: 'Coach Pádel Kids & Iniciación',
-        specialty: 'Niños pequeños (4 a 12 años) y Principiantes',
-        experience: 'Lic. en Educación Física · Especialista Infantil',
-        bio: 'Experta en psicomotricidad y enseñanza lúdica para que los niños aprendan seguro y felices.',
-        schedule: 'Lun a Vie · 3:00 PM a 7:00 PM'
-      },
-      {
-        id: 'COACH-3',
-        name: 'Roberto Domínguez',
-        role: 'Coach Vital Senior & Control',
-        specialty: 'Adultos Mayores Activos y Técnica',
-        experience: '10 años en deportes de raqueta',
-        bio: 'Diseña sesiones seguras de bajo impacto ideales para adultos mayores que buscan salud, movilidad y gran convivencia.',
-        schedule: 'Mar, Jue y Fin de Semana · 8:00 AM a 2:00 PM'
-      }
-    ],
-
+    // Transacciones con desglose contable estricto
     transactions: [
       {
-        id: 'VC-1001',
+        id: 'VC-TX-01',
         date: today,
-        time: '08:50 AM',
-        stream: 'Reservaciones',
-        concept: 'Cancha Techada 1 (9:00 AM)',
+        time: '08:45 AM',
+        service: 'Renta',
+        concept: 'Renta Cancha Techada 1 (9:00 AM)',
         customer: 'Familia Hernández',
+        coachId: 'NONE',
+        coachName: '-',
         paymentMethod: 'Tarjeta',
-        amount: 400,
-        status: 'Pagado'
+        amount: 350,
+        prestadorAmount: 0,
+        clienteAmount: 350
       },
       {
-        id: 'VC-1002',
+        id: 'VC-TX-02',
         date: today,
-        time: '09:45 AM',
-        stream: 'Clases y Torneos',
-        concept: 'Vital Senior · Adultos Mayores',
-        customer: 'Sra. Carmen y Grupo',
-        paymentMethod: 'Efectivo',
-        amount: 550,
-        status: 'Pagado'
-      },
-      {
-        id: 'VC-1003',
-        date: today,
-        time: '11:15 AM',
-        stream: 'Comida y Bebidas',
-        concept: '2x Club Sándwich Vital + 2x Smoothie',
-        customer: 'Familia Hernández',
-        paymentMethod: 'Tarjeta',
-        amount: 426,
-        status: 'Pagado'
-      },
-      {
-        id: 'VC-1004',
-        date: today,
-        time: '03:55 PM',
-        stream: 'Clases y Torneos',
-        concept: 'Mensualidad Pádel Kids · Mateo Gómez',
-        customer: 'Laura Gómez',
-        paymentMethod: 'Tarjeta',
-        amount: 650,
-        status: 'Pagado'
-      },
-      {
-        id: 'VC-1005',
-        date: today,
-        time: '05:00 PM',
-        stream: 'Reservaciones',
-        concept: 'Cancha Techada 2 (5:00 PM) + Pala',
+        time: '09:50 AM',
+        service: 'Clase',
+        concept: 'Clase Muestra 1 Persona',
         customer: 'Carlos Piña',
+        coachId: 'COACH-1',
+        coachName: 'Lucas Morilla',
         paymentMethod: 'Tarjeta',
-        amount: 480,
-        status: 'Pagado'
+        amount: 250,
+        prestadorAmount: 100,
+        clienteAmount: 150
+      },
+      {
+        id: 'VC-TX-03',
+        date: today,
+        time: '10:55 AM',
+        service: 'Clase',
+        concept: 'Clase Particular 1 Persona',
+        customer: 'Andrea Soto',
+        coachId: 'COACH-2',
+        coachName: 'Leo Marín',
+        paymentMethod: 'Efectivo',
+        amount: 500,
+        prestadorAmount: 250,
+        clienteAmount: 250
+      },
+      {
+        id: 'VC-TX-04',
+        date: today,
+        time: '03:40 PM',
+        service: 'Clínica',
+        concept: 'Clínica Mensual Niños (8 sesiones)',
+        customer: 'Mateo R. / Laura Gómez',
+        coachId: 'COACH-2',
+        coachName: 'Leo Marín',
+        paymentMethod: 'Tarjeta',
+        amount: 1200,
+        prestadorAmount: 600,
+        clienteAmount: 600
+      },
+      {
+        id: 'VC-TX-05',
+        date: today,
+        time: '05:30 PM',
+        service: 'Reta',
+        concept: 'Reta Organizada (4 jugadores x $150)',
+        customer: '4 Participantes',
+        coachId: 'NONE',
+        coachName: '-',
+        paymentMethod: 'Efectivo',
+        amount: 600,
+        prestadorAmount: 0,
+        clienteAmount: 600
       }
     ]
   };
@@ -450,11 +409,10 @@ function buildInitialState() {
 
 let state = loadState();
 let selectedDate = getTodayISO(0);
-let currentProgramFilter = 'all';
-let currentFoodFilter = 'all';
-let currentPosCategory = 'all';
+let currentPosFilter = 'all';
+let currentPosCoach = 'COACH-1';
+let currentPosMethod = 'Tarjeta';
 let posCart = [];
-let clientFoodCart = [];
 
 function loadState() {
   try {
@@ -465,7 +423,7 @@ function loadState() {
       return seed;
     }
     const parsed = JSON.parse(raw);
-    if (!parsed || !parsed.settings || !Array.isArray(parsed.programs) || !Array.isArray(parsed.catalog) || parsed.catalog.length === 0) {
+    if (!parsed || !parsed.settings || !Array.isArray(parsed.transactions)) {
       const seed = buildInitialState();
       localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
       return seed;
@@ -506,7 +464,6 @@ function switchMainMode(mode) {
   const coachView = document.getElementById('view-coach');
   const adminView = document.getElementById('view-admin');
   const clientNav = document.getElementById('client-nav');
-  const clientCartBtn = document.getElementById('client-cart-btn');
 
   const btnClient = document.getElementById('btn-mode-client');
   const btnCoach = document.getElementById('btn-mode-coach');
@@ -530,22 +487,16 @@ function switchMainMode(mode) {
   if (mode === 'client') {
     clientNav?.classList.remove('is-hidden');
     if (clientNav) clientNav.style.display = '';
-    clientCartBtn?.classList.remove('is-hidden');
-    if (clientCartBtn) clientCartBtn.style.display = '';
     renderAllClientViews();
   } else if (mode === 'coach') {
     clientNav?.classList.add('is-hidden');
     if (clientNav) clientNav.style.display = 'none';
-    clientCartBtn?.classList.add('is-hidden');
-    if (clientCartBtn) clientCartBtn.style.display = 'none';
     populateCoachSelector();
     renderCoachView();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } else {
     clientNav?.classList.add('is-hidden');
     if (clientNav) clientNav.style.display = 'none';
-    clientCartBtn?.classList.add('is-hidden');
-    if (clientCartBtn) clientCartBtn.style.display = 'none';
     renderAllAdminViews();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -557,9 +508,9 @@ function switchAdminTab(tabName) {
   const tabs = ['dashboard', 'pos', 'registro', 'ingresos'];
   const titles = {
     dashboard: 'Dashboard y Números',
-    pos: 'Punto de Venta (POS)',
+    pos: 'Punto de Venta Oficial (POS)',
     registro: 'Calendario Maestro de Canchas',
-    ingresos: 'Ingresos y Catálogo'
+    ingresos: 'Ingresos y Comisiones'
   };
 
   tabs.forEach(t => {
@@ -583,7 +534,7 @@ function switchAdminTab(tabName) {
 }
 
 // ============================================================================
-// CLIENT VIEWS: ULTRA-CLEAN & MODAL-DRIVEN
+// 1. VISTA CLIENTE
 // ============================================================================
 
 function renderHeroLiveStatus() {
@@ -596,11 +547,11 @@ function renderHeroLiveStatus() {
     const booked = state.reservations.filter(r => r.date === today && r.courtId === court.id).length;
     const free = Math.max(0, totalHours - booked);
     return `
-      <a href="#reservar" class="bg-vital-950/85 backdrop-blur-md border border-white/15 rounded-2xl p-3 text-vital-cream hover:border-vital-lime transition">
+      <a href="#canchas" class="bg-vital-950/85 backdrop-blur-md border border-white/15 rounded-2xl p-3 text-vital-cream hover:border-vital-lime transition">
         <div class="text-xs font-bold truncate">${court.shortName}</div>
         <div class="flex items-center justify-between mt-1">
           <span class="text-[11px] text-vital-lime font-bold">${free} hrs libres</span>
-          <span class="text-[11px] text-vital-cream/70">$${court.hourlyRate}/h</span>
+          <span class="text-[11px] text-vital-cream/70">$350/h</span>
         </div>
       </a>
     `;
@@ -629,13 +580,13 @@ function renderDateStrip() {
   const html = days.map(d => {
     const active = d.iso === selectedDate;
     return `
-      <button onclick="selectBookingDate('${d.iso}')" class="px-4 py-2 rounded-2xl border text-left transition shrink-0 ${
+      <button onclick="selectBookingDate('${d.iso}')" class="px-3.5 py-1.5 rounded-xl border text-left transition shrink-0 ${
         active
           ? 'bg-vital-900 text-vital-cream border-vital-900 shadow-sm'
           : 'bg-white hover:bg-vital-sand/60 text-vital-900 border-vital-900/10'
       }">
-        <span class="text-[10px] uppercase font-bold block ${active ? 'text-vital-lime' : 'text-vital-900/50'}">${d.dayName}</span>
-        <span class="text-xs font-extrabold">${d.dayNum} ${d.month}</span>
+        <div class="text-[10px] font-bold uppercase tracking-wider ${active ? 'text-vital-lime' : 'text-vital-900/50'}">${d.dayName}</div>
+        <div class="text-xs font-black">${d.dayNum} ${d.month}</div>
       </button>
     `;
   }).join('');
@@ -647,1261 +598,843 @@ function renderDateStrip() {
 function selectBookingDate(iso) {
   selectedDate = iso;
   renderDateStrip();
-  renderClientCourtsGrid();
-  renderCoachView();
-  renderAdminCourtsSchedule();
-  renderAdminDashboard();
+  renderCourtsGrid();
+  if (document.getElementById('view-coach') && !document.getElementById('view-coach').classList.contains('is-hidden')) {
+    renderCoachView();
+  }
+  if (document.getElementById('view-admin') && !document.getElementById('view-admin').classList.contains('is-hidden')) {
+    renderAdminMasterCalendar();
+  }
 }
 
-function handleDateInputChange(val) {
-  if (val) selectBookingDate(val);
+function handleDateInputChange(iso) {
+  if (iso) selectBookingDate(iso);
 }
 
-// Minimal Hour-Chip Grid for Client Reservations
-function renderClientCourtsGrid() {
-  const container = document.getElementById('client-courts-container');
+function renderCourtsGrid() {
+  const container = document.getElementById('courts-slots-container');
   if (!container) return;
 
-  const openH = Number(state.settings.openHour) || 8;
-  const closeH = Number(state.settings.closeHour) || 20;
-  const hours = [];
-  for (let h = openH; h < closeH; h++) hours.push(h);
+  const openH = state.settings.openHour;
+  const closeH = state.settings.closeHour;
 
   container.innerHTML = state.settings.courts.map(court => {
-    const dayBookings = state.reservations.filter(r => r.date === selectedDate && r.courtId === court.id);
-    const freeCount = hours.length - dayBookings.length;
+    const hoursHtml = [];
+    for (let h = openH; h < closeH; h++) {
+      const existing = state.reservations.find(r => r.date === selectedDate && r.courtId === court.id && r.hour === h);
 
-    const pills = hours.map(hr => {
-      const booking = dayBookings.find(r => Number(r.hour) === hr);
-      const label = formatHourLabel(hr);
-
-      if (!booking) {
-        return `
-          <button onclick="openBookingModal('${court.id}', ${hr})" class="hour-pill p-3 rounded-2xl border border-emerald-500/25 bg-emerald-50/50 hover:bg-vital-lime hover:border-vital-900 text-left transition group">
-            <div class="text-xs font-extrabold text-vital-900">${label}</div>
-            <div class="text-[11px] font-semibold text-emerald-800 group-hover:text-vital-950 mt-0.5">Libre · $${court.hourlyRate}</div>
+      if (!existing) {
+        hoursHtml.push(`
+          <button onclick="openBookingModal('${court.id}', ${h}, 'Renta')"
+            class="hour-pill p-3 rounded-2xl border border-emerald-300/80 bg-emerald-50/70 hover:bg-vital-lime hover:border-vital-lime hover:text-vital-950 text-emerald-950 font-bold text-xs flex items-center justify-between shadow-xs">
+            <span>${formatHourLabel(h)}</span>
+            <span class="text-[10px] text-emerald-700 uppercase font-extrabold tracking-wider">Libre · $350</span>
           </button>
-        `;
+        `);
+      } else if (existing.service === 'Mantenimiento') {
+        hoursHtml.push(`
+          <div class="p-3 rounded-2xl border border-stone-200 bg-stone-100 text-stone-400 font-bold text-xs flex items-center justify-between">
+            <span class="line-through">${formatHourLabel(h)}</span>
+            <span class="text-[10px] uppercase font-semibold">Mantenimiento</span>
+          </div>
+        `);
+      } else if (existing.service === 'Reta') {
+        hoursHtml.push(`
+          <div class="p-3 rounded-2xl border border-amber-300 bg-amber-50 text-amber-900 font-bold text-xs flex items-center justify-between">
+            <span>${formatHourLabel(h)}</span>
+            <span class="text-[10px] text-amber-700 font-bold uppercase tracking-wider">Reta ($150/p)</span>
+          </div>
+        `);
+      } else if (existing.service === 'Clase' || existing.service === 'Clínica') {
+        hoursHtml.push(`
+          <div class="p-3 rounded-2xl border border-sky-300 bg-sky-50 text-sky-950 font-bold text-xs flex items-center justify-between">
+            <span>${formatHourLabel(h)}</span>
+            <span class="text-[10px] text-sky-700 font-bold uppercase tracking-wider">${existing.service}: ${existing.coachName}</span>
+          </div>
+        `);
+      } else {
+        hoursHtml.push(`
+          <div class="p-3 rounded-2xl border border-stone-200 bg-stone-100/80 text-stone-400 font-medium text-xs flex items-center justify-between">
+            <span class="line-through">${formatHourLabel(h)}</span>
+            <span class="text-[10px] uppercase font-semibold">Apartada</span>
+          </div>
+        `);
       }
-
-      if (booking.type === 'Mantenimiento') {
-        return `
-          <button onclick="openSlotInfoModal('${booking.id}')" class="hour-pill p-3 rounded-2xl border border-amber-300 bg-amber-50/80 text-left">
-            <div class="text-xs font-bold text-amber-950">${label}</div>
-            <div class="text-[11px] font-semibold text-amber-700 truncate mt-0.5">🔧 Mant.</div>
-          </button>
-        `;
-      }
-
-      const isClass = booking.type === 'Clase' || booking.type === 'Torneo';
-      return `
-        <button onclick="openSlotInfoModal('${booking.id}')" class="hour-pill p-3 rounded-2xl border ${
-          isClass ? 'border-vital-orange/30 bg-orange-50/70 text-vital-950' : 'border-stone-200 bg-stone-100 text-stone-500'
-        } text-left">
-          <div class="text-xs font-bold">${label}</div>
-          <div class="text-[11px] font-semibold truncate mt-0.5">${isClass ? '🏆 Clase' : 'Ocupada'}</div>
-        </button>
-      `;
-    }).join('');
+    }
 
     return `
-      <div class="card-luxury rounded-3xl p-6 space-y-5">
-        <div class="flex items-center justify-between border-b border-stone-100 pb-4">
+      <div class="card-luxury rounded-3xl p-6 space-y-4">
+        <div class="flex items-center justify-between border-b border-vital-900/10 pb-4">
           <div>
-            <span class="text-[11px] font-bold uppercase tracking-wider text-vital-700">☔ ${court.badge}</span>
-            <h3 class="font-brand text-2xl text-vital-900">${court.shortName}</h3>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-vital-orange">Techada · Cristal Panorámico</span>
+            <h3 class="font-brand text-2xl text-vital-900">${court.name}</h3>
           </div>
           <div class="text-right">
-            <span class="font-brand text-xl text-vital-900">$${court.hourlyRate}<span class="text-xs font-sans text-stone-500">/hr</span></span>
-            <span class="block text-[11px] font-bold text-emerald-700">${freeCount} disponibles</span>
+            <span class="font-brand text-xl font-bold text-vital-900">$350</span>
+            <span class="text-[11px] text-stone-500 block">por hora fija</span>
           </div>
         </div>
 
-        <div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
-          ${pills}
+        <div class="grid grid-cols-2 gap-2.5">
+          ${hoursHtml.join('')}
         </div>
       </div>
     `;
   }).join('');
 }
 
-// Modal when user clicks an occupied / class / maintenance slot
-function openSlotInfoModal(resId) {
-  const b = state.reservations.find(r => r.id === resId);
-  if (!b) return;
-  const court = state.settings.courts.find(c => c.id === b.courtId);
+// ----------------------------------------------------------------------------
+// SECCIÓN 2: CLASES CLIENTE
+// ----------------------------------------------------------------------------
+function renderClientClasses() {
+  const container = document.getElementById('client-classes-grid');
+  if (!container) return;
 
-  openModal(`
-    <div class="space-y-4">
-      <div class="flex items-start justify-between border-b border-stone-100 pb-3">
-        <div>
-          <span class="text-xs font-bold uppercase ${b.type === 'Mantenimiento' ? 'text-amber-700' : 'text-vital-orange'}">${b.type}</span>
-          <h3 class="font-brand text-2xl text-vital-900 mt-0.5">${b.customer}</h3>
-          <p class="text-xs text-stone-500">${court ? court.shortName : ''} · ${formatHourLabel(b.hour)} – ${formatHourLabel(b.hour + 1)}</p>
+  const classes = OFFICIAL_SERVICES.filter(s => s.service === 'Clase');
+
+  container.innerHTML = classes.map(c => `
+    <div class="card-luxury rounded-3xl p-6 flex flex-col justify-between space-y-5 border border-vital-900/10 hover:border-vital-lime transition">
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-sky-100 text-sky-900">${c.badge}</span>
+          <span class="font-brand text-2xl font-bold text-vital-900">$${c.price} <span class="text-xs font-normal text-stone-500">MXN</span></span>
         </div>
-        <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
+        <h4 class="font-brand text-xl text-vital-900 font-bold">${c.name}</h4>
+        <p class="text-xs text-stone-600 leading-relaxed">${c.description}</p>
       </div>
 
-      <div class="bg-vital-cream p-4 rounded-2xl text-xs space-y-1.5">
-        ${b.coachName ? `<div><strong>Entrenador:</strong> ${b.coachName}</div>` : ''}
-        <div><strong>Estado:</strong> ${b.type === 'Mantenimiento' ? 'Cerrada por mantenimiento' : 'Horario apartado'}</div>
-        ${b.notes ? `<div><strong>Detalle:</strong> ${b.notes}</div>` : ''}
-      </div>
-
-      <div class="flex justify-end">
-        <button onclick="closeModal()" class="px-5 py-2.5 rounded-xl bg-vital-900 text-vital-cream text-xs font-bold">Entendido</button>
-      </div>
-    </div>
-  `);
-}
-
-// ============================================================================
-// CLASES Y TORNEOS (MINIMAL CARDS -> DETAIL & CHECKOUT MODAL)
-// ============================================================================
-
-function filterPrograms(category) {
-  currentProgramFilter = category;
-  document.querySelectorAll('.prog-filter-btn').forEach(btn => {
-    const isAct = btn.getAttribute('data-prog-filter') === category;
-    btn.className = isAct
-      ? 'prog-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-vital-900 text-vital-cream transition'
-      : 'prog-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white text-vital-900/70 hover:text-vital-900 transition';
-  });
-  renderClientPrograms();
-}
-
-function renderClientPrograms() {
-  const grid = document.getElementById('client-programs-grid');
-  if (!grid) return;
-
-  const list = state.programs.filter(p => currentProgramFilter === 'all' || p.category === currentProgramFilter);
-
-  grid.innerHTML = list.map(prog => {
-    const spotsLeft = Math.max(0, prog.spotsTotal - prog.spotsTaken);
-    return `
-      <div onclick="openProgramEnrollModal('${prog.id}')" class="card-luxury rounded-3xl p-6 cursor-pointer flex flex-col justify-between group">
-        <div class="space-y-2.5">
-          <div class="flex items-center justify-between text-[11px] font-bold">
-            <span class="text-vital-orange uppercase tracking-wider">${prog.category}</span>
-            <span class="text-emerald-700">${spotsLeft} lugares</span>
-          </div>
-          <h3 class="font-brand text-xl text-vital-900 group-hover:text-vital-700 transition">${prog.title}</h3>
-          <p class="text-xs text-stone-500 font-medium">${prog.schedule}</p>
+      <div class="pt-3 border-t border-vital-900/10 flex items-center justify-between">
+        <div class="text-[11px] text-stone-500">
+          <span>Lucas Morilla o Leo Marín</span>
         </div>
-
-        <div class="pt-4 mt-5 border-t border-stone-100 flex items-center justify-between">
-          <span class="font-brand text-xl text-vital-900">$${prog.price} <span class="text-[11px] font-sans text-stone-400">MXN</span></span>
-          <span class="text-xs font-bold text-vital-900 group-hover:translate-x-1 transition inline-flex items-center gap-1">
-            Ver e Inscribirme →
-          </span>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-// ============================================================================
-// ZONA DE COMIDA (MINIMAL CARDS -> DETAIL MODAL OR QUICK ADD)
-// ============================================================================
-
-function filterFoodMenu(cat) {
-  currentFoodFilter = cat;
-  document.querySelectorAll('.food-filter-btn').forEach(btn => {
-    const isAct = btn.getAttribute('data-food-filter') === cat;
-    btn.className = isAct
-      ? 'food-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-vital-900 text-vital-cream transition'
-      : 'food-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white text-vital-900/70 hover:text-vital-900 transition';
-  });
-  renderClientFoodGrid();
-}
-
-function renderClientFoodGrid() {
-  const grid = document.getElementById('client-food-grid');
-  if (!grid) return;
-
-  const items = state.catalog.filter(item => {
-    if (item.category === 'Canchas y Clases') return false;
-    return currentFoodFilter === 'all' || item.category === currentFoodFilter;
-  });
-
-  grid.innerHTML = items.map(item => {
-    const emoji = item.category.includes('Sándwiches') ? '🥪' : item.category.includes('Bebidas') ? '🥤' : '🏓';
-    return `
-      <div class="card-luxury rounded-3xl p-5 flex flex-col justify-between">
-        <div onclick="openFoodDetailModal('${item.id}')" class="cursor-pointer">
-          <div class="flex items-center justify-between text-xs mb-2">
-            <span class="font-bold text-stone-400 uppercase text-[10px] tracking-wider">${item.badge || item.category}</span>
-            <span>${emoji}</span>
-          </div>
-          <h3 class="font-brand text-lg text-vital-900 leading-snug hover:text-vital-700 transition">${item.name}</h3>
-        </div>
-
-        <div class="pt-3 mt-4 border-t border-stone-100 flex items-center justify-between">
-          <span class="font-brand text-lg text-vital-900">$${item.price}</span>
-          <div class="flex items-center gap-1.5">
-            <button onclick="openFoodDetailModal('${item.id}')" class="px-2.5 py-1.5 rounded-xl bg-vital-cream text-vital-900 text-[11px] font-bold">Detalle</button>
-            <button onclick="addToClientFoodCart('${item.id}')" class="px-3 py-1.5 rounded-xl bg-vital-900 text-vital-lime text-[11px] font-bold">+ Pedir</button>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function openFoodDetailModal(itemId) {
-  const item = state.catalog.find(i => i.id === itemId);
-  if (!item) return;
-
-  openModal(`
-    <div class="space-y-4">
-      <div class="flex items-start justify-between border-b border-stone-100 pb-3">
-        <div>
-          <span class="text-xs font-bold uppercase text-vital-orange">${item.category}</span>
-          <h3 class="font-brand text-2xl text-vital-900 mt-0.5">${item.name}</h3>
-        </div>
-        <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
-      </div>
-      <p class="text-sm text-stone-600 leading-relaxed">${item.description || 'Preparado al momento en la Zona de Comida de Vital Club.'}</p>
-      <div class="flex items-center justify-between pt-3 border-t border-stone-100">
-        <span class="font-brand text-2xl text-vital-900">${formatMXN(item.price)}</span>
-        <button onclick="addToClientFoodCart('${item.id}'); closeModal();" class="px-5 py-3 rounded-2xl bg-vital-900 text-vital-lime font-bold text-xs">
-          + Agregar a mi Pedido
+        <button onclick="openClassBookingModal('${c.id}')" class="px-4 py-2 rounded-xl bg-vital-900 hover:bg-vital-800 text-vital-cream font-bold text-xs transition">
+          Agendar Clase
         </button>
-      </div>
-    </div>
-  `);
-}
-
-function addToClientFoodCart(itemId) {
-  const item = state.catalog.find(i => i.id === itemId);
-  if (!item) return;
-  const ex = clientFoodCart.find(c => c.id === itemId);
-  if (ex) ex.qty += 1;
-  else clientFoodCart.push({ ...item, qty: 1 });
-  updateClientCartBadge();
-  showToast(`Agregado: ${item.name}`);
-}
-
-function updateClientCartBadge() {
-  const badge = document.getElementById('client-cart-count');
-  if (!badge) return;
-  const count = clientFoodCart.reduce((s, i) => s + i.qty, 0);
-  badge.textContent = count;
-  badge.classList.toggle('is-hidden', count === 0);
-}
-
-function openClientFoodCart() {
-  if (clientFoodCart.length === 0) {
-    showToast('Tu carrito está vacío. Selecciona alimentos en la Zona de Comida.');
-    document.getElementById('comida')?.scrollIntoView({ behavior: 'smooth' });
-    return;
-  }
-
-  const total = clientFoodCart.reduce((s, i) => s + i.price * i.qty, 0);
-  const rows = clientFoodCart.map(item => `
-    <div class="flex items-center justify-between py-2 border-b border-stone-100 text-xs">
-      <div>
-        <span class="font-bold text-vital-900">${item.qty}x ${item.name}</span>
-        <span class="text-stone-400 ml-1">($${item.price})</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <span class="font-bold">$${item.qty * item.price}</span>
-        <button onclick="removeClientFoodItem('${item.id}')" class="text-rose-600 font-bold">✕</button>
       </div>
     </div>
   `).join('');
+}
+
+// ----------------------------------------------------------------------------
+// SECCIÓN 3: CLÍNICAS MENSUALES CLIENTE
+// ----------------------------------------------------------------------------
+function renderClientClinics() {
+  const container = document.getElementById('client-clinics-grid');
+  if (!container) return;
+
+  const clinics = OFFICIAL_SERVICES.filter(s => s.service === 'Clínica');
+
+  container.innerHTML = clinics.map(c => `
+    <div class="card-luxury rounded-3xl p-6 sm:p-7 flex flex-col justify-between space-y-4 border border-vital-900/10 hover:border-vital-orange transition">
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+            c.badge.includes('Descuento') ? 'bg-vital-lime text-vital-950 font-extrabold' : 'bg-emerald-100 text-emerald-900'
+          }">${c.badge}</span>
+          <span class="font-brand text-2xl sm:text-3xl font-bold text-vital-900">$${c.price} <span class="text-xs font-normal text-stone-500">MXN/mes</span></span>
+        </div>
+        <h4 class="font-brand text-xl sm:text-2xl text-vital-900 font-bold">${c.name}</h4>
+        <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">${c.description}</p>
+      </div>
+
+      <div class="pt-4 border-t border-vital-900/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="text-xs text-vital-orange font-bold">
+          8 sesiones al mes · 2 por semana
+        </div>
+        <button onclick="openClinicBookingModal('${c.id}')" class="px-5 py-2.5 rounded-xl bg-vital-orange hover:bg-orange-600 text-white font-bold text-xs transition shadow-sm">
+          Inscribirme a Clínica
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ----------------------------------------------------------------------------
+// SECCIÓN 4: COACHES CLIENTE
+// ----------------------------------------------------------------------------
+function renderClientCoaches() {
+  const container = document.getElementById('client-coaches-grid');
+  if (!container) return;
+
+  container.innerHTML = COACHES_DATA.map(coach => `
+    <div class="bg-vital-950/80 rounded-3xl p-6 sm:p-8 border border-white/10 flex flex-col justify-between space-y-5">
+      <div class="space-y-3">
+        <div class="flex items-center gap-3.5">
+          <div class="w-12 h-12 rounded-2xl bg-vital-lime text-vital-950 font-brand font-bold text-xl flex items-center justify-center">
+            ${coach.name.split(' ').map(n => n[0]).join('')}
+          </div>
+          <div>
+            <h4 class="font-brand text-2xl text-vital-cream font-bold">${coach.name}</h4>
+            <p class="text-xs font-semibold text-vital-orange">${coach.role}</p>
+          </div>
+        </div>
+        <p class="text-xs text-vital-cream/80 leading-relaxed">${coach.bio}</p>
+      </div>
+
+      <div class="pt-4 border-t border-white/10 space-y-1 text-xs">
+        <div class="text-vital-cream/60">Especialidad: <span class="text-vital-cream font-medium">${coach.specialty}</span></div>
+        <div class="text-vital-cream/60">Horarios: <span class="text-vital-lime font-medium">${coach.schedule}</span></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderAllClientViews() {
+  renderHeroLiveStatus();
+  renderDateStrip();
+  renderCourtsGrid();
+  renderClientClasses();
+  renderClientClinics();
+  renderClientCoaches();
+}
+
+// ============================================================================
+// MODALES DE CLIENTE (RENTA, RETA, CLASE, CLÍNICA)
+// ============================================================================
+
+function openBookingModal(courtId, hour, defaultService = 'Renta') {
+  const court = state.settings.courts.find(c => c.id === courtId) || state.settings.courts[0];
 
   openModal(`
-    <div class="space-y-4">
-      <div class="flex items-center justify-between border-b border-stone-100 pb-3">
-        <h3 class="font-brand text-2xl text-vital-900">Tu Pedido · Zona de Comida</h3>
-        <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
+    <div class="space-y-5">
+      <div class="border-b border-vital-900/10 pb-3">
+        <span class="text-[10px] font-bold uppercase tracking-widest text-vital-orange">Reserva de Cancha Techada</span>
+        <h3 class="font-brand text-2xl text-vital-900 mt-0.5">${court.name}</h3>
+        <p class="text-xs text-stone-500">${selectedDate} · ${formatHourLabel(hour)}</p>
       </div>
-      <div class="max-h-48 overflow-y-auto">${rows}</div>
-      <form onsubmit="submitClientFoodOrder(event)" class="space-y-3">
-        <div class="grid sm:grid-cols-2 gap-2.5">
-          <input type="text" id="food-order-name" required placeholder="Tu nombre o familia *" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-semibold" />
-          <input type="text" id="food-order-note" placeholder="¿Para qué cancha o mesa?" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-semibold" />
+
+      <form id="court-booking-form" onsubmit="submitCourtBooking(event, '${courtId}', ${hour})" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-bold text-vital-900 uppercase tracking-wider mb-1">Servicio</label>
+          <select id="modal-bk-service" onchange="updateBookingModalPrice(this.value)" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream border border-vital-900/10 font-bold text-vital-900">
+            <option value="Renta" ${defaultService === 'Renta' ? 'selected' : ''}>Renta de Cancha (1 Hora) · $350 MXN</option>
+            <option value="Renta-2H">Renta de Cancha (2 Horas) · $700 MXN</option>
+            <option value="Reta" ${defaultService === 'Reta' ? 'selected' : ''}>Reta Organizada (2 Horas) · $150 MXN por persona</option>
+          </select>
         </div>
-        <select id="food-order-pay" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-bold">
-          <option value="Tarjeta">💳 Pagar con Tarjeta (${formatMXN(total)})</option>
-          <option value="Efectivo">💵 Pagar en Barra al recoger (${formatMXN(total)})</option>
-        </select>
-        <div class="flex items-center justify-between pt-2">
-          <span class="font-brand text-2xl text-vital-900">${formatMXN(total)}</span>
-          <button type="submit" class="px-5 py-3 rounded-2xl bg-vital-900 text-vital-lime font-bold text-xs">Confirmar Pedido</button>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-vital-900 uppercase tracking-wider mb-1">Nombre Completo</label>
+            <input type="text" id="modal-bk-name" required placeholder="Ej. Familia Hernández / Carlos R." class="w-full px-3 py-2.5 rounded-xl bg-vital-cream border border-vital-900/10 font-semibold" />
+          </div>
+          <div>
+            <label class="block font-bold text-vital-900 uppercase tracking-wider mb-1">WhatsApp de Contacto</label>
+            <input type="tel" id="modal-bk-phone" required placeholder="715 123 4567" class="w-full px-3 py-2.5 rounded-xl bg-vital-cream border border-vital-900/10 font-semibold" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-vital-900 uppercase tracking-wider mb-1">Método de Pago</label>
+          <select id="modal-bk-payment" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream border border-vital-900/10 font-bold text-vital-900">
+            <option value="Tarjeta">Tarjeta en línea (Confirmación inmediata)</option>
+            <option value="Efectivo">Pago en recepción del club</option>
+            <option value="Transferencia">Transferencia SPEI</option>
+          </select>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-vital-cream border border-vital-900/10 flex items-center justify-between">
+          <span class="font-bold text-vital-900/70">Total a Pagar:</span>
+          <span id="modal-bk-price-display" class="font-brand text-2xl font-bold text-vital-900">$350 MXN</span>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal()" class="px-4 py-2.5 rounded-xl border border-vital-900/15 font-bold text-stone-600">Cancelar</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-vital-lime hover:opacity-95 text-vital-950 font-bold">Confirmar Reserva</button>
         </div>
       </form>
     </div>
   `);
 }
 
-function removeClientFoodItem(id) {
-  clientFoodCart = clientFoodCart.filter(i => i.id !== id);
-  updateClientCartBadge();
-  if (clientFoodCart.length === 0) closeModal();
-  else openClientFoodCart();
+function updateBookingModalPrice(val) {
+  const el = document.getElementById('modal-bk-price-display');
+  if (!el) return;
+  if (val === 'Renta-2H') el.textContent = '$700 MXN';
+  else if (val === 'Reta') el.textContent = '$150 MXN';
+  else el.textContent = '$350 MXN';
 }
 
-function submitClientFoodOrder(e) {
+function submitCourtBooking(e, courtId, hour) {
   e.preventDefault();
-  const customer = document.getElementById('food-order-name').value.trim();
-  const note = document.getElementById('food-order-note').value.trim();
-  const paymentMethod = document.getElementById('food-order-pay').value;
-  const total = clientFoodCart.reduce((s, i) => s + i.price * i.qty, 0);
-  const summary = clientFoodCart.map(i => `${i.qty}x ${i.name}`).join(', ');
+  const servVal = document.getElementById('modal-bk-service').value;
+  const name = document.getElementById('modal-bk-name').value.trim();
+  const phone = document.getElementById('modal-bk-phone').value.trim();
+  const method = document.getElementById('modal-bk-payment').value;
 
-  const newTx = {
-    id: 'VC-' + Math.floor(1000 + Math.random() * 9000),
-    date: getTodayISO(0),
-    time: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
-    stream: 'Comida y Bebidas',
-    concept: `${summary}${note ? ' · ' + note : ''}`,
-    customer,
-    paymentMethod,
-    amount: total,
-    status: 'Pagado'
+  const is2H = servVal === 'Renta-2H';
+  const service = servVal === 'Reta' ? 'Reta' : 'Renta';
+  const amount = is2H ? 700 : (servVal === 'Reta' ? 150 : 350);
+
+  const newRes = {
+    id: 'RES-' + Date.now().toString().slice(-5),
+    date: selectedDate,
+    courtId,
+    hour,
+    duration: is2H ? 2 : 1,
+    service,
+    customer: name,
+    phone,
+    amount,
+    prestadorAmount: 0,
+    clienteAmount: amount,
+    coachId: 'NONE',
+    coachName: 'Sin Coach',
+    paymentMethod: method,
+    notes: is2H ? 'Renta 2 horas' : (service === 'Reta' ? 'Reta 2 horas' : 'Renta 1 hora')
   };
 
-  state.transactions.unshift(newTx);
-  clientFoodCart = [];
-  updateClientCartBadge();
+  state.reservations.push(newRes);
+
+  state.transactions.unshift({
+    id: 'VC-TX-' + Date.now().toString().slice(-4),
+    date: selectedDate,
+    time: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+    service,
+    concept: `${service} (${courtId === 'cancha-1' ? 'Cancha 1' : 'Cancha 2'}) - ${name}`,
+    customer: name,
+    coachId: 'NONE',
+    coachName: '-',
+    paymentMethod: method,
+    amount,
+    prestadorAmount: 0,
+    clienteAmount: amount
+  });
+
   saveState();
-  showReceiptModal(newTx, 'Pedido Confirmado');
+  closeModal();
+  renderCourtsGrid();
+  renderHeroLiveStatus();
+  showToast(`¡${service} confirmada para ${name}!`);
 }
 
-// ============================================================================
-// COACHES & CLUB INFO MODALS (LOW COGNITIVE LOAD)
-// ============================================================================
-
-function renderClientCoaches() {
-  const grid = document.getElementById('client-coaches-grid');
-  if (!grid) return;
-
-  grid.innerHTML = state.coaches.map(coach => {
-    const initials = coach.name.split(' ').map(n => n[0]).slice(0, 2).join('');
-    return `
-      <div onclick="openCoachProfileModal('${coach.id}')" class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-3xl p-5 cursor-pointer transition flex items-center justify-between gap-4">
-        <div class="flex items-center gap-3.5 min-w-0">
-          <div class="w-12 h-12 rounded-2xl bg-vital-lime text-vital-950 font-brand text-lg flex items-center justify-center shrink-0">
-            ${initials}
-          </div>
-          <div class="min-w-0">
-            <h4 class="font-brand text-lg text-vital-cream truncate">${coach.name}</h4>
-            <p class="text-xs text-vital-cream/60 truncate">${coach.role}</p>
-          </div>
-        </div>
-        <span class="text-xs font-bold text-vital-lime shrink-0">Ver →</span>
-      </div>
-    `;
-  }).join('');
-}
-
-function openCoachProfileModal(coachId) {
-  const coach = state.coaches.find(c => c.id === coachId);
-  if (!coach) return;
+function openClassBookingModal(classId) {
+  const item = OFFICIAL_SERVICES.find(s => s.id === classId) || OFFICIAL_SERVICES[3];
 
   openModal(`
-    <div class="space-y-4">
-      <div class="flex items-start justify-between border-b border-stone-100 pb-3">
+    <div class="space-y-5">
+      <div class="border-b border-vital-900/10 pb-3">
+        <span class="text-[10px] font-bold uppercase tracking-widest text-vital-orange">Agendar Clase de Pádel</span>
+        <h3 class="font-brand text-2xl text-vital-900 mt-0.5">${item.name}</h3>
+        <p class="text-xs text-stone-500">1 hora de duración · Cancha techada y pelotas incluidas</p>
+      </div>
+
+      <form id="class-booking-form" onsubmit="submitClassBooking(event, '${item.id}')" class="space-y-4 text-xs">
         <div>
-          <span class="text-xs font-bold uppercase text-vital-orange">${coach.role}</span>
-          <h3 class="font-brand text-2xl text-vital-900 mt-0.5">${coach.name}</h3>
-          <p class="text-xs text-stone-500">${coach.experience}</p>
+          <label class="block font-bold text-vital-900 uppercase tracking-wider mb-1">Selecciona tu Coach</label>
+          <select id="modal-cls-coach" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream border border-vital-900/10 font-bold text-vital-900">
+            <option value="COACH-1">Lucas Morilla (Head Coach · 40% com.)</option>
+            <option value="COACH-2">Leo Marín (Coach Infantil/Principiantes · 50% com.)</option>
+          </select>
         </div>
-        <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
-      </div>
-      <p class="text-sm text-stone-600 leading-relaxed">${coach.bio}</p>
-      <div class="bg-vital-cream p-4 rounded-2xl text-xs space-y-1">
-        <div><strong>Especialidad:</strong> ${coach.specialty}</div>
-        <div><strong>Horario:</strong> ${coach.schedule}</div>
-      </div>
-      <div class="flex items-center justify-between pt-2">
-        <button onclick="closeModal()" class="px-4 py-2.5 rounded-xl bg-stone-100 text-xs font-bold">Cerrar</button>
-        <a href="https://wa.me/527151317443?text=${encodeURIComponent('Hola Vital Club, me gustaría agendar clase con ' + coach.name)}" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl bg-vital-900 text-vital-lime text-xs font-bold">
-          Agendar por WhatsApp
-        </a>
-      </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-vital-900 uppercase tracking-wider mb-1">Nombre Alumno(a)</label>
+            <input type="text" id="modal-cls-name" required placeholder="Nombre completo" class="w-full px-3 py-2.5 rounded-xl bg-vital-cream border border-vital-900/10 font-semibold" />
+          </div>
+          <div>
+            <label class="block font-bold text-vital-900 uppercase tracking-wider mb-1">WhatsApp</label>
+            <input type="tel" id="modal-cls-phone" required placeholder="715 123 4567" class="w-full px-3 py-2.5 rounded-xl bg-vital-cream border border-vital-900/10 font-semibold" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-vital-900 uppercase tracking-wider mb-1">Cancha</label>
+            <select id="modal-cls-court" class="w-full px-3 py-2 rounded-xl bg-vital-cream border border-vital-900/10 font-bold">
+              <option value="cancha-1">Cancha Techada 1</option>
+              <option value="cancha-2">Cancha Techada 2</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-vital-900 uppercase tracking-wider mb-1">Horario Deseado</label>
+            <select id="modal-cls-hour" class="w-full px-3 py-2 rounded-xl bg-vital-cream border border-vital-900/10 font-bold">
+              ${[9, 10, 11, 12, 16, 17, 18, 19].map(h => `<option value="${h}">${formatHourLabel(h)}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-vital-900 uppercase tracking-wider mb-1">Método de Pago</label>
+          <select id="modal-cls-payment" class="w-full px-3 py-2 rounded-xl bg-vital-cream border border-vital-900/10 font-bold">
+            <option value="Tarjeta">Tarjeta en línea</option>
+            <option value="Efectivo">Pago al llegar al club</option>
+          </select>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-vital-cream border border-vital-900/10 flex items-center justify-between">
+          <span class="font-bold text-vital-900/70">Monto Final:</span>
+          <span class="font-brand text-2xl font-bold text-vital-900">$${item.price} MXN</span>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal()" class="px-4 py-2.5 rounded-xl border border-vital-900/15 font-bold text-stone-600">Cancelar</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-vital-lime text-vital-950 font-bold">Confirmar Clase</button>
+        </div>
+      </form>
     </div>
   `);
+}
+
+function submitClassBooking(e, classId) {
+  e.preventDefault();
+  const item = OFFICIAL_SERVICES.find(s => s.id === classId);
+  const coachId = document.getElementById('modal-cls-coach').value;
+  const name = document.getElementById('modal-cls-name').value.trim();
+  const phone = document.getElementById('modal-cls-phone').value.trim();
+  const courtId = document.getElementById('modal-cls-court').value;
+  const hour = Number(document.getElementById('modal-cls-hour').value);
+  const method = document.getElementById('modal-cls-payment').value;
+
+  const coach = COACHES_DATA.find(c => c.id === coachId) || COACHES_DATA[0];
+  const split = calculateSplit('Clase', item.price, coachId);
+
+  state.reservations.push({
+    id: 'RES-' + Date.now().toString().slice(-5),
+    date: selectedDate,
+    courtId,
+    hour,
+    duration: 1,
+    service: 'Clase',
+    customer: `${item.name} · ${name}`,
+    phone,
+    amount: item.price,
+    prestadorAmount: split.prestador,
+    clienteAmount: split.cliente,
+    coachId,
+    coachName: coach.name,
+    students: [name],
+    attendanceChecked: false,
+    paymentMethod: method,
+    notes: item.name
+  });
+
+  state.transactions.unshift({
+    id: 'VC-TX-' + Date.now().toString().slice(-4),
+    date: selectedDate,
+    time: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+    service: 'Clase',
+    concept: `${item.name} (${coach.name}) - ${name}`,
+    customer: name,
+    coachId,
+    coachName: coach.name,
+    paymentMethod: method,
+    amount: item.price,
+    prestadorAmount: split.prestador,
+    clienteAmount: split.cliente
+  });
+
+  saveState();
+  closeModal();
+  renderCourtsGrid();
+  showToast(`¡Clase agendada con ${coach.name} para ${name}!`);
+}
+
+function openClinicBookingModal(clinicId) {
+  const item = OFFICIAL_SERVICES.find(s => s.id === clinicId) || OFFICIAL_SERVICES[8];
+
+  openModal(`
+    <div class="space-y-5">
+      <div class="border-b border-vital-900/10 pb-3">
+        <span class="text-[10px] font-bold uppercase tracking-widest text-vital-orange">Inscripción a Clínica Mensual</span>
+        <h3 class="font-brand text-2xl text-vital-900 mt-0.5">${item.name}</h3>
+        <p class="text-xs text-stone-500">8 sesiones mensuales de 1 hora · 2 por semana</p>
+      </div>
+
+      <form id="clinic-booking-form" onsubmit="submitClinicBooking(event, '${item.id}')" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-bold text-vital-900 uppercase tracking-wider mb-1">Entrenador Titular</label>
+          <select id="modal-cln-coach" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream border border-vital-900/10 font-bold text-vital-900">
+            <option value="COACH-1">Lucas Morilla (Director Deportivo · 40% com.)</option>
+            <option value="COACH-2">Leo Marín (Infantil & Juvenil · 50% com.)</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-vital-900 uppercase tracking-wider mb-1">Nombre Alumno(a)</label>
+            <input type="text" id="modal-cln-name" required placeholder="Nombre y Apellido" class="w-full px-3 py-2.5 rounded-xl bg-vital-cream border border-vital-900/10 font-semibold" />
+          </div>
+          <div>
+            <label class="block font-bold text-vital-900 uppercase tracking-wider mb-1">WhatsApp</label>
+            <input type="tel" id="modal-cln-phone" required placeholder="715 123 4567" class="w-full px-3 py-2.5 rounded-xl bg-vital-cream border border-vital-900/10 font-semibold" />
+          </div>
+        </div>
+
+        <!-- Familias Vital checkbox -->
+        <label class="flex items-center gap-2 p-3 rounded-xl bg-vital-lime/20 border border-vital-lime/40 cursor-pointer">
+          <input type="checkbox" id="modal-cln-family" onchange="toggleFamilyDiscount('${item.id}', this.checked)" class="accent-vital-900 w-4 h-4" />
+          <span class="text-xs font-bold text-vital-950">Aplicar Descuento Familias Vital (10% si se inscriben 3+ integrantes)</span>
+        </label>
+
+        <div class="p-3.5 rounded-2xl bg-vital-cream border border-vital-900/10 flex items-center justify-between">
+          <span class="font-bold text-vital-900/70">Mensualidad Total:</span>
+          <span id="modal-cln-price-display" class="font-brand text-2xl font-bold text-vital-900">$${item.price} MXN</span>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal()" class="px-4 py-2.5 rounded-xl border border-vital-900/15 font-bold text-stone-600">Cancelar</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-vital-orange hover:bg-orange-600 text-white font-bold">Confirmar Inscripción</button>
+        </div>
+      </form>
+    </div>
+  `);
+}
+
+function toggleFamilyDiscount(originalId, isChecked) {
+  const el = document.getElementById('modal-cln-price-display');
+  if (!el) return;
+  const isKid = originalId.includes('NINO');
+  if (isChecked) {
+    el.textContent = isKid ? '$1,080 MXN' : '$1,350 MXN';
+  } else {
+    el.textContent = isKid ? '$1,200 MXN' : '$1,500 MXN';
+  }
+}
+
+function submitClinicBooking(e, clinicId) {
+  e.preventDefault();
+  const coachId = document.getElementById('modal-cln-coach').value;
+  const name = document.getElementById('modal-cln-name').value.trim();
+  const phone = document.getElementById('modal-cln-phone').value.trim();
+  const isFamily = document.getElementById('modal-cln-family').checked;
+
+  const isKid = clinicId.includes('NINO');
+  let finalPrice = isKid ? (isFamily ? 1080 : 1200) : (isFamily ? 1350 : 1500);
+  const finalTitle = `Clínica Mensual ${isKid ? 'Niños' : 'Adultos'}${isFamily ? ' (Familias Vital)' : ''}`;
+
+  const coach = COACHES_DATA.find(c => c.id === coachId) || COACHES_DATA[0];
+  const split = calculateSplit('Clínica', finalPrice, coachId);
+
+  state.reservations.push({
+    id: 'RES-' + Date.now().toString().slice(-5),
+    date: selectedDate,
+    courtId: 'cancha-2',
+    hour: isKid ? 16 : 18,
+    duration: 1,
+    service: 'Clínica',
+    customer: `${finalTitle} · ${name}`,
+    phone,
+    amount: finalPrice,
+    prestadorAmount: split.prestador,
+    clienteAmount: split.cliente,
+    coachId,
+    coachName: coach.name,
+    students: [name],
+    attendanceChecked: true,
+    paymentMethod: 'Tarjeta',
+    notes: 'Inscripción a mensualidad 8 sesiones'
+  });
+
+  state.transactions.unshift({
+    id: 'VC-TX-' + Date.now().toString().slice(-4),
+    date: selectedDate,
+    time: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+    service: 'Clínica',
+    concept: `${finalTitle} (${coach.name}) - ${name}`,
+    customer: name,
+    coachId,
+    coachName: coach.name,
+    paymentMethod: 'Tarjeta',
+    amount: finalPrice,
+    prestadorAmount: split.prestador,
+    clienteAmount: split.cliente
+  });
+
+  saveState();
+  closeModal();
+  renderCourtsGrid();
+  showToast(`¡Inscripción confirmada para ${name} con ${coach.name}!`);
 }
 
 function openClubInfoModal() {
   openModal(`
     <div class="space-y-4">
-      <div class="flex items-start justify-between border-b border-stone-100 pb-3">
-        <div>
-          <span class="text-xs font-bold uppercase text-vital-700">Zitácuaro, Michoacán</span>
-          <h3 class="font-brand text-2xl text-vital-900">Ubicación, Horarios y Amenidades</h3>
-        </div>
-        <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
+      <div class="border-b border-vital-900/10 pb-3">
+        <span class="text-[10px] font-bold uppercase tracking-widest text-vital-orange">Vital Club Zitácuaro</span>
+        <h3 class="font-brand text-2xl text-vital-900 mt-0.5">Información y Ubicación</h3>
       </div>
-
-      <div class="grid grid-cols-2 gap-2.5 text-xs">
-        <div class="bg-vital-cream p-3.5 rounded-2xl">
-          <strong class="block text-vital-900 mb-0.5">📍 Dirección</strong>
-          <span class="text-stone-600">Andrés Landa y Piña Nte. 26, Col. Cuauhtémoc, Zitácuaro, Mich., 61506</span>
-        </div>
-        <div class="bg-vital-cream p-3.5 rounded-2xl">
-          <strong class="block text-vital-900 mb-0.5">🕒 Horarios</strong>
-          <span class="text-stone-600">Lun a Vie: 8:00 AM – 8:00 PM<br>Sáb y Dom: 8:00 AM – 8:00 PM</span>
-        </div>
+      <div class="space-y-2.5 text-xs text-stone-600 leading-relaxed">
+        <p><strong>Dirección:</strong> Andrés Landa y Piña Nte. 26, Col. Cuauhtémoc, Zitácuaro, Mich., México, 61506.</p>
+        <p><strong>Horarios:</strong> Lunes a Viernes 8:00 AM – 8:00 PM y Fines de Semana.</p>
+        <p><strong>WhatsApp / Tel:</strong> 715 131 7443</p>
+        <p><strong>Amenidades Actuales:</strong> 2 canchas de cristal panorámico 100% techadas (sin pretexto si llueve), iluminación profesional y estacionamiento.</p>
+        <p><strong>Próximamente:</strong> Zona de cocina, café de especialidad, barra saludable, barre y gym.</p>
       </div>
-
-      <div class="rounded-2xl overflow-hidden border border-stone-200 h-48">
-        <iframe
-          title="Mapa Vital Club"
-          class="w-full h-full"
-          loading="lazy"
-          src="https://www.google.com/maps?q=Andr%C3%A9s+Landa+y+Pi%C3%B1a+Nte.+26,+Cuauht%C3%A9moc,+61506+Her%C3%B3ica+Zit%C3%A1cuaro,+Mich.,+Mexico&output=embed">
-        </iframe>
-      </div>
-
-      <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
-        <a href="tel:7151317443" class="px-4 py-2.5 rounded-xl bg-vital-900 text-vital-lime text-xs font-bold">📞 715 131 7443</a>
-        <a href="https://www.instagram.com/vitalclub.zit/" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl bg-stone-100 text-vital-900 text-xs font-bold">Instagram @vitalclub.zit</a>
-        <a href="https://web.facebook.com/profile.php?id=61584920653779&sk=about" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl bg-stone-100 text-vital-900 text-xs font-bold">Facebook</a>
+      <div class="flex justify-end pt-2">
+        <button onclick="closeModal()" class="px-5 py-2.5 rounded-xl bg-vital-900 text-vital-cream font-bold text-xs">Cerrar</button>
       </div>
     </div>
   `);
 }
 
 // ============================================================================
-// BOOKING & PROGRAM ENROLLMENT MODALS (WITH CARD PAYMENT)
-// ============================================================================
-
-function openBookingModal(courtId, hour) {
-  const court = state.settings.courts.find(c => c.id === courtId) || state.settings.courts[0];
-  const basePrice = Number(court.hourlyRate) || 400;
-
-  openModal(`
-    <div class="space-y-4">
-      <div class="flex items-start justify-between border-b border-stone-100 pb-3">
-        <div>
-          <span class="text-xs font-bold uppercase text-emerald-700">☔ ${court.shortName}</span>
-          <h3 class="font-brand text-2xl text-vital-900 mt-0.5">${formatHourLabel(hour)} – ${formatHourLabel(hour + 1)}</h3>
-          <p class="text-xs text-stone-500">Fecha: ${selectedDate}</p>
-        </div>
-        <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
-      </div>
-
-      <form onsubmit="confirmCourtBooking(event, '${court.id}', ${hour})" class="space-y-3.5">
-        <div class="grid sm:grid-cols-2 gap-2.5">
-          <input type="text" id="book-customer" required placeholder="Nombre completo *" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-semibold" />
-          <input type="tel" id="book-phone" required placeholder="Teléfono / WhatsApp *" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-semibold" />
-        </div>
-
-        <div class="grid sm:grid-cols-2 gap-2.5">
-          <select id="book-notes" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-semibold">
-            <option value="Partido Familiar">👨‍👩‍👧‍👦 Partido Familiar</option>
-            <option value="Partido Amistoso">🎾 Partido Amistoso</option>
-            <option value="Práctica con Niños">🧒 Práctica con Niños</option>
-            <option value="Adultos Mayores">🤍 Adultos Mayores</option>
-          </select>
-          <select id="book-extra" onchange="recalcBookingModalTotal(${basePrice})" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-semibold">
-            <option value="0">Sin extras ($0)</option>
-            <option value="80">+ Renta 1 Pala (+$80)</option>
-            <option value="160">+ Renta 2 Palas (+$160)</option>
-            <option value="195">+ Tubo Pelotas (+$195)</option>
-          </select>
-        </div>
-
-        <div class="bg-vital-cream p-3.5 rounded-2xl space-y-2.5">
-          <select id="book-payment-method" onchange="toggleCardInputs('book-card-fields', this.value)" class="w-full px-3 py-2 rounded-xl bg-white text-xs font-bold">
-            <option value="Tarjeta">💳 Pagar con Tarjeta (Visa / MC / Amex)</option>
-            <option value="Efectivo">💵 Pagar en Recepción</option>
-            <option value="Transferencia">📲 Transferencia</option>
-          </select>
-          <div id="book-card-fields" class="grid grid-cols-12 gap-2">
-            <input type="text" placeholder="Número de tarjeta" maxlength="19" class="col-span-12 px-3 py-2 rounded-xl bg-white text-xs" />
-            <input type="text" placeholder="MM/AA" maxlength="5" class="col-span-6 px-3 py-2 rounded-xl bg-white text-xs" />
-            <input type="password" placeholder="CVV" maxlength="4" class="col-span-6 px-3 py-2 rounded-xl bg-white text-xs" />
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between pt-2 border-t border-stone-100">
-          <span id="book-modal-total" class="font-brand text-2xl text-vital-900">$${basePrice} MXN</span>
-          <button type="submit" class="px-6 py-3 rounded-2xl bg-vital-900 text-vital-lime font-bold text-xs shadow-md">
-            Confirmar Reserva
-          </button>
-        </div>
-      </form>
-    </div>
-  `);
-}
-
-function recalcBookingModalTotal(basePrice) {
-  const extra = Number(document.getElementById('book-extra')?.value || 0);
-  const el = document.getElementById('book-modal-total');
-  if (el) el.textContent = `$${basePrice + extra} MXN`;
-}
-
-function toggleCardInputs(containerId, method) {
-  document.getElementById(containerId)?.classList.toggle('hidden', method !== 'Tarjeta');
-}
-
-function confirmCourtBooking(e, courtId, hour) {
-  e.preventDefault();
-  const court = state.settings.courts.find(c => c.id === courtId) || state.settings.courts[0];
-  const customer = document.getElementById('book-customer').value.trim();
-  const phone = document.getElementById('book-phone').value.trim();
-  const notes = document.getElementById('book-notes').value;
-  const extra = Number(document.getElementById('book-extra').value || 0);
-  const paymentMethod = document.getElementById('book-payment-method').value;
-  const totalAmount = Number(court.hourlyRate) + extra;
-
-  const newRes = {
-    id: 'RES-' + Math.floor(100 + Math.random() * 900),
-    date: selectedDate,
-    courtId: court.id,
-    hour: Number(hour),
-    duration: 1,
-    customer,
-    phone,
-    type: 'Reserva',
-    amount: totalAmount,
-    status: paymentMethod === 'Efectivo' ? 'Pago en Club' : 'Pagado',
-    paymentMethod,
-    notes
-  };
-
-  const newTx = {
-    id: 'VC-' + Math.floor(1000 + Math.random() * 9000),
-    date: selectedDate,
-    time: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
-    stream: 'Reservaciones',
-    concept: `Reserva ${court.shortName} (${formatHourLabel(hour)})`,
-    customer,
-    paymentMethod,
-    amount: totalAmount,
-    status: newRes.status
-  };
-
-  state.reservations.push(newRes);
-  state.transactions.unshift(newTx);
-  saveState();
-  renderAllClientViews();
-  renderCoachView();
-  renderAllAdminViews();
-  showReceiptModal(newTx, '¡Cancha Apartada!');
-}
-
-function openProgramEnrollModal(progId) {
-  const prog = state.programs.find(p => p.id === progId);
-  if (!prog) return;
-  const spotsLeft = Math.max(0, prog.spotsTotal - prog.spotsTaken);
-
-  openModal(`
-    <div class="space-y-4">
-      <div class="flex items-start justify-between border-b border-stone-100 pb-3">
-        <div>
-          <span class="text-xs font-bold uppercase text-vital-orange">${prog.category} · ${prog.court}</span>
-          <h3 class="font-brand text-2xl text-vital-900 mt-0.5">${prog.title}</h3>
-          <p class="text-xs text-stone-500">${prog.schedule} · ${prog.coach}</p>
-        </div>
-        <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
-      </div>
-
-      <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">${prog.description}</p>
-
-      <div class="flex items-center justify-between bg-vital-cream px-3.5 py-2 rounded-xl text-xs">
-        <span>Edades: <strong>${prog.ageRange}</strong></span>
-        <span class="text-emerald-700 font-bold">${spotsLeft} cupos libres</span>
-      </div>
-
-      <form onsubmit="confirmProgramEnrollment(event, '${prog.id}')" class="space-y-3">
-        <div class="grid sm:grid-cols-2 gap-2.5">
-          <input type="text" id="enroll-name" required placeholder="Nombre del alumno / pareja *" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-semibold" />
-          <input type="tel" id="enroll-phone" required placeholder="Teléfono *" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-semibold" />
-        </div>
-
-        <div class="bg-vital-cream p-3.5 rounded-2xl space-y-2">
-          <select id="enroll-pay-method" onchange="toggleCardInputs('enroll-card-box', this.value)" class="w-full px-3 py-2 rounded-xl bg-white text-xs font-bold">
-            <option value="Tarjeta">💳 Pagar con Tarjeta</option>
-            <option value="Efectivo">💵 Pagar en Recepción</option>
-          </select>
-          <div id="enroll-card-box" class="grid grid-cols-12 gap-2">
-            <input type="text" placeholder="Número de tarjeta" maxlength="19" class="col-span-12 px-3 py-2 rounded-xl bg-white text-xs" />
-            <input type="text" placeholder="MM/AA" maxlength="5" class="col-span-6 px-3 py-2 rounded-xl bg-white text-xs" />
-            <input type="password" placeholder="CVV" maxlength="4" class="col-span-6 px-3 py-2 rounded-xl bg-white text-xs" />
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between pt-2 border-t border-stone-100">
-          <div>
-            <span class="font-brand text-2xl text-vital-900">${formatMXN(prog.price)}</span>
-            <span class="block text-[10px] text-stone-400">${prog.priceLabel}</span>
-          </div>
-          <button type="submit" class="px-6 py-3 rounded-2xl bg-vital-900 text-vital-lime font-bold text-xs shadow-md">
-            Inscribirme Ahora
-          </button>
-        </div>
-      </form>
-    </div>
-  `);
-}
-
-function confirmProgramEnrollment(e, progId) {
-  e.preventDefault();
-  const prog = state.programs.find(p => p.id === progId);
-  if (!prog) return;
-
-  const student = document.getElementById('enroll-name').value.trim();
-  const paymentMethod = document.getElementById('enroll-pay-method').value;
-  if (prog.spotsTaken < prog.spotsTotal) prog.spotsTaken += 1;
-
-  const newTx = {
-    id: 'VC-' + Math.floor(1000 + Math.random() * 9000),
-    date: getTodayISO(0),
-    time: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
-    stream: 'Clases y Torneos',
-    concept: `Inscripción: ${prog.title}`,
-    customer: student,
-    paymentMethod,
-    amount: Number(prog.price),
-    status: 'Pagado'
-  };
-
-  state.transactions.unshift(newTx);
-  saveState();
-  renderAllClientViews();
-  showReceiptModal(newTx, '¡Inscripción Confirmada!');
-}
-
-// ============================================================================
-// 2. VISTA COACH (CLEAN HOURLY PILLS + MODAL FOR ATTENDANCE & STUDENTS)
+// 2. VISTA COACH (AGENDA Y COMISIONES PRESTADOR)
 // ============================================================================
 
 function populateCoachSelector() {
   const sel = document.getElementById('coach-view-select');
   if (!sel) return;
-  const currentVal = sel.value;
-  sel.innerHTML = [
-    `<option value="all">👥 Todos los Coaches</option>`,
-    ...state.coaches.map(c => `<option value="${c.id}">👟 ${c.name}</option>`)
-  ].join('');
-  if (currentVal && (currentVal === 'all' || state.coaches.some(c => c.id === currentVal))) {
-    sel.value = currentVal;
-  } else if (state.coaches[0]) {
-    sel.value = state.coaches[0].id;
-  }
+  sel.innerHTML = COACHES_DATA.map(c => `
+    <option value="${c.id}">${c.name} · ${c.schemeLabel}</option>
+  `).join('');
 }
 
 function renderCoachView() {
-  const kpiWrap = document.getElementById('coach-kpi-cards');
-  const timelineWrap = document.getElementById('coach-hourly-timeline');
   const sel = document.getElementById('coach-view-select');
-  const headingEl = document.getElementById('coach-schedule-heading');
-  if (!timelineWrap) return;
+  const coachId = sel?.value || 'COACH-1';
+  const coach = COACHES_DATA.find(c => c.id === coachId) || COACHES_DATA[0];
 
-  if (sel && sel.options.length === 0) populateCoachSelector();
-  const selectedCoachId = sel?.value || 'all';
-  const coachObj = state.coaches.find(c => c.id === selectedCoachId);
+  const heading = document.getElementById('coach-schedule-heading');
+  if (heading) heading.textContent = `${coach.name} · Agenda y Comisiones`;
 
-  renderDateStrip();
-  if (headingEl) {
-    headingEl.textContent = coachObj ? `Calendario · ${coachObj.name}` : 'Calendario · Todos los Coaches';
-  }
+  // Comisiones acumuladas por este coach en las transacciones
+  const coachTxs = state.transactions.filter(t => t.coachId === coachId);
+  const totalEarned = coachTxs.reduce((s, t) => s + (t.prestadorAmount || 0), 0);
+  const totalSessions = state.reservations.filter(r => r.date === selectedDate && r.coachId === coachId).length;
 
-  const dayBookings = state.reservations.filter(r => r.date === selectedDate);
-  const myClasses = dayBookings.filter(r =>
-    (r.type === 'Clase' || r.type === 'Torneo') &&
-    (selectedCoachId === 'all' || r.coachId === selectedCoachId || (coachObj && r.coachName === coachObj.name))
-  );
-  const totalStudents = myClasses.reduce((s, c) => s + (Array.isArray(c.students) ? c.students.length : 1), 0);
-  const checkedCount = myClasses.filter(c => c.attendanceChecked).length;
-  const maintCount = dayBookings.filter(r => r.type === 'Mantenimiento').length;
-
-  if (kpiWrap) {
-    kpiWrap.innerHTML = `
+  const kpis = document.getElementById('coach-kpi-cards');
+  if (kpis) {
+    kpis.innerHTML = `
       <div class="card-luxury rounded-2xl p-4">
-        <span class="text-[11px] font-bold text-stone-400 uppercase">Mis Clases Hoy</span>
-        <div class="font-brand text-2xl text-vital-900 mt-1">${myClasses.length} hrs</div>
+        <span class="text-[10px] uppercase font-bold text-stone-400">Comisiones Acumuladas</span>
+        <p class="font-brand text-2xl font-bold text-vital-green mt-0.5">${formatMXN(totalEarned)}</p>
+        <span class="text-[11px] text-stone-500 font-semibold">${coach.schemeLabel}</span>
       </div>
       <div class="card-luxury rounded-2xl p-4">
-        <span class="text-[11px] font-bold text-stone-400 uppercase">Alumnos en Lista</span>
-        <div class="font-brand text-2xl text-vital-900 mt-1">${totalStudents}</div>
+        <span class="text-[10px] uppercase font-bold text-stone-400">Sesiones Hoy</span>
+        <p class="font-brand text-2xl font-bold text-vital-900 mt-0.5">${totalSessions}</p>
+        <span class="text-[11px] text-stone-500">Clases y clínicas programadas</span>
       </div>
       <div class="card-luxury rounded-2xl p-4">
-        <span class="text-[11px] font-bold text-stone-400 uppercase">Asistencias</span>
-        <div class="font-brand text-2xl text-emerald-700 mt-1">${checkedCount}/${myClasses.length}</div>
+        <span class="text-[10px] uppercase font-bold text-stone-400">Total Alumnos Atendidos</span>
+        <p class="font-brand text-2xl font-bold text-vital-orange mt-0.5">${coachTxs.length}</p>
+        <span class="text-[11px] text-stone-500">Registros de pago oficiales</span>
       </div>
       <div class="card-luxury rounded-2xl p-4">
-        <span class="text-[11px] font-bold text-stone-400 uppercase">Mantenimientos</span>
-        <div class="font-brand text-2xl text-amber-700 mt-1">${maintCount}</div>
+        <span class="text-[10px] uppercase font-bold text-stone-400">Esquema Laboral</span>
+        <p class="text-sm font-bold text-vital-900 mt-1.5">${coach.hasBaseSalary ? 'Sueldo Base + 40%' : '50% Directo (Sin Base)'}</p>
+        <span class="text-[11px] text-emerald-700 font-semibold">Anexo 2 Vigente</span>
       </div>
     `;
   }
 
-  const openH = Number(state.settings.openHour) || 8;
-  const closeH = Number(state.settings.closeHour) || 20;
-  const hours = [];
-  for (let h = openH; h < closeH; h++) hours.push(h);
+  // Timeline por hora
+  const timeline = document.getElementById('coach-hourly-timeline');
+  if (!timeline) return;
 
-  timelineWrap.innerHTML = state.settings.courts.map(court => {
-    const pills = hours.map(hr => {
-      const booking = dayBookings.find(r => r.courtId === court.id && Number(r.hour) === hr);
-      const label = formatHourLabel(hr);
+  const openH = state.settings.openHour;
+  const closeH = state.settings.closeHour;
 
-      if (!booking) {
-        return `
-          <button onclick="openCoachClassModal('${court.id}', ${hr})" class="hour-pill p-3 rounded-2xl border border-emerald-500/20 bg-emerald-50/40 hover:bg-vital-lime text-left transition">
-            <div class="text-xs font-bold text-vital-900">${label}</div>
-            <div class="text-[11px] text-emerald-800 font-semibold mt-0.5">+ Asignar</div>
-          </button>
-        `;
-      }
-
-      if (booking.type === 'Mantenimiento') {
-        return `
-          <button onclick="openAdminSlotModal('${court.id}', ${hr})" class="hour-pill p-3 rounded-2xl border border-amber-300 bg-amber-50 text-left">
-            <div class="text-xs font-bold text-amber-950">${label}</div>
-            <div class="text-[11px] text-amber-800 font-semibold truncate mt-0.5">🔧 Mant.</div>
-          </button>
-        `;
-      }
-
-      const isClass = booking.type === 'Clase' || booking.type === 'Torneo';
-      const isMine = isClass && (selectedCoachId === 'all' || booking.coachId === selectedCoachId || (coachObj && booking.coachName === coachObj.name));
-
-      if (isClass) {
-        return `
-          <button onclick="openCoachClassDetailModal('${booking.id}')" class="hour-pill p-3 rounded-2xl border-2 ${
-            isMine ? 'border-vital-orange bg-orange-50 text-vital-950' : 'border-stone-200 bg-stone-50 text-stone-500'
-          } text-left">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-extrabold">${label}</span>
-              <span class="text-[10px]">${booking.attendanceChecked ? '✅' : '👟'}</span>
-            </div>
-            <div class="text-[11px] font-bold truncate mt-0.5">${booking.customer}</div>
-          </button>
-        `;
-      }
-
-      return `
-        <button onclick="openSlotInfoModal('${booking.id}')" class="hour-pill p-3 rounded-2xl border border-stone-200 bg-stone-100 text-stone-500 text-left">
-          <div class="text-xs font-bold">${label}</div>
-          <div class="text-[11px] truncate mt-0.5">🔒 Cliente</div>
-        </button>
-      `;
-    }).join('');
-
-    return `
-      <div class="card-luxury rounded-3xl p-6 space-y-4">
-        <div class="flex items-center justify-between border-b border-stone-100 pb-3">
-          <h3 class="font-brand text-xl text-vital-900">${court.shortName}</h3>
-          <span class="text-xs text-stone-400 font-semibold">${selectedDate}</span>
+  const hoursList = [];
+  for (let h = openH; h < closeH; h++) {
+    const res = state.reservations.find(r => r.date === selectedDate && r.coachId === coachId && r.hour === h);
+    if (res) {
+      hoursList.push(`
+        <div class="p-4 rounded-2xl border border-vital-lime/60 bg-vital-lime/10 space-y-2">
+          <div class="flex items-center justify-between text-xs font-bold text-vital-900">
+            <span>${formatHourLabel(h)} · ${res.courtId === 'cancha-1' ? 'Cancha 1' : 'Cancha 2'}</span>
+            <span class="px-2 py-0.5 rounded bg-vital-lime text-vital-950 font-black">${res.service}</span>
+          </div>
+          <p class="font-brand text-base font-bold text-vital-900">${res.customer}</p>
+          <div class="flex items-center justify-between text-xs pt-1 border-t border-vital-900/10">
+            <span class="text-stone-500">Comisión Coach: <strong class="text-vital-green">${formatMXN(res.prestadorAmount)}</strong></span>
+            <button onclick="toggleAttendance('${res.id}')" class="px-2.5 py-1 rounded-lg ${res.attendanceChecked ? 'bg-emerald-600 text-white' : 'bg-white border text-stone-700'} font-bold">
+              ${res.attendanceChecked ? '✓ Asistencia Tomada' : 'Pasar Asistencia'}
+            </button>
+          </div>
         </div>
-        <div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5">${pills}</div>
-      </div>
-    `;
-  }).join('');
+      `);
+    } else {
+      hoursList.push(`
+        <div class="p-3.5 rounded-2xl border border-stone-200 bg-white/70 flex items-center justify-between text-xs text-stone-400">
+          <span>${formatHourLabel(h)}</span>
+          <span>Disponible para clase particular</span>
+        </div>
+      `);
+    }
+  }
+
+  timeline.innerHTML = hoursList.join('');
 }
 
-// Focused Modal for Coach to check attendance and see student list
-function openCoachClassDetailModal(resId) {
-  const b = state.reservations.find(r => r.id === resId);
-  if (!b) return;
-  const court = state.settings.courts.find(c => c.id === b.courtId);
-  const students = Array.isArray(b.students) && b.students.length > 0 ? b.students : ['Grupo registrado'];
-
-  openModal(`
-    <div class="space-y-4">
-      <div class="flex items-start justify-between border-b border-stone-100 pb-3">
-        <div>
-          <span class="text-xs font-bold uppercase text-vital-orange">${court ? court.shortName : ''} · ${formatHourLabel(b.hour)}</span>
-          <h3 class="font-brand text-2xl text-vital-900 mt-0.5">${b.customer}</h3>
-          <p class="text-xs text-stone-500">Coach: ${b.coachName || 'Vital Club'}</p>
-        </div>
-        <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
-      </div>
-
-      <div class="bg-vital-cream p-4 rounded-2xl space-y-2 text-xs">
-        <div class="font-bold text-vital-900 uppercase">Alumnos Inscritos (${students.length})</div>
-        <div class="flex flex-wrap gap-1.5">
-          ${students.map(st => `<span class="px-2.5 py-1 rounded-lg bg-white border border-stone-200 font-semibold">${st}</span>`).join('')}
-        </div>
-        ${b.notes ? `<div class="pt-2 border-t border-stone-200/60 text-stone-600"><strong>Notas:</strong> ${b.notes}</div>` : ''}
-      </div>
-
-      <div class="flex items-center justify-between pt-2">
-        <button onclick="deleteReservation('${b.id}'); closeModal();" class="text-xs font-bold text-rose-600 hover:underline">
-          Liberar horario
-        </button>
-        <button onclick="toggleClassAttendance('${b.id}'); closeModal();" class="px-5 py-3 rounded-2xl font-bold text-xs ${
-          b.attendanceChecked ? 'bg-emerald-600 text-white' : 'bg-vital-900 text-vital-lime'
-        }">
-          ${b.attendanceChecked ? '✅ Asistencia Confirmada' : '✓ Confirmar Asistencia'}
-        </button>
-      </div>
-    </div>
-  `);
-}
-
-function toggleClassAttendance(resId) {
-  const item = state.reservations.find(r => r.id === resId);
-  if (!item) return;
-  item.attendanceChecked = !item.attendanceChecked;
+function toggleAttendance(resId) {
+  const r = state.reservations.find(x => x.id === resId);
+  if (!r) return;
+  r.attendanceChecked = !r.attendanceChecked;
   saveState();
   renderCoachView();
-  renderAdminCourtsSchedule();
-  showToast(item.attendanceChecked ? 'Asistencia confirmada' : 'Asistencia pendiente');
+  showToast(r.attendanceChecked ? 'Asistencia marcada.' : 'Asistencia desmarcada.');
+}
+
+function openCoachClassModal() {
+  const sel = document.getElementById('coach-view-select');
+  const coachId = sel?.value || 'COACH-1';
+  openClassBookingModal('SERV-CLASE-1P');
 }
 
 // ============================================================================
-// 3. VISTA ADMIN (DASHBOARD, POS, UNIFIED SLOT MODAL & CATALOG MODAL)
+// 3. VISTA ADMIN (DASHBOARD, POS, CONTROL CANCHAS & COMISIONES)
 // ============================================================================
-
-function renderAllAdminViews() {
-  renderAdminDashboard();
-  renderPosCatalog();
-  renderPosCart();
-  renderAdminCourtsSchedule();
-  renderAdminIncomeTable();
-}
 
 function renderAdminDashboard() {
-  const kpiContainer = document.getElementById('dashboard-kpi-cards');
-  const barsContainer = document.getElementById('dashboard-streams-bars');
-  const occContainer = document.getElementById('dashboard-court-occupancy');
-  const recentTxContainer = document.getElementById('dashboard-recent-tx');
-  if (!kpiContainer) return;
+  const kpis = document.getElementById('dashboard-kpi-cards');
+  if (!kpis) return;
 
-  const totalIncome = state.transactions.reduce((s, t) => s + Number(t.amount || 0), 0);
-  const resIncome = state.transactions.filter(t => t.stream === 'Reservaciones').reduce((s, t) => s + Number(t.amount || 0), 0);
-  const classIncome = state.transactions.filter(t => t.stream === 'Clases y Torneos').reduce((s, t) => s + Number(t.amount || 0), 0);
-  const foodIncome = state.transactions.filter(t => t.stream === 'Comida y Bebidas' || t.stream === 'Accesorios y Otros').reduce((s, t) => s + Number(t.amount || 0), 0);
+  const totalGross = state.transactions.reduce((s, t) => s + Number(t.amount || 0), 0);
+  const totalClub = state.transactions.reduce((s, t) => s + Number(t.clienteAmount || 0), 0);
+  const totalCoaches = state.transactions.reduce((s, t) => s + Number(t.prestadorAmount || 0), 0);
 
-  kpiContainer.innerHTML = `
-    <div class="bg-vital-900 text-vital-cream rounded-3xl p-5">
-      <span class="text-[11px] font-bold uppercase text-vital-lime">Ingresos Totales</span>
-      <div class="font-brand text-2xl mt-1">${formatMXN(totalIncome)}</div>
+  const lucasEarned = state.transactions.filter(t => t.coachId === 'COACH-1').reduce((s, t) => s + Number(t.prestadorAmount || 0), 0);
+  const leoEarned = state.transactions.filter(t => t.coachId === 'COACH-2').reduce((s, t) => s + Number(t.prestadorAmount || 0), 0);
+
+  kpis.innerHTML = `
+    <div class="card-luxury rounded-2xl p-5">
+      <span class="text-[10px] uppercase font-bold tracking-wider text-stone-400">Ingreso Bruto Total</span>
+      <p class="font-brand text-3xl font-bold text-vital-900 mt-1">${formatMXN(totalGross)}</p>
+      <span class="text-[11px] text-stone-500">${state.transactions.length} operaciones registradas</span>
     </div>
-    <div class="card-luxury rounded-3xl p-5">
-      <span class="text-[11px] font-bold uppercase text-emerald-700">Canchas Techadas</span>
-      <div class="font-brand text-2xl text-vital-900 mt-1">${formatMXN(resIncome)}</div>
+    <div class="card-luxury rounded-2xl p-5 border-l-4 border-l-vital-green">
+      <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-800">Utilidad Vital Club (Cliente)</span>
+      <p class="font-brand text-3xl font-bold text-vital-green mt-1">${formatMXN(totalClub)}</p>
+      <span class="text-[11px] text-stone-500">Libre de comisiones a coaches</span>
     </div>
-    <div class="card-luxury rounded-3xl p-5">
-      <span class="text-[11px] font-bold uppercase text-vital-orange">Clases y Torneos</span>
-      <div class="font-brand text-2xl text-vital-900 mt-1">${formatMXN(classIncome)}</div>
+    <div class="card-luxury rounded-2xl p-5 border-l-4 border-l-vital-orange">
+      <span class="text-[10px] uppercase font-bold tracking-wider text-amber-800">Comisiones Prestadores</span>
+      <p class="font-brand text-3xl font-bold text-vital-orange mt-1">${formatMXN(totalCoaches)}</p>
+      <span class="text-[11px] text-stone-500">Lucas: ${formatMXN(lucasEarned)} · Leo: ${formatMXN(leoEarned)}</span>
     </div>
-    <div class="card-luxury rounded-3xl p-5">
-      <span class="text-[11px] font-bold uppercase text-amber-700">Comida y POS</span>
-      <div class="font-brand text-2xl text-vital-900 mt-1">${formatMXN(foodIncome)}</div>
+    <div class="card-luxury rounded-2xl p-5">
+      <span class="text-[10px] uppercase font-bold tracking-wider text-stone-400">Servicios Oficiales</span>
+      <p class="font-brand text-3xl font-bold text-vital-900 mt-1">4</p>
+      <span class="text-[11px] text-stone-500">Renta, Reta, Clase, Clínica</span>
     </div>
   `;
 
-  const streams = [
-    { label: 'Reservaciones de Canchas', val: resIncome, color: 'bg-vital-900' },
-    { label: 'Clases y Torneos', val: classIncome, color: 'bg-vital-orange' },
-    { label: 'Zona de Comida y POS', val: foodIncome, color: 'bg-emerald-600' }
-  ];
+  // Bars
+  const bars = document.getElementById('dashboard-streams-bars');
+  if (bars) {
+    const streams = ['Renta', 'Reta', 'Clase', 'Clínica'];
+    const safeTotal = Math.max(1, totalGross);
 
-  barsContainer.innerHTML = streams.map(st => {
-    const pct = totalIncome > 0 ? Math.round((st.val / totalIncome) * 100) : 0;
-    return `
-      <div class="space-y-1">
-        <div class="flex justify-between text-xs font-bold">
-          <span>${st.label}</span>
-          <span>${formatMXN(st.val)} (${pct}%)</span>
-        </div>
-        <div class="w-full h-2.5 rounded-full bg-stone-100 overflow-hidden">
-          <div class="h-full ${st.color} rounded-full" style="width: ${Math.max(4, pct)}%"></div>
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  const hoursPerCourt = state.settings.closeHour - state.settings.openHour;
-  const todayBookings = state.reservations.filter(r => r.date === selectedDate);
-  occContainer.innerHTML = state.settings.courts.map(court => {
-    const bks = todayBookings.filter(r => r.courtId === court.id);
-    const pct = Math.min(100, Math.round((bks.length / hoursPerCourt) * 100));
-    return `
-      <div class="p-4 rounded-2xl bg-vital-cream space-y-1.5">
-        <div class="flex justify-between text-xs font-bold">
-          <span>${court.shortName}</span>
-          <span class="text-emerald-700">${bks.length}/${hoursPerCourt} hrs (${pct}%)</span>
-        </div>
-        <div class="w-full h-2 rounded-full bg-white overflow-hidden">
-          <div class="h-full bg-vital-900 rounded-full" style="width: ${pct}%"></div>
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  recentTxContainer.innerHTML = `
-    <table class="w-full text-left text-xs">
-      <thead>
-        <tr class="border-b border-stone-100 text-stone-400 uppercase">
-          <th class="py-2">Folio</th>
-          <th class="py-2">Flujo</th>
-          <th class="py-2">Concepto</th>
-          <th class="py-2">Cliente</th>
-          <th class="py-2 text-right">Monto</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-stone-100">
-        ${state.transactions.slice(0, 5).map(t => `
-          <tr>
-            <td class="py-2.5 font-bold text-stone-400">${t.id}</td>
-            <td class="py-2.5 font-semibold">${t.stream}</td>
-            <td class="py-2.5 font-bold text-vital-900">${t.concept}</td>
-            <td class="py-2.5 text-stone-500">${t.customer}</td>
-            <td class="py-2.5 text-right font-extrabold">${formatMXN(t.amount)}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
-}
-
-// Admin Calendar: Clean Hour Pills -> Single Modal for Booking / Coach Class / Maintenance
-function renderAdminCourtsSchedule() {
-  const container = document.getElementById('admin-courts-schedule');
-  if (!container) return;
-
-  const openH = Number(state.settings.openHour) || 8;
-  const closeH = Number(state.settings.closeHour) || 20;
-  const hours = [];
-  for (let h = openH; h < closeH; h++) hours.push(h);
-
-  container.innerHTML = state.settings.courts.map(court => {
-    const pills = hours.map(hr => {
-      const b = state.reservations.find(r => r.date === selectedDate && r.courtId === court.id && Number(r.hour) === hr);
-      const label = formatHourLabel(hr);
-
-      if (!b) {
-        return `
-          <button onclick="openAdminSlotModal('${court.id}', ${hr})" class="hour-pill p-3 rounded-2xl border border-emerald-500/20 bg-emerald-50/40 hover:bg-vital-lime text-left transition">
-            <div class="text-xs font-bold text-vital-900">${label}</div>
-            <div class="text-[11px] text-emerald-800 font-semibold mt-0.5">Libre</div>
-          </button>
-        `;
-      }
-
-      if (b.type === 'Mantenimiento') {
-        return `
-          <button onclick="openAdminSlotModal('${court.id}', ${hr})" class="hour-pill p-3 rounded-2xl border border-amber-300 bg-amber-50 text-left">
-            <div class="text-xs font-bold text-amber-950">${label}</div>
-            <div class="text-[11px] text-amber-800 font-semibold truncate mt-0.5">🔧 Mant.</div>
-          </button>
-        `;
-      }
-
-      const isClass = b.type === 'Clase' || b.type === 'Torneo';
+    bars.innerHTML = streams.map(st => {
+      const amt = state.transactions.filter(t => t.service === st).reduce((s, t) => s + Number(t.amount || 0), 0);
+      const pct = Math.round((amt / safeTotal) * 100);
       return `
-        <button onclick="openAdminSlotModal('${court.id}', ${hr})" class="hour-pill p-3 rounded-2xl border ${
-          isClass ? 'border-vital-orange/40 bg-orange-50' : 'border-stone-200 bg-stone-100'
-        } text-left">
-          <div class="text-xs font-bold text-vital-900">${label}</div>
-          <div class="text-[11px] font-semibold truncate mt-0.5">${isClass ? '🏆 ' : '🎾 '}${b.customer}</div>
-        </button>
+        <div>
+          <div class="flex justify-between text-xs font-bold mb-1">
+            <span class="text-vital-900">${st}s</span>
+            <span>${formatMXN(amt)} (${pct}%)</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-stone-100 overflow-hidden">
+            <div class="h-full bg-vital-900 rounded-full transition-all" style="width: ${pct}%"></div>
+          </div>
+        </div>
       `;
     }).join('');
+  }
 
-    return `
-      <div class="bg-vital-cream/60 rounded-3xl p-5 border border-vital-900/5 space-y-4">
-        <div class="flex items-center justify-between">
-          <h3 class="font-brand text-xl text-vital-900">${court.shortName}</h3>
-          <span class="text-xs font-bold text-stone-400">${selectedDate}</span>
+  // Occupancy
+  const occ = document.getElementById('dashboard-court-occupancy');
+  if (occ) {
+    const totalSlots = (state.settings.closeHour - state.settings.openHour) * state.settings.courts.length;
+    const bookedSlots = state.reservations.filter(r => r.date === selectedDate).length;
+    const occPct = Math.round((bookedSlots / Math.max(1, totalSlots)) * 100);
+
+    occ.innerHTML = `
+      <div class="p-4 rounded-2xl bg-vital-cream space-y-2">
+        <div class="flex justify-between text-xs font-bold">
+          <span>Ocupación de Canchas Hoy</span>
+          <span class="text-vital-green">${occPct}% (${bookedSlots}/${totalSlots} hrs)</span>
         </div>
-        <div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5">${pills}</div>
+        <div class="w-full h-2 rounded-full bg-white overflow-hidden">
+          <div class="h-full bg-vital-lime rounded-full" style="width: ${occPct}%"></div>
+        </div>
       </div>
+      <p class="text-xs text-stone-500">
+        Tarifa de $350/h fija en cualquier horario según el Anexo 2.
+      </p>
     `;
-  }).join('');
-}
-
-// Unified Admin Slot Action Modal (Eliminates button clutter on screen)
-function openAdminSlotModal(courtId, hour) {
-  const court = state.settings.courts.find(c => c.id === courtId) || state.settings.courts[0];
-  const existing = state.reservations.find(r => r.date === selectedDate && r.courtId === courtId && Number(r.hour) === Number(hour));
-
-  if (existing) {
-    openModal(`
-      <div class="space-y-4">
-        <div class="flex items-start justify-between border-b border-stone-100 pb-3">
-          <div>
-            <span class="text-xs font-bold uppercase text-vital-orange">${court.shortName} · ${formatHourLabel(hour)}</span>
-            <h3 class="font-brand text-2xl text-vital-900 mt-0.5">${existing.customer}</h3>
-          </div>
-          <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
-        </div>
-
-        <div class="bg-vital-cream p-4 rounded-2xl text-xs space-y-1.5">
-          <div><strong>Tipo:</strong> ${existing.type}</div>
-          ${existing.coachName ? `<div><strong>Coach:</strong> ${existing.coachName} (${existing.attendanceChecked ? '✅ Asistencia OK' : '⏳ Pendiente'})</div>` : ''}
-          ${existing.amount ? `<div><strong>Monto:</strong> ${formatMXN(existing.amount)} (${existing.paymentMethod})</div>` : ''}
-          ${existing.notes ? `<div><strong>Notas:</strong> ${existing.notes}</div>` : ''}
-        </div>
-
-        <div class="flex items-center justify-between pt-2">
-          <button onclick="deleteReservation('${existing.id}'); closeModal();" class="px-4 py-2.5 rounded-xl bg-rose-50 text-rose-700 font-bold text-xs">
-            Liberar Horario
-          </button>
-          <button onclick="closeModal()" class="px-5 py-2.5 rounded-xl bg-vital-900 text-vital-cream font-bold text-xs">
-            Cerrar
-          </button>
-        </div>
-      </div>
-    `);
-    return;
   }
 
-  // Free slot -> Choose action cleanly in modal
-  openModal(`
-    <div class="space-y-4">
-      <div class="flex items-start justify-between border-b border-stone-100 pb-3">
-        <div>
-          <span class="text-xs font-bold uppercase text-emerald-700">Horario Libre · ${selectedDate}</span>
-          <h3 class="font-brand text-2xl text-vital-900 mt-0.5">${court.shortName} · ${formatHourLabel(hour)}</h3>
-        </div>
-        <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
-      </div>
-
-      <p class="text-xs text-stone-500">¿Qué deseas registrar en este horario?</p>
-
-      <div class="grid gap-2.5">
-        <button onclick="openBookingModal('${court.id}', ${hour})" class="p-4 rounded-2xl bg-vital-cream hover:bg-vital-lime text-left transition flex items-center justify-between">
-          <div>
-            <div class="font-bold text-sm text-vital-900">🎾 Apartar Cancha a Cliente</div>
-            <div class="text-xs text-stone-500">Registrar reserva normal ($${court.hourlyRate}/hr)</div>
-          </div>
-          <span class="font-bold text-xs">→</span>
-        </button>
-
-        <button onclick="openCoachClassModal('${court.id}', ${hour})" class="p-4 rounded-2xl bg-vital-cream hover:bg-orange-100 text-left transition flex items-center justify-between">
-          <div>
-            <div class="font-bold text-sm text-vital-900">👟 Asignar Clase a un Coach</div>
-            <div class="text-xs text-stone-500">Se sincroniza con el calendario del entrenador</div>
-          </div>
-          <span class="font-bold text-xs">→</span>
-        </button>
-
-        <button onclick="openMaintenanceModal('${court.id}', ${hour})" class="p-4 rounded-2xl bg-vital-cream hover:bg-amber-100 text-left transition flex items-center justify-between">
-          <div>
-            <div class="font-bold text-sm text-vital-900">🔧 Bloquear por Mantenimiento</div>
-            <div class="text-xs text-stone-500">Cierra el horario para que ningún cliente reserve</div>
-          </div>
-          <span class="font-bold text-xs">→</span>
-        </button>
-      </div>
-    </div>
-  `);
-}
-
-function openCoachClassModal(defaultCourtId = 'cancha-1', defaultHour = 10) {
-  const openH = Number(state.settings.openHour) || 8;
-  const closeH = Number(state.settings.closeHour) || 20;
-  const hourOptions = [];
-  for (let h = openH; h < closeH; h++) {
-    hourOptions.push(`<option value="${h}" ${h === Number(defaultHour) ? 'selected' : ''}>${formatHourLabel(h)}</option>`);
+  // Recent Table
+  const table = document.getElementById('dashboard-recent-txs');
+  if (table) {
+    table.innerHTML = state.transactions.slice(0, 6).map(t => `
+      <tr class="hover:bg-vital-cream/50">
+        <td class="py-2.5 px-3 text-stone-400 font-mono">${t.time}</td>
+        <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded font-bold text-[10px] bg-stone-100">${t.service}</span></td>
+        <td class="py-2.5 px-3 font-semibold text-vital-900">${t.concept}</td>
+        <td class="py-2.5 px-3 text-stone-600">${t.coachName || '-'}</td>
+        <td class="py-2.5 px-3 font-bold">${formatMXN(t.amount)}</td>
+        <td class="py-2.5 px-3 font-bold text-vital-orange">${formatMXN(t.prestadorAmount)}</td>
+        <td class="py-2.5 px-3 font-bold text-vital-green">${formatMXN(t.clienteAmount)}</td>
+      </tr>
+    `).join('');
   }
-
-  openModal(`
-    <div class="space-y-4">
-      <div class="flex items-start justify-between border-b border-stone-100 pb-3">
-        <h3 class="font-brand text-2xl text-vital-900">Programar Clase de Coach</h3>
-        <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
-      </div>
-      <form onsubmit="confirmCoachClass(event)" class="space-y-3">
-        <div class="grid sm:grid-cols-2 gap-2.5">
-          <select id="coach-modal-coach" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-bold">
-            ${state.coaches.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
-          </select>
-          <input type="text" id="coach-modal-title" required placeholder="Nombre de la Clase *" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-semibold" />
-        </div>
-        <div class="grid grid-cols-3 gap-2">
-          <input type="date" id="coach-modal-date" value="${selectedDate}" required class="px-3 py-2 rounded-xl bg-vital-cream text-xs font-bold" />
-          <select id="coach-modal-court" class="px-3 py-2 rounded-xl bg-vital-cream text-xs font-bold">
-            ${state.settings.courts.map(c => `<option value="${c.id}" ${c.id === defaultCourtId ? 'selected' : ''}>${c.shortName}</option>`).join('')}
-          </select>
-          <select id="coach-modal-hour" class="px-3 py-2 rounded-xl bg-vital-cream text-xs font-bold">${hourOptions.join('')}</select>
-        </div>
-        <div class="grid sm:grid-cols-2 gap-2.5">
-          <input type="text" id="coach-modal-students" placeholder="Alumnos (separados por coma)" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs" />
-          <input type="number" id="coach-modal-amount" value="350" placeholder="Costo ($)" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-bold" />
-        </div>
-        <input type="text" id="coach-modal-notes" placeholder="Notas de la sesión" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs" />
-        <button type="submit" class="w-full py-3 rounded-2xl bg-vital-900 text-vital-lime font-bold text-xs">Guardar Clase</button>
-      </form>
-    </div>
-  `);
 }
 
-function confirmCoachClass(e) {
-  e.preventDefault();
-  const coachId = document.getElementById('coach-modal-coach').value;
-  const coachObj = state.coaches.find(c => c.id === coachId);
-  const title = document.getElementById('coach-modal-title').value.trim();
-  const date = document.getElementById('coach-modal-date').value;
-  const courtId = document.getElementById('coach-modal-court').value;
-  const hour = Number(document.getElementById('coach-modal-hour').value);
-  const studentsRaw = document.getElementById('coach-modal-students').value.trim();
-  const amount = Number(document.getElementById('coach-modal-amount').value || 0);
-  const notes = document.getElementById('coach-modal-notes').value.trim();
-
-  state.reservations = state.reservations.filter(r => !(r.date === date && r.courtId === courtId && Number(r.hour) === hour));
-  const students = studentsRaw ? studentsRaw.split(',').map(s => s.trim()).filter(Boolean) : ['Grupo Vital Club'];
-
-  state.reservations.push({
-    id: 'CLS-' + Math.floor(100 + Math.random() * 900),
-    date,
-    courtId,
-    hour,
-    duration: 1,
-    customer: title,
-    phone: '715 131 7443',
-    type: 'Clase',
-    coachId,
-    coachName: coachObj ? coachObj.name : 'Coach',
-    students,
-    attendanceChecked: false,
-    amount,
-    status: 'Pagado',
-    paymentMethod: 'Tarjeta',
-    notes
-  });
-
-  selectedDate = date;
-  saveState();
-  closeModal();
-  renderAllClientViews();
-  renderCoachView();
-  renderAllAdminViews();
-  showToast('Clase programada en calendario');
-}
-
-function openMaintenanceModal(defaultCourtId = 'cancha-1', defaultHour = 13) {
-  const openH = Number(state.settings.openHour) || 8;
-  const closeH = Number(state.settings.closeHour) || 20;
-  const hourOptions = [];
-  for (let h = openH; h < closeH; h++) {
-    hourOptions.push(`<option value="${h}" ${h === Number(defaultHour) ? 'selected' : ''}>${formatHourLabel(h)}</option>`);
-  }
-
-  openModal(`
-    <div class="space-y-4">
-      <div class="flex items-start justify-between border-b border-stone-100 pb-3">
-        <h3 class="font-brand text-2xl text-vital-900">Bloquear por Mantenimiento</h3>
-        <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
-      </div>
-      <form onsubmit="confirmMaintenanceBlock(event)" class="space-y-3">
-        <div class="grid grid-cols-3 gap-2">
-          <input type="date" id="maint-date" value="${selectedDate}" required class="px-3 py-2 rounded-xl bg-vital-cream text-xs font-bold" />
-          <select id="maint-court" class="px-3 py-2 rounded-xl bg-vital-cream text-xs font-bold">
-            ${state.settings.courts.map(c => `<option value="${c.id}" ${c.id === defaultCourtId ? 'selected' : ''}>${c.shortName}</option>`).join('')}
-            <option value="both">Ambas Canchas</option>
-          </select>
-          <select id="maint-hour" class="px-3 py-2 rounded-xl bg-vital-cream text-xs font-bold">${hourOptions.join('')}</select>
-        </div>
-        <select id="maint-title" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-bold">
-          <option value="Mantenimiento Preventivo">🔧 Mantenimiento Preventivo</option>
-          <option value="Limpieza y Cepillado">🧹 Limpieza y Cepillado de Pasto</option>
-          <option value="Evento Privado">🏆 Bloqueo por Evento / Torneo</option>
-        </select>
-        <input type="text" id="maint-notes" placeholder="Motivo u observaciones..." class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs" />
-        <button type="submit" class="w-full py-3 rounded-2xl bg-amber-600 text-white font-bold text-xs">Bloquear Horario</button>
-      </form>
-    </div>
-  `);
-}
-
-function confirmMaintenanceBlock(e) {
-  e.preventDefault();
-  const date = document.getElementById('maint-date').value;
-  const courtTarget = document.getElementById('maint-court').value;
-  const hour = Number(document.getElementById('maint-hour').value);
-  const title = document.getElementById('maint-title').value;
-  const notes = document.getElementById('maint-notes').value.trim() || 'Cerrada por mantenimiento';
-
-  const targets = courtTarget === 'both' ? state.settings.courts.map(c => c.id) : [courtTarget];
-  targets.forEach(cId => {
-    state.reservations = state.reservations.filter(r => !(r.date === date && r.courtId === cId && Number(r.hour) === hour));
-    state.reservations.push({
-      id: 'MANT-' + Math.floor(100 + Math.random() * 900),
-      date,
-      courtId: cId,
-      hour,
-      duration: 1,
-      customer: title,
-      type: 'Mantenimiento',
-      amount: 0,
-      status: 'Bloqueado',
-      paymentMethod: 'N/A',
-      notes
-    });
-  });
-
-  selectedDate = date;
-  saveState();
-  closeModal();
-  renderAllClientViews();
-  renderCoachView();
-  renderAllAdminViews();
-  showToast('Horario bloqueado por mantenimiento');
-}
-
-function deleteReservation(resId) {
-  state.reservations = state.reservations.filter(r => r.id !== resId);
-  saveState();
-  renderAllClientViews();
-  renderCoachView();
-  renderAllAdminViews();
-  showToast('Horario liberado');
-}
-
-// ============================================================================
-// POS & CATALOG MODALS
-// ============================================================================
-
-function setPosCategory(cat) {
-  currentPosCategory = cat;
+// ----------------------------------------------------------------------------
+// PUNTO DE VENTA (POS) ADMIN
+// ----------------------------------------------------------------------------
+function filterPosCatalog(cat) {
+  currentPosFilter = cat;
   document.querySelectorAll('.pos-cat-btn').forEach(btn => {
     const isAct = btn.getAttribute('data-pos-cat') === cat;
     btn.className = isAct
       ? 'pos-cat-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-vital-900 text-vital-cream'
-      : 'pos-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900';
+      : 'pos-cat-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand';
   });
   renderPosCatalog();
 }
 
 function renderPosCatalog() {
-  const grid = document.getElementById('pos-catalog-grid');
-  const q = (document.getElementById('pos-search-input')?.value || '').toLowerCase().trim();
-  if (!grid) return;
+  const container = document.getElementById('pos-catalog-grid');
+  if (!container) return;
 
-  const list = state.catalog.filter(i => {
-    const matchCat = currentPosCategory === 'all' || i.category === currentPosCategory;
-    const matchQ = !q || i.name.toLowerCase().includes(q);
-    return matchCat && matchQ;
-  });
+  const query = (document.getElementById('pos-search-input')?.value || '').toLowerCase().trim();
 
-  grid.innerHTML = list.map(item => `
-    <button onclick="addToPosCart('${item.id}')" class="p-3.5 rounded-2xl border border-stone-100 bg-vital-cream/60 hover:bg-vital-lime text-left transition flex flex-col justify-between">
-      <div class="font-bold text-xs text-vital-900">${item.name}</div>
-      <div class="flex items-center justify-between mt-2 pt-2 border-t border-stone-200/50 w-full">
-        <span class="font-brand text-base text-vital-900">$${item.price}</span>
-        <span class="text-xs font-bold">+</span>
+  let items = OFFICIAL_SERVICES;
+  if (currentPosFilter !== 'all') {
+    items = items.filter(i => i.service === currentPosFilter);
+  }
+  if (query) {
+    items = items.filter(i => i.name.toLowerCase().includes(query));
+  }
+
+  container.innerHTML = items.map(item => `
+    <button onclick="addToPosCart('${item.id}')" class="p-3.5 rounded-2xl bg-vital-cream hover:bg-vital-lime/30 border border-vital-900/10 text-left transition flex flex-col justify-between">
+      <div>
+        <span class="text-[9px] font-extrabold uppercase tracking-wider text-vital-orange">${item.service}</span>
+        <h5 class="font-bold text-xs text-vital-900 mt-0.5 line-clamp-2">${item.name}</h5>
       </div>
+      <span class="font-brand text-sm font-bold text-vital-900 mt-2 block">${formatMXN(item.price)}</span>
     </button>
   `).join('');
 }
 
-function addToPosCart(itemId) {
-  const item = state.catalog.find(i => i.id === itemId);
+function addToPosCart(serviceId) {
+  const item = OFFICIAL_SERVICES.find(s => s.id === serviceId);
   if (!item) return;
-  const ex = posCart.find(c => c.id === itemId);
-  if (ex) ex.qty += 1;
-  else posCart.push({ ...item, qty: 1 });
+
+  const existing = posCart.find(c => c.id === serviceId);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    posCart.push({ ...item, qty: 1 });
+  }
+
   renderPosCart();
 }
 
-function changePosQty(itemId, delta) {
-  const idx = posCart.findIndex(c => c.id === itemId);
-  if (idx === -1) return;
-  posCart[idx].qty += delta;
-  if (posCart[idx].qty <= 0) posCart.splice(idx, 1);
+function changePosCartQty(serviceId, delta) {
+  const item = posCart.find(c => c.id === serviceId);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) {
+    posCart = posCart.filter(c => c.id !== serviceId);
+  }
   renderPosCart();
 }
 
@@ -1911,345 +1444,349 @@ function clearPosCart() {
 }
 
 function renderPosCart() {
-  const container = document.getElementById('pos-cart-items');
-  const qtyEl = document.getElementById('pos-total-qty');
+  const list = document.getElementById('pos-ticket-items');
   const totalEl = document.getElementById('pos-total-amount');
-  if (!container) return;
+  if (!list || !totalEl) return;
+
+  const total = posCart.reduce((s, i) => s + i.price * i.qty, 0);
+  totalEl.textContent = formatMXN(total);
 
   if (posCart.length === 0) {
-    container.innerHTML = `<p class="text-xs text-stone-400 py-6 text-center">Selecciona productos para cobrar.</p>`;
-    if (qtyEl) qtyEl.textContent = '0';
-    if (totalEl) totalEl.textContent = '$0 MXN';
-    updatePosCashChange();
+    list.innerHTML = `<p class="text-xs text-stone-400 text-center py-6">Selecciona servicios para cobrar en mostrador.</p>`;
     return;
   }
 
-  const totalQty = posCart.reduce((s, i) => s + i.qty, 0);
-  const totalAmount = posCart.reduce((s, i) => s + i.qty * i.price, 0);
-
-  container.innerHTML = posCart.map(item => `
-    <div class="flex items-center justify-between p-2 rounded-xl bg-vital-cream text-xs">
-      <span class="font-bold truncate max-w-[130px]">${item.name}</span>
-      <div class="flex items-center gap-1.5">
-        <button onclick="changePosQty('${item.id}', -1)" class="w-5 h-5 rounded bg-white font-bold">-</button>
-        <span class="font-bold">${item.qty}</span>
-        <button onclick="changePosQty('${item.id}', 1)" class="w-5 h-5 rounded bg-white font-bold">+</button>
-        <span class="font-extrabold w-12 text-right">$${item.qty * item.price}</span>
+  list.innerHTML = posCart.map(c => `
+    <div class="p-2.5 rounded-xl bg-vital-cream border border-vital-900/10 flex items-center justify-between text-xs">
+      <div class="min-w-0 pr-2">
+        <p class="font-bold text-vital-900 truncate">${c.name}</p>
+        <p class="text-[11px] text-stone-500">${formatMXN(c.price)} c/u</p>
+      </div>
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button onclick="changePosCartQty('${c.id}', -1)" class="w-6 h-6 rounded bg-white font-bold text-stone-700">-</button>
+        <span class="font-bold w-4 text-center">${c.qty}</span>
+        <button onclick="changePosCartQty('${c.id}', 1)" class="w-6 h-6 rounded bg-white font-bold text-stone-700">+</button>
       </div>
     </div>
   `).join('');
 
-  if (qtyEl) qtyEl.textContent = String(totalQty);
-  if (totalEl) totalEl.textContent = formatMXN(totalAmount);
-  updatePosCashChange();
+  calculatePosChange();
 }
 
-function updatePosCashChange() {
-  const method = document.getElementById('pos-payment-method')?.value || 'Efectivo';
-  const cashBox = document.getElementById('pos-cash-box');
-  const received = Number(document.getElementById('pos-cash-received')?.value || 0);
-  const changeEl = document.getElementById('pos-cash-change');
-  const total = posCart.reduce((s, i) => s + i.qty * i.price, 0);
+function selectPosPaymentMethod(method) {
+  currentPosMethod = method;
+  document.querySelectorAll('.pos-method-btn').forEach(btn => {
+    const isAct = btn.getAttribute('data-pos-method') === method;
+    btn.className = isAct
+      ? 'pos-method-btn px-2 py-1.5 rounded-lg border text-xs font-bold bg-vital-900 text-vital-cream'
+      : 'pos-method-btn px-2 py-1.5 rounded-lg border text-xs font-semibold bg-white';
+  });
 
-  cashBox?.classList.toggle('hidden', method !== 'Efectivo');
-  if (changeEl) {
-    const diff = received - total;
-    changeEl.textContent = diff >= 0 && total > 0 ? formatMXN(diff) : '$0';
+  const cashBox = document.getElementById('pos-cash-container');
+  if (cashBox) {
+    cashBox.classList.toggle('is-hidden', method !== 'Efectivo');
   }
 }
 
-function completePosSale() {
-  if (posCart.length === 0) return;
-  const customer = document.getElementById('pos-customer-input')?.value.trim() || 'Mostrador';
-  const paymentMethod = document.getElementById('pos-payment-method')?.value || 'Efectivo';
-  const totalAmount = posCart.reduce((s, i) => s + i.qty * i.price, 0);
-  const concept = posCart.map(i => `${i.qty}x ${i.name}`).join(', ');
-  const stream = posCart.some(i => i.category === 'Canchas y Clases') ? 'Reservaciones' : 'Comida y Bebidas';
+function calculatePosChange() {
+  const input = document.getElementById('pos-cash-input');
+  const changeEl = document.getElementById('pos-cash-change');
+  if (!input || !changeEl) return;
+
+  const total = posCart.reduce((s, i) => s + i.price * i.qty, 0);
+  const given = Number(input.value || 0);
+  const diff = Math.max(0, given - total);
+  changeEl.textContent = formatMXN(diff);
+}
+
+function executePosCheckout() {
+  if (posCart.length === 0) {
+    showToast('Agrega al menos un servicio al ticket.');
+    return;
+  }
+
+  const coachId = document.getElementById('pos-coach-select')?.value || 'COACH-1';
+  const customer = document.getElementById('pos-customer-input')?.value.trim() || 'Cliente Mostrador';
+  const coach = COACHES_DATA.find(c => c.id === coachId);
+  const coachName = coachId === 'NONE' || !coach ? '-' : coach.name;
+
+  let totalAmount = 0;
+  let totalPrestador = 0;
+  let totalCliente = 0;
+
+  const concepts = posCart.map(item => {
+    const lineTotal = item.price * item.qty;
+    totalAmount += lineTotal;
+    const split = calculateSplit(item.service, lineTotal, coachId);
+    totalPrestador += split.prestador;
+    totalCliente += split.cliente;
+    return `${item.qty}x ${item.name}`;
+  }).join(', ');
+
+  const primaryService = posCart[0].service;
 
   const newTx = {
-    id: 'POS-' + Math.floor(1000 + Math.random() * 9000),
-    date: getTodayISO(0),
+    id: 'VC-TX-' + Date.now().toString().slice(-4),
+    date: selectedDate,
     time: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
-    stream,
-    concept,
+    service: primaryService,
+    concept: concepts,
     customer,
-    paymentMethod,
+    coachId,
+    coachName,
+    paymentMethod: currentPosMethod,
     amount: totalAmount,
-    status: 'Pagado'
+    prestadorAmount: totalPrestador,
+    clienteAmount: totalCliente
   };
 
   state.transactions.unshift(newTx);
   posCart = [];
+  if (document.getElementById('pos-customer-input')) document.getElementById('pos-customer-input').value = '';
+  if (document.getElementById('pos-cash-input')) document.getElementById('pos-cash-input').value = '';
+
   saveState();
-  renderAllAdminViews();
-  showReceiptModal(newTx, 'Venta POS Registrada');
+  renderPosCart();
+  renderAdminAllViews();
+  showToast(`Cobro registrado por ${formatMXN(totalAmount)}`);
 }
 
-function renderAdminIncomeTable() {
-  const wrap = document.getElementById('admin-income-table-wrap');
-  const filterVal = document.getElementById('income-filter-stream')?.value || 'all';
-  if (!wrap) return;
+// ----------------------------------------------------------------------------
+// CALENDARIO MAESTRO ADMIN
+// ----------------------------------------------------------------------------
+function renderAdminMasterCalendar() {
+  const container = document.getElementById('admin-master-calendar-grid');
+  if (!container) return;
 
-  const list = state.transactions.filter(t => filterVal === 'all' || t.stream === filterVal);
-  wrap.innerHTML = `
-    <table class="w-full text-left text-xs">
-      <thead>
-        <tr class="border-b border-stone-100 text-stone-400 uppercase">
-          <th class="py-2">Folio</th>
-          <th class="py-2">Flujo</th>
-          <th class="py-2">Concepto</th>
-          <th class="py-2">Cliente</th>
-          <th class="py-2">Pago</th>
-          <th class="py-2 text-right">Monto</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-stone-100">
-        ${list.map(t => `
-          <tr>
-            <td class="py-2.5 font-bold text-stone-400">${t.id}</td>
-            <td class="py-2.5">${t.stream}</td>
-            <td class="py-2.5 font-bold text-vital-900">${t.concept}</td>
-            <td class="py-2.5 text-stone-500">${t.customer}</td>
-            <td class="py-2.5">${t.paymentMethod}</td>
-            <td class="py-2.5 text-right font-extrabold">${formatMXN(t.amount)}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
+  const openH = state.settings.openHour;
+  const closeH = state.settings.closeHour;
+
+  container.innerHTML = state.settings.courts.map(court => {
+    const slots = [];
+    for (let h = openH; h < closeH; h++) {
+      const res = state.reservations.find(r => r.date === selectedDate && r.courtId === court.id && r.hour === h);
+
+      if (!res) {
+        slots.push(`
+          <button onclick="openAdminCreateSlotModal('${court.id}', ${h})" class="p-3 rounded-xl border border-dashed border-stone-300 hover:border-vital-900 bg-white text-left transition flex items-center justify-between text-xs">
+            <span class="font-bold text-stone-400">${formatHourLabel(h)}</span>
+            <span class="text-vital-green font-bold text-[11px]">+ Asignar Horario</span>
+          </button>
+        `);
+      } else {
+        const isMaint = res.service === 'Mantenimiento';
+        slots.push(`
+          <div class="p-3 rounded-xl border ${isMaint ? 'border-stone-300 bg-stone-100 text-stone-500' : 'border-vital-900/15 bg-vital-cream'} flex items-center justify-between text-xs">
+            <div class="min-w-0 pr-2">
+              <span class="font-black text-vital-900">${formatHourLabel(h)} · ${res.service}</span>
+              <p class="font-semibold text-stone-600 truncate">${res.customer}</p>
+              ${res.coachName !== 'Sin Coach' ? `<p class="text-[10px] text-stone-400">Coach: ${res.coachName}</p>` : ''}
+            </div>
+            <button onclick="deleteReservationSlot('${res.id}')" class="px-2 py-1 rounded bg-red-100 hover:bg-red-200 text-red-700 font-bold text-[10px] shrink-0">
+              Liberar
+            </button>
+          </div>
+        `);
+      }
+    }
+
+    return `
+      <div class="card-luxury rounded-2xl p-5 space-y-3">
+        <h4 class="font-brand text-xl text-vital-900 font-bold border-b border-vital-900/10 pb-2">${court.name}</h4>
+        <div class="grid sm:grid-cols-2 gap-2">${slots.join('')}</div>
+      </div>
+    `;
+  }).join('');
 }
 
-// Clean Catalog & Settings Modal (Instead of cluttering the page)
-function openCatalogManagerModal() {
+function openAdminCreateSlotModal(courtId = 'cancha-1', hour = 10) {
   openModal(`
     <div class="space-y-4">
-      <div class="flex items-center justify-between border-b border-stone-100 pb-3">
-        <h3 class="font-brand text-2xl text-vital-900">Configuración y Catálogo</h3>
-        <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
+      <div class="border-b border-vital-900/10 pb-2">
+        <span class="text-[10px] font-bold uppercase tracking-widest text-vital-orange">Control de Canchas Admin</span>
+        <h3 class="font-brand text-2xl text-vital-900 mt-0.5">Asignar o Bloquear Cancha</h3>
       </div>
 
-      <div class="bg-vital-cream p-4 rounded-2xl space-y-2.5 text-xs">
-        <div class="font-bold text-vital-900 uppercase">Tarifa por Hora de Canchas Techadas ($)</div>
+      <form id="admin-create-slot-form" onsubmit="submitAdminCreateSlot(event)" class="space-y-3 text-xs">
         <div class="grid grid-cols-2 gap-2.5">
           <div>
-            <label class="text-stone-500">Cancha Techada 1</label>
-            <input type="number" id="modal-rate-c1" value="${state.settings.courts[0].hourlyRate}" class="w-full mt-1 px-3 py-2 rounded-xl bg-white font-bold" />
+            <label class="block font-bold mb-1">Cancha</label>
+            <select id="adm-slot-court" class="w-full px-3 py-2 rounded-xl bg-vital-cream border font-bold">
+              <option value="cancha-1" ${courtId === 'cancha-1' ? 'selected' : ''}>Cancha Techada 1</option>
+              <option value="cancha-2" ${courtId === 'cancha-2' ? 'selected' : ''}>Cancha Techada 2</option>
+            </select>
           </div>
           <div>
-            <label class="text-stone-500">Cancha Techada 2</label>
-            <input type="number" id="modal-rate-c2" value="${state.settings.courts[1].hourlyRate}" class="w-full mt-1 px-3 py-2 rounded-xl bg-white font-bold" />
+            <label class="block font-bold mb-1">Hora</label>
+            <select id="adm-slot-hour" class="w-full px-3 py-2 rounded-xl bg-vital-cream border font-bold">
+              ${[8,9,10,11,12,13,14,15,16,17,18,19].map(h => `<option value="${h}" ${h === hour ? 'selected' : ''}>${formatHourLabel(h)}</option>`).join('')}
+            </select>
           </div>
         </div>
-        <button onclick="saveModalCourtRates()" class="w-full py-2 rounded-xl bg-vital-900 text-vital-lime font-bold">Actualizar Tarifas</button>
-      </div>
 
-      <div class="grid grid-cols-3 gap-2">
-        <button onclick="openAdminNewModal('item')" class="p-3 rounded-2xl bg-vital-cream hover:bg-vital-sand text-xs font-bold text-vital-900">+ Producto Comida</button>
-        <button onclick="openAdminNewModal('program')" class="p-3 rounded-2xl bg-vital-cream hover:bg-vital-sand text-xs font-bold text-vital-900">+ Clase / Torneo</button>
-        <button onclick="openAdminNewModal('coach')" class="p-3 rounded-2xl bg-vital-cream hover:bg-vital-sand text-xs font-bold text-vital-900">+ Entrenador</button>
-      </div>
+        <div>
+          <label class="block font-bold mb-1">Servicio Oficial</label>
+          <select id="adm-slot-service" class="w-full px-3 py-2 rounded-xl bg-vital-cream border font-bold">
+            <option value="Renta">Renta de Cancha ($350)</option>
+            <option value="Reta">Reta Organizada ($150/p)</option>
+            <option value="Clase">Clase con Coach</option>
+            <option value="Clínica">Clínica Mensual</option>
+            <option value="Mantenimiento">Mantenimiento (Bloqueo de horario)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold mb-1">Coach Responsable</label>
+          <select id="adm-slot-coach" class="w-full px-3 py-2 rounded-xl bg-vital-cream border font-bold">
+            <option value="NONE">Sin Coach / Mantenimiento</option>
+            <option value="COACH-1">Lucas Morilla (40% comisión)</option>
+            <option value="COACH-2">Leo Marín (50% comisión)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold mb-1">Detalle / Cliente</label>
+          <input type="text" id="adm-slot-desc" required placeholder="Ej. Familia Ruiz / Limpieza de vidrios" class="w-full px-3 py-2 rounded-xl bg-vital-cream border font-semibold" />
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl border text-stone-600 font-bold">Cancelar</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-vital-lime text-vital-950 font-bold">Guardar en Calendario</button>
+        </div>
+      </form>
     </div>
   `);
 }
 
-function saveModalCourtRates() {
-  const r1 = Number(document.getElementById('modal-rate-c1')?.value || 400);
-  const r2 = Number(document.getElementById('modal-rate-c2')?.value || 400);
-  state.settings.courts[0].hourlyRate = r1;
-  state.settings.courts[1].hourlyRate = r2;
+function submitAdminCreateSlot(e) {
+  e.preventDefault();
+  const courtId = document.getElementById('adm-slot-court').value;
+  const hour = Number(document.getElementById('adm-slot-hour').value);
+  const service = document.getElementById('adm-slot-service').value;
+  const coachId = document.getElementById('adm-slot-coach').value;
+  const desc = document.getElementById('adm-slot-desc').value.trim();
+
+  const coach = COACHES_DATA.find(c => c.id === coachId);
+  const coachName = coach ? coach.name : 'Sin Coach';
+
+  const amount = service === 'Mantenimiento' ? 0 : (service === 'Reta' ? 150 : 350);
+  const split = calculateSplit(service, amount, coachId);
+
+  // Eliminar slot previo si existía en esa hora
+  state.reservations = state.reservations.filter(r => !(r.date === selectedDate && r.courtId === courtId && r.hour === hour));
+
+  state.reservations.push({
+    id: 'RES-' + Date.now().toString().slice(-5),
+    date: selectedDate,
+    courtId,
+    hour,
+    duration: 1,
+    service,
+    customer: desc,
+    phone: '-',
+    amount,
+    prestadorAmount: split.prestador,
+    clienteAmount: split.cliente,
+    coachId,
+    coachName,
+    paymentMethod: 'Recepción',
+    notes: 'Asignado desde panel admin'
+  });
+
   saveState();
   closeModal();
-  renderAllClientViews();
-  renderAllAdminViews();
-  showToast('Tarifas actualizadas');
+  renderAdminMasterCalendar();
+  renderCourtsGrid();
+  showToast('Horario actualizado en el calendario maestro.');
 }
 
-function openAdminNewModal(type) {
-  if (type === 'item') {
-    openModal(`
-      <div class="space-y-4">
-        <div class="flex items-center justify-between border-b border-stone-100 pb-3">
-          <h3 class="font-brand text-2xl text-vital-900">Nuevo Producto</h3>
-          <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
-        </div>
-        <form onsubmit="saveNewCatalogItem(event)" class="space-y-3">
-          <input type="text" id="new-item-name" required placeholder="Nombre del producto *" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-semibold" />
-          <div class="grid grid-cols-2 gap-2">
-            <select id="new-item-cat" class="px-3 py-2.5 rounded-xl bg-vital-cream text-xs font-bold">
-              <option value="Sándwiches y Comida">Sándwiches y Comida</option>
-              <option value="Bebidas y Café">Bebidas y Café</option>
-              <option value="Renta y Accesorios">Renta y Accesorios</option>
-            </select>
-            <input type="number" id="new-item-price" required placeholder="Precio ($) *" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-bold" />
-          </div>
-          <input type="text" id="new-item-desc" placeholder="Descripción breve" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs" />
-          <button type="submit" class="w-full py-3 rounded-2xl bg-vital-900 text-vital-lime font-bold text-xs">Guardar Producto</button>
-        </form>
-      </div>
-    `);
-  } else if (type === 'program') {
-    openModal(`
-      <div class="space-y-4">
-        <div class="flex items-center justify-between border-b border-stone-100 pb-3">
-          <h3 class="font-brand text-2xl text-vital-900">Nueva Clase o Torneo</h3>
-          <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
-        </div>
-        <form onsubmit="saveNewProgram(event)" class="space-y-3">
-          <input type="text" id="new-prog-title" required placeholder="Título *" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-semibold" />
-          <div class="grid grid-cols-2 gap-2">
-            <select id="new-prog-cat" class="px-3 py-2.5 rounded-xl bg-vital-cream text-xs font-bold">
-              <option value="Niños y Familia">Niños y Familia</option>
-              <option value="Adultos y Seniors">Adultos y Seniors</option>
-              <option value="Torneos">Torneos</option>
-            </select>
-            <input type="number" id="new-prog-price" required placeholder="Precio ($) *" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-bold" />
-          </div>
-          <div class="grid grid-cols-2 gap-2">
-            <input type="text" id="new-prog-sched" required placeholder="Horario (ej. Lun 5pm) *" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs" />
-            <input type="text" id="new-prog-coach" required placeholder="Coach *" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs" />
-          </div>
-          <input type="text" id="new-prog-desc" placeholder="Descripción" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs" />
-          <button type="submit" class="w-full py-3 rounded-2xl bg-vital-900 text-vital-lime font-bold text-xs">Publicar</button>
-        </form>
-      </div>
-    `);
-  } else if (type === 'coach') {
-    openModal(`
-      <div class="space-y-4">
-        <div class="flex items-center justify-between border-b border-stone-100 pb-3">
-          <h3 class="font-brand text-2xl text-vital-900">Nuevo Entrenador</h3>
-          <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
-        </div>
-        <form onsubmit="saveNewCoach(event)" class="space-y-3">
-          <input type="text" id="new-coach-name" required placeholder="Nombre completo *" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-semibold" />
-          <input type="text" id="new-coach-role" required placeholder="Especialidad / Rol *" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs" />
-          <input type="text" id="new-coach-sched" required placeholder="Horario *" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs" />
-          <input type="text" id="new-coach-bio" required placeholder="Semblanza breve *" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs" />
-          <button type="submit" class="w-full py-3 rounded-2xl bg-vital-900 text-vital-lime font-bold text-xs">Guardar Entrenador</button>
-        </form>
-      </div>
-    `);
-  } else if (type === 'transaction') {
-    openModal(`
-      <div class="space-y-4">
-        <div class="flex items-center justify-between border-b border-stone-100 pb-3">
-          <h3 class="font-brand text-2xl text-vital-900">Registrar Ingreso</h3>
-          <button onclick="closeModal()" class="p-2 rounded-xl bg-stone-100">✕</button>
-        </div>
-        <form onsubmit="saveNewManualTransaction(event)" class="space-y-3">
-          <input type="text" id="new-tx-concept" required placeholder="Concepto *" class="w-full px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-semibold" />
-          <div class="grid grid-cols-2 gap-2">
-            <select id="new-tx-stream" class="px-3 py-2.5 rounded-xl bg-vital-cream text-xs font-bold">
-              <option value="Reservaciones">Reservaciones</option>
-              <option value="Clases y Torneos">Clases y Torneos</option>
-              <option value="Comida y Bebidas">Comida y Bebidas</option>
-            </select>
-            <input type="number" id="new-tx-amount" required placeholder="Monto ($) *" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs font-bold" />
-          </div>
-          <div class="grid grid-cols-2 gap-2">
-            <input type="text" id="new-tx-customer" placeholder="Cliente" class="px-3.5 py-2.5 rounded-xl bg-vital-cream text-xs" />
-            <select id="new-tx-method" class="px-3 py-2.5 rounded-xl bg-vital-cream text-xs font-bold">
-              <option value="Efectivo">Efectivo</option>
-              <option value="Tarjeta">Tarjeta</option>
-              <option value="Transferencia">Transferencia</option>
-            </select>
-          </div>
-          <button type="submit" class="w-full py-3 rounded-2xl bg-vital-900 text-vital-lime font-bold text-xs">Guardar</button>
-        </form>
-      </div>
-    `);
+function deleteReservationSlot(resId) {
+  state.reservations = state.reservations.filter(r => r.id !== resId);
+  saveState();
+  renderAdminMasterCalendar();
+  renderCourtsGrid();
+  renderHeroLiveStatus();
+  showToast('Cancha liberada exitosamente.');
+}
+
+// ----------------------------------------------------------------------------
+// CONTROL DE INGRESOS Y LIQUIDACIÓN DE COMISIONES
+// ----------------------------------------------------------------------------
+function renderAdminIncomeTable() {
+  const body = document.getElementById('admin-income-table-body');
+  if (!body) return;
+
+  const filter = document.getElementById('income-filter-stream')?.value || 'all';
+
+  let list = state.transactions;
+  if (filter !== 'all') {
+    list = list.filter(t => t.service === filter);
   }
+
+  // Update payout balances
+  const lucasTotal = state.transactions.filter(t => t.coachId === 'COACH-1').reduce((s, t) => s + Number(t.prestadorAmount || 0), 0);
+  const leoTotal = state.transactions.filter(t => t.coachId === 'COACH-2').reduce((s, t) => s + Number(t.prestadorAmount || 0), 0);
+
+  const lucasEl = document.getElementById('payout-lucas');
+  const leoEl = document.getElementById('payout-leo');
+  if (lucasEl) lucasEl.textContent = formatMXN(lucasTotal);
+  if (leoEl) leoEl.textContent = formatMXN(leoTotal);
+
+  body.innerHTML = list.map(t => `
+    <tr class="hover:bg-vital-cream/50 text-xs">
+      <td class="py-3 px-3 font-mono text-stone-400">${t.id}</td>
+      <td class="py-3 px-3">${t.date} ${t.time}</td>
+      <td class="py-3 px-3"><span class="px-2 py-0.5 rounded font-bold text-[10px] bg-stone-100">${t.service}</span></td>
+      <td class="py-3 px-3 font-semibold text-vital-900">${t.concept}</td>
+      <td class="py-3 px-3 text-stone-600">${t.coachName || '-'}</td>
+      <td class="py-3 px-3 text-stone-500">${t.paymentMethod}</td>
+      <td class="py-3 px-3 font-bold">${formatMXN(t.amount)}</td>
+      <td class="py-3 px-3 font-bold text-vital-orange">${formatMXN(t.prestadorAmount)}</td>
+      <td class="py-3 px-3 font-bold text-vital-green">${formatMXN(t.clienteAmount)}</td>
+    </tr>
+  `).join('');
 }
 
-function saveNewCatalogItem(e) {
-  e.preventDefault();
-  state.catalog.unshift({
-    id: 'ITEM-' + Math.floor(100 + Math.random() * 900),
-    name: document.getElementById('new-item-name').value.trim(),
-    category: document.getElementById('new-item-cat').value,
-    price: Number(document.getElementById('new-item-price').value),
-    badge: 'Nuevo',
-    description: document.getElementById('new-item-desc').value.trim()
+function exportIncomeToCSV() {
+  const rows = [
+    ['Folio', 'Fecha', 'Hora', 'Servicio', 'Concepto', 'Cliente', 'Coach', 'Pago', 'Total', 'Prestador', 'Vital Club']
+  ];
+
+  state.transactions.forEach(t => {
+    rows.push([
+      t.id,
+      t.date,
+      t.time,
+      t.service,
+      `"${t.concept.replace(/"/g, '""')}"`,
+      `"${t.customer.replace(/"/g, '""')}"`,
+      t.coachName || '-',
+      t.paymentMethod,
+      t.amount,
+      t.prestadorAmount,
+      t.clienteAmount
+    ]);
   });
-  saveState();
-  closeModal();
-  renderAllClientViews();
-  renderAllAdminViews();
-  showToast('Producto agregado');
-}
 
-function saveNewProgram(e) {
-  e.preventDefault();
-  state.programs.unshift({
-    id: 'PROG-' + Math.floor(100 + Math.random() * 900),
-    title: document.getElementById('new-prog-title').value.trim(),
-    category: document.getElementById('new-prog-cat').value,
-    price: Number(document.getElementById('new-prog-price').value),
-    schedule: document.getElementById('new-prog-sched').value.trim(),
-    coach: document.getElementById('new-prog-coach').value.trim(),
-    ageRange: 'Familiar',
-    priceLabel: 'Inscripción abierta',
-    spotsTotal: 12,
-    spotsTaken: 1,
-    court: 'Cancha Techada 1',
-    description: document.getElementById('new-prog-desc').value.trim()
-  });
-  saveState();
-  closeModal();
-  renderAllClientViews();
-  showToast('Clase / Torneo publicado');
-}
-
-function saveNewCoach(e) {
-  e.preventDefault();
-  state.coaches.push({
-    id: 'COACH-' + Math.floor(100 + Math.random() * 900),
-    name: document.getElementById('new-coach-name').value.trim(),
-    role: document.getElementById('new-coach-role').value.trim(),
-    specialty: 'Pádel Familiar',
-    experience: 'Coach Vital Club',
-    schedule: document.getElementById('new-coach-sched').value.trim(),
-    bio: document.getElementById('new-coach-bio').value.trim()
-  });
-  saveState();
-  closeModal();
-  renderAllClientViews();
-  showToast('Entrenador agregado');
-}
-
-function saveNewManualTransaction(e) {
-  e.preventDefault();
-  state.transactions.unshift({
-    id: 'VC-' + Math.floor(1000 + Math.random() * 9000),
-    date: getTodayISO(0),
-    time: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
-    stream: document.getElementById('new-tx-stream').value,
-    concept: document.getElementById('new-tx-concept').value.trim(),
-    customer: document.getElementById('new-tx-customer').value.trim() || 'Cliente',
-    paymentMethod: document.getElementById('new-tx-method').value,
-    amount: Number(document.getElementById('new-tx-amount').value),
-    status: 'Pagado'
-  });
-  saveState();
-  closeModal();
-  renderAllAdminViews();
-  showToast('Ingreso registrado');
-}
-
-function exportIncomeCSV() {
-  const headers = ['Folio', 'Fecha', 'Hora', 'Flujo', 'Concepto', 'Cliente', 'MetodoPago', 'MontoMXN'];
-  const rows = state.transactions.map(t => [t.id, t.date, t.time, `"${t.stream}"`, `"${t.concept}"`, `"${t.customer}"`, t.paymentMethod, t.amount]);
-  const csv = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const csv = 'data:text/csv;charset=utf-8,' + rows.map(r => r.join(',')).join('\n');
   const link = document.createElement('a');
   link.setAttribute('href', encodeURI(csv));
-  link.setAttribute('download', `vital_club_ingresos_${getTodayISO(0)}.csv`);
+  link.setAttribute('download', `vital_club_ingresos_comisiones_${getTodayISO(0)}.csv`);
   document.body.appendChild(link);
   link.click();
   link.remove();
 }
 
+function renderAllAdminViews() {
+  renderAdminDashboard();
+  renderPosCatalog();
+  renderPosCart();
+  renderAdminMasterCalendar();
+  renderAdminIncomeTable();
+}
+
 // ============================================================================
-// MODAL & RECEIPT HELPERS
+// MODAL HELPERS
 // ============================================================================
 
 function openModal(html) {
@@ -2265,50 +1802,12 @@ function closeModal() {
   document.getElementById('universal-modal')?.classList.add('is-hidden');
 }
 
-function showReceiptModal(tx, heading) {
-  openModal(`
-    <div id="printable-receipt" class="space-y-4">
-      <div class="text-center border-b border-dashed border-stone-200 pb-4">
-        <div class="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-vital-900 text-vital-lime font-bold mb-2">✓</div>
-        <h3 class="font-brand text-2xl text-vital-900">${heading}</h3>
-        <p class="text-[11px] text-stone-400 uppercase tracking-widest mt-0.5">Vital Club · Zitácuaro</p>
-      </div>
-
-      <div class="bg-vital-cream p-4 rounded-2xl text-xs space-y-1.5">
-        <div class="flex justify-between"><span class="text-stone-500">Folio:</span><strong>${tx.id}</strong></div>
-        <div class="flex justify-between"><span class="text-stone-500">Cliente:</span><strong>${tx.customer}</strong></div>
-        <div class="flex justify-between"><span class="text-stone-500">Pago:</span><strong>${tx.paymentMethod}</strong></div>
-        <div class="pt-2 border-t border-stone-200/60"><strong>${tx.concept}</strong></div>
-        <div class="pt-2 border-t border-stone-200/60 flex justify-between items-baseline">
-          <span class="font-bold uppercase">Total</span>
-          <span class="font-brand text-2xl text-vital-900">${formatMXN(tx.amount)}</span>
-        </div>
-      </div>
-
-      <div class="flex gap-2.5">
-        <button onclick="window.print()" class="flex-1 py-2.5 rounded-xl bg-stone-100 text-xs font-bold">🖨️ Imprimir</button>
-        <button onclick="closeModal()" class="flex-1 py-2.5 rounded-xl bg-vital-900 text-vital-lime text-xs font-bold">Listo</button>
-      </div>
-    </div>
-  `);
-}
-
-function renderAllClientViews() {
-  renderHeroLiveStatus();
-  renderDateStrip();
-  renderClientCourtsGrid();
-  renderClientPrograms();
-  renderClientFoodGrid();
-  renderClientCoaches();
-  updateClientCartBadge();
-}
-
-document.addEventListener('click', (e) => {
-  const modal = document.getElementById('universal-modal');
-  if (modal && e.target === modal) closeModal();
-});
+// ============================================================================
+// INITIALIZATION
+// ============================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
   renderAllClientViews();
+  populateCoachSelector();
   if (window.lucide) lucide.createIcons();
 });
