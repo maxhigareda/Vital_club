@@ -1256,7 +1256,7 @@ function renderClientCoaches() {
 // ----------------------------------------------------------------------------
 let current3DAngle = 'iso1';
 let current3DCourt = 'cancha-1';
-let isCompareRealMode = false;
+let currentLightboxMode = 'gallery'; // 'gallery' | 'render3d' | 'custom'
 let currentLightboxIndex = 0;
 let currentLightboxSubIndex = 0;
 let currentGalleryCategory = 'todos';
@@ -1269,24 +1269,13 @@ function render3DCourtViewer() {
   ['iso1', 'iso2', 'cancha2'].forEach(ang => {
     const btn = document.getElementById(`btn-ang-${ang}`);
     if (btn) {
-      if (ang === current3DAngle && !isCompareRealMode) {
-        btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-lime text-vital-950 shadow-sm';
+      if (ang === current3DAngle) {
+        btn.className = 'w-full sm:w-auto px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-lime text-vital-950 shadow-sm text-center';
       } else {
-        btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition bg-white/10 text-vital-cream hover:bg-white/20';
+        btn.className = 'w-full sm:w-auto px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition bg-white/10 text-vital-cream hover:bg-white/20 text-center';
       }
     }
   });
-
-  const compareBtn = document.getElementById('btn-compare-mode');
-  if (compareBtn) {
-    if (isCompareRealMode) {
-      compareBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-lime text-vital-950 shadow-sm';
-      compareBtn.innerHTML = '🔄 Volver a Render 3D';
-    } else {
-      compareBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-orange text-white hover:opacity-90 shadow-sm';
-      compareBtn.innerHTML = '⚖️ Comparar Real';
-    }
-  }
 
   // Update Court toggle buttons
   const btnC1 = document.getElementById('btn-court-1');
@@ -1304,39 +1293,34 @@ function render3DCourtViewer() {
 
   // Update Badge & Labels
   const badgeEl = document.getElementById('active-angle-badge');
-  if (badgeEl) badgeEl.textContent = isCompareRealMode ? 'Foto Real en Directo' : angle.badge;
+  if (badgeEl) badgeEl.textContent = angle.badge;
 
   const modeLabel = document.getElementById('render-mode-label');
-  if (modeLabel) modeLabel.textContent = isCompareRealMode ? 'Instalaciones Reales · Zitácuaro' : angle.modeLabel;
+  if (modeLabel) modeLabel.textContent = angle.modeLabel;
 
   // Update Viewport Image
   const imgEl = document.getElementById('render-display-img');
   if (imgEl) {
     imgEl.classList.remove('fade-in-quick');
     void imgEl.offsetWidth; // trigger reflow
-    imgEl.src = isCompareRealMode ? angle.realPhoto : angle.image;
+    imgEl.src = angle.image;
     imgEl.classList.add('fade-in-quick');
   }
 
-  // Render Hotspots (only when in 3D CAD mode)
+  // Render Hotspots for 3D CAD mode
   const hotspotsContainer = document.getElementById('render-hotspots');
   if (hotspotsContainer) {
-    if (isCompareRealMode) {
-      hotspotsContainer.innerHTML = '';
-      hideHotspotTooltip();
-    } else {
-      hotspotsContainer.innerHTML = (angle.hotspots || []).map((h, idx) => `
-        <button
-          type="button"
-          onclick="showHotspotTooltip(${idx})"
-          class="hotspot-btn hotspot-pulse"
-          style="left: ${h.x}%; top: ${h.y}%;"
-          title="${h.title}"
-        >
-          ${idx + 1}
-        </button>
-      `).join('');
-    }
+    hotspotsContainer.innerHTML = (angle.hotspots || []).map((h, idx) => `
+      <button
+        type="button"
+        onclick="showHotspotTooltip(${idx})"
+        class="hotspot-btn hotspot-pulse"
+        style="left: ${h.x}%; top: ${h.y}%;"
+        title="${h.title}"
+      >
+        ${idx + 1}
+      </button>
+    `).join('');
   }
 
   // Update Synchronized Side Real Photo Card
@@ -1367,18 +1351,18 @@ function render3DCourtViewer() {
 }
 
 function switch3DAngle(angleId) {
-  isCompareRealMode = false;
   current3DAngle = angleId;
   render3DCourtViewer();
 }
 
-function switchCourt3D(courtId) {
-  current3DCourt = courtId;
+function switch3DAngleFromLightbox(angleId) {
+  current3DAngle = angleId;
   render3DCourtViewer();
+  updateLightboxContent();
 }
 
-function toggleCompareMode() {
-  isCompareRealMode = !isCompareRealMode;
+function switchCourt3D(courtId) {
+  current3DCourt = courtId;
   render3DCourtViewer();
 }
 
@@ -1420,9 +1404,11 @@ function setSideRealPhoto(src) {
 }
 
 function openCurrentRenderLightbox() {
-  const angle = COURT_3D_DATA.angles[current3DAngle] || COURT_3D_DATA.angles.iso1;
-  const targetImg = isCompareRealMode ? angle.realPhoto : angle.image;
-  openCustomLightbox(targetImg, angle.badge, isCompareRealMode ? 'Fotografía de Instalaciones Reales' : 'Render CAD Arquitectónico 3D', angle.realDesc);
+  currentLightboxMode = 'render3d';
+  updateLightboxContent();
+  const modal = document.getElementById('gallery-lightbox');
+  if (modal) modal.classList.remove('is-hidden');
+  document.body.style.overflow = 'hidden';
 }
 
 function openCurrentSidePhotoModal() {
@@ -1499,6 +1485,7 @@ function filterGallery(cat) {
 }
 
 function openGalleryLightbox(index, subIndex = 0) {
+  currentLightboxMode = 'gallery';
   currentLightboxIndex = (index + GALLERY_ITEMS.length) % GALLERY_ITEMS.length;
   currentLightboxSubIndex = subIndex;
   updateLightboxContent();
@@ -1513,26 +1500,39 @@ function selectLightboxSubImage(subIdx) {
 }
 
 function navigateGalleryLightbox(direction) {
-  const item = GALLERY_ITEMS[currentLightboxIndex];
-  if (item && item.images && item.images.length > 1) {
-    const nextSub = currentLightboxSubIndex + direction;
-    if (nextSub >= 0 && nextSub < item.images.length) {
-      currentLightboxSubIndex = nextSub;
-      updateLightboxContent();
-      return;
-    }
+  // If in 3D Render mode: ONLY navigate between 3D render angles!
+  if (currentLightboxMode === 'render3d') {
+    const angles = ['iso1', 'iso2', 'cancha2'];
+    let idx = angles.indexOf(current3DAngle);
+    if (idx === -1) idx = 0;
+    idx = (idx + direction + angles.length) % angles.length;
+    current3DAngle = angles[idx];
+    render3DCourtViewer();
+    updateLightboxContent();
+    return;
   }
 
-  currentLightboxIndex = (currentLightboxIndex + direction + GALLERY_ITEMS.length) % GALLERY_ITEMS.length;
-  const newItem = GALLERY_ITEMS[currentLightboxIndex];
-  currentLightboxSubIndex = (direction > 0) ? 0 : ((newItem && newItem.images) ? newItem.images.length - 1 : 0);
-  updateLightboxContent();
+  // If in Gallery mode: navigate through gallery items and sub-images
+  if (currentLightboxMode === 'gallery') {
+    const item = GALLERY_ITEMS[currentLightboxIndex];
+    if (item && item.images && item.images.length > 1) {
+      const nextSub = currentLightboxSubIndex + direction;
+      if (nextSub >= 0 && nextSub < item.images.length) {
+        currentLightboxSubIndex = nextSub;
+        updateLightboxContent();
+        return;
+      }
+    }
+
+    currentLightboxIndex = (currentLightboxIndex + direction + GALLERY_ITEMS.length) % GALLERY_ITEMS.length;
+    const newItem = GALLERY_ITEMS[currentLightboxIndex];
+    currentLightboxSubIndex = (direction > 0) ? 0 : ((newItem && newItem.images) ? newItem.images.length - 1 : 0);
+    updateLightboxContent();
+    return;
+  }
 }
 
 function updateLightboxContent() {
-  const item = GALLERY_ITEMS[currentLightboxIndex];
-  if (!item) return;
-
   const img = document.getElementById('lb-image');
   const counter = document.getElementById('lb-counter');
   const badge = document.getElementById('lb-badge');
@@ -1540,64 +1540,108 @@ function updateLightboxContent() {
   const desc = document.getElementById('lb-desc');
   const thumbsContainer = document.getElementById('lb-subgallery-thumbs');
 
-  const hasSubImages = item.images && item.images.length > 1;
-  const currentSub = hasSubImages ? item.images[currentLightboxSubIndex] || item.images[0] : null;
+  // MODE 1: Render 3D CAD Isolated Navigation
+  if (currentLightboxMode === 'render3d') {
+    const angle = COURT_3D_DATA.angles[current3DAngle] || COURT_3D_DATA.angles.iso1;
+    const angles = ['iso1', 'iso2', 'cancha2'];
+    const currentIdx = Math.max(0, angles.indexOf(current3DAngle));
 
-  const activeSrc = currentSub ? currentSub.src : item.image;
-  const activeTitle = currentSub ? currentSub.title : item.title;
-  const activeDesc = currentSub ? currentSub.description : item.description;
+    if (img) img.src = angle.image;
+    if (counter) counter.textContent = `Render 3D CAD · Ángulo ${currentIdx + 1} de 3`;
+    if (badge) badge.textContent = angle.badge;
+    if (title) title.textContent = angle.modeLabel;
+    if (desc) desc.textContent = angle.realDesc;
 
-  if (img) {
-    img.src = activeSrc;
-    img.onerror = () => { img.src = item.image; };
-  }
-
-  if (counter) {
-    if (hasSubImages) {
-      counter.textContent = `${item.title} · Foto ${currentLightboxSubIndex + 1} de ${item.images.length}`;
-    } else {
-      counter.textContent = `Foto ${currentLightboxIndex + 1} de ${GALLERY_ITEMS.length}`;
-    }
-  }
-
-  if (badge) badge.textContent = item.badge;
-  if (title) title.textContent = activeTitle;
-  if (desc) desc.textContent = activeDesc;
-
-  if (thumbsContainer) {
-    if (hasSubImages) {
-      thumbsContainer.innerHTML = item.images.map((sub, sIdx) => {
-        const isActive = sIdx === currentLightboxSubIndex;
-        return `
-          <button onclick="selectLightboxSubImage(${sIdx})" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-            isActive
-              ? 'bg-vital-lime text-vital-950 shadow-md ring-2 ring-vital-lime scale-105'
-              : 'bg-white/10 text-white hover:bg-white/20'
-          }">
-            <span>📸 Foto ${sIdx + 1}</span>
-          </button>
-        `;
-      }).join('');
+    if (thumbsContainer) {
+      thumbsContainer.innerHTML = [
+        { id: 'iso1', label: '🏟️ Pistas 1 & 2' },
+        { id: 'iso2', label: '📐 Hangar & Techo' },
+        { id: 'cancha2', label: '🎾 Esquina Cancha 2' }
+      ].map(a => `
+        <button onclick="switch3DAngleFromLightbox('${a.id}')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+          a.id === current3DAngle
+            ? 'bg-vital-lime text-vital-950 shadow-md ring-2 ring-vital-lime scale-105'
+            : 'bg-white/10 text-white hover:bg-white/20'
+        }">
+          <span>${a.label}</span>
+        </button>
+      `).join('');
       thumbsContainer.classList.remove('is-hidden');
-    } else {
-      thumbsContainer.innerHTML = '';
-      thumbsContainer.classList.add('is-hidden');
     }
+    return;
+  }
+
+  // MODE 2: General Gallery with Multi-Photo Comedor Subgallery
+  if (currentLightboxMode === 'gallery') {
+    const item = GALLERY_ITEMS[currentLightboxIndex];
+    if (!item) return;
+
+    const hasSubImages = item.images && item.images.length > 1;
+    const currentSub = hasSubImages ? item.images[currentLightboxSubIndex] || item.images[0] : null;
+
+    const activeSrc = currentSub ? currentSub.src : item.image;
+    const activeTitle = currentSub ? currentSub.title : item.title;
+    const activeDesc = currentSub ? currentSub.description : item.description;
+
+    if (img) {
+      img.src = activeSrc;
+      img.onerror = () => { img.src = item.image; };
+    }
+
+    if (counter) {
+      if (hasSubImages) {
+        counter.textContent = `${item.title} · Foto ${currentLightboxSubIndex + 1} de ${item.images.length}`;
+      } else {
+        counter.textContent = `Foto ${currentLightboxIndex + 1} de ${GALLERY_ITEMS.length}`;
+      }
+    }
+
+    if (badge) badge.textContent = item.badge;
+    if (title) title.textContent = activeTitle;
+    if (desc) desc.textContent = activeDesc;
+
+    if (thumbsContainer) {
+      if (hasSubImages) {
+        thumbsContainer.innerHTML = item.images.map((sub, sIdx) => {
+          const isActive = sIdx === currentLightboxSubIndex;
+          return `
+            <button onclick="selectLightboxSubImage(${sIdx})" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+              isActive
+                ? 'bg-vital-lime text-vital-950 shadow-md ring-2 ring-vital-lime scale-105'
+                : 'bg-white/10 text-white hover:bg-white/20'
+            }">
+              <span>📸 Foto ${sIdx + 1}</span>
+            </button>
+          `;
+        }).join('');
+        thumbsContainer.classList.remove('is-hidden');
+      } else {
+        thumbsContainer.innerHTML = '';
+        thumbsContainer.classList.add('is-hidden');
+      }
+    }
+    return;
   }
 }
 
 function openCustomLightbox(imgSrc, badgeText, titleText, descText) {
+  currentLightboxMode = 'custom';
   const img = document.getElementById('lb-image');
   const counter = document.getElementById('lb-counter');
   const badge = document.getElementById('lb-badge');
   const title = document.getElementById('lb-title');
   const desc = document.getElementById('lb-desc');
+  const thumbsContainer = document.getElementById('lb-subgallery-thumbs');
 
   if (img) img.src = imgSrc;
   if (counter) counter.textContent = 'Detalle en Alta Definición';
   if (badge) badge.textContent = badgeText;
   if (title) title.textContent = titleText;
   if (desc) desc.textContent = descText;
+  if (thumbsContainer) {
+    thumbsContainer.innerHTML = '';
+    thumbsContainer.classList.add('is-hidden');
+  }
 
   const modal = document.getElementById('gallery-lightbox');
   if (modal) modal.classList.remove('is-hidden');

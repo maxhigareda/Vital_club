@@ -181,18 +181,15 @@
               </div>
 
               <!-- Action buttons to rotate/switch angles -->
-              <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 w-full sm:w-auto">
-                <button id="btn-ang-iso1" onclick="switch3DAngle('iso1')" class="w-full sm:w-auto px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-lime text-vital-950 shadow-sm text-center" title="Vista isométrica de Pistas 1 y 2 con techo">
+              <div class="grid grid-cols-3 sm:flex sm:flex-wrap items-center gap-2 w-full sm:w-auto">
+                <button id="btn-ang-iso1" onclick="switch3DAngle('iso1')" class="w-full sm:w-auto px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-lime text-vital-950 shadow-sm text-center" title="Vista isométrica de Pistas 1 y 2 con techo">
                   🏟️ Pistas 1 & 2
                 </button>
-                <button id="btn-ang-iso2" onclick="switch3DAngle('iso2')" class="w-full sm:w-auto px-3 py-1.5 rounded-xl text-xs font-bold transition bg-white/10 text-vital-cream hover:bg-white/20 text-center" title="Vista frontal con hangar y techo">
+                <button id="btn-ang-iso2" onclick="switch3DAngle('iso2')" class="w-full sm:w-auto px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition bg-white/10 text-vital-cream hover:bg-white/20 text-center" title="Vista frontal con hangar y techo">
                   📐 Hangar & Techo
                 </button>
-                <button id="btn-ang-cancha2" onclick="switch3DAngle('cancha2')" class="w-full sm:w-auto px-3 py-1.5 rounded-xl text-xs font-bold transition bg-white/10 text-vital-cream hover:bg-white/20 text-center" title="Detalle de esquina de Cancha 2">
+                <button id="btn-ang-cancha2" onclick="switch3DAngle('cancha2')" class="w-full sm:w-auto px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition bg-white/10 text-vital-cream hover:bg-white/20 text-center" title="Detalle de esquina de Cancha 2">
                   🎾 Esquina Cancha 2
-                </button>
-                <button id="btn-compare-mode" onclick="toggleCompareMode()" class="w-full sm:w-auto px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-orange text-white hover:opacity-90 shadow-sm text-center" title="Alternar entre render y foto real">
-                  ⚖️ Comparar Real
                 </button>
               </div>
             </div>
@@ -796,6 +793,6 @@
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=10"></script>
+  <script src="app.js?v=11"></script>
 </body>
 </html>
