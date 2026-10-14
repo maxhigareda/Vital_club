@@ -506,7 +506,24 @@ const GALLERY_ITEMS = [
     title: 'Comedor y Terraza Social',
     badge: 'Zona de Convivencia',
     description: 'Mesas en madera natural y sillas nórdicas para relajarse antes y después de cada partido.',
-    image: 'assets/real/social-comedor-terraza.jpg'
+    image: 'assets/real/social-comedor-terraza.jpg',
+    images: [
+      {
+        src: 'assets/real/social-comedor-terraza.jpg',
+        title: 'Comedor y Terraza Social · Mesas Nórdicas',
+        description: 'Mesas en madera natural y sillas nórdicas para relajarse antes y después de cada partido.'
+      },
+      {
+        src: 'assets/real/social-comedor-terraza-2.jpg',
+        title: 'Comedor y Terraza Social · Vista Terraza',
+        description: 'Espacio de terraza y área de convivencia familiar en Vital Club Zitácuaro.'
+      },
+      {
+        src: 'assets/real/social-comedor-terraza-3.jpg',
+        title: 'Comedor y Terraza Social · Zona Convivencia',
+        description: 'Ambiente confortable para descansar y compartir bebidas después de jugar.'
+      }
+    ]
   }
 ];
 
@@ -1241,6 +1258,7 @@ let current3DAngle = 'iso1';
 let current3DCourt = 'cancha-1';
 let isCompareRealMode = false;
 let currentLightboxIndex = 0;
+let currentLightboxSubIndex = 0;
 let currentGalleryCategory = 'todos';
 
 function render3DCourtViewer() {
@@ -1438,6 +1456,8 @@ function renderOfficialGallery(category = currentGalleryCategory) {
 
   container.innerHTML = list.map((item) => {
     const globalIdx = GALLERY_ITEMS.findIndex(g => g.id === item.id);
+    const hasMultiple = item.images && item.images.length > 1;
+
     return `
       <div
         onclick="openGalleryLightbox(${globalIdx})"
@@ -1446,15 +1466,27 @@ function renderOfficialGallery(category = currentGalleryCategory) {
         <img src="${item.image}" alt="${item.title}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" />
         <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
         
+        <!-- Multi-photo Badge for Comedor/Social -->
+        <div class="absolute top-2.5 left-2.5 z-20 flex items-center gap-1.5">
+          ${hasMultiple ? `
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-vital-orange text-white shadow-md border border-white/20">
+              <span>📸</span> 3 Fotos
+            </span>
+          ` : ''}
+        </div>
+
         <div class="relative z-10 p-3.5 sm:p-4 space-y-1">
-          <span class="inline-block px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-vital-lime text-vital-950">
-            ${item.badge}
-          </span>
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span class="inline-block px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-vital-lime text-vital-950">
+              ${item.badge}
+            </span>
+            ${hasMultiple ? `<span class="text-[10px] text-vital-lime font-bold">★ Interactivo</span>` : ''}
+          </div>
           <h4 class="font-brand font-bold text-white text-sm sm:text-base leading-tight">${item.title}</h4>
           <p class="text-[11px] text-white/75 line-clamp-2">${item.description}</p>
         </div>
 
-        <div class="absolute top-2.5 right-2.5 w-7 h-7 rounded-xl bg-black/60 text-white flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition backdrop-blur-sm">
+        <div class="absolute top-2.5 right-2.5 w-7 h-7 rounded-xl bg-black/60 text-white flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition backdrop-blur-sm z-20">
           ↗
         </div>
       </div>
@@ -1466,16 +1498,34 @@ function filterGallery(cat) {
   renderOfficialGallery(cat);
 }
 
-function openGalleryLightbox(index) {
+function openGalleryLightbox(index, subIndex = 0) {
   currentLightboxIndex = (index + GALLERY_ITEMS.length) % GALLERY_ITEMS.length;
+  currentLightboxSubIndex = subIndex;
   updateLightboxContent();
   const modal = document.getElementById('gallery-lightbox');
   if (modal) modal.classList.remove('is-hidden');
   document.body.style.overflow = 'hidden';
 }
 
+function selectLightboxSubImage(subIdx) {
+  currentLightboxSubIndex = subIdx;
+  updateLightboxContent();
+}
+
 function navigateGalleryLightbox(direction) {
+  const item = GALLERY_ITEMS[currentLightboxIndex];
+  if (item && item.images && item.images.length > 1) {
+    const nextSub = currentLightboxSubIndex + direction;
+    if (nextSub >= 0 && nextSub < item.images.length) {
+      currentLightboxSubIndex = nextSub;
+      updateLightboxContent();
+      return;
+    }
+  }
+
   currentLightboxIndex = (currentLightboxIndex + direction + GALLERY_ITEMS.length) % GALLERY_ITEMS.length;
+  const newItem = GALLERY_ITEMS[currentLightboxIndex];
+  currentLightboxSubIndex = (direction > 0) ? 0 : ((newItem && newItem.images) ? newItem.images.length - 1 : 0);
   updateLightboxContent();
 }
 
@@ -1488,12 +1538,52 @@ function updateLightboxContent() {
   const badge = document.getElementById('lb-badge');
   const title = document.getElementById('lb-title');
   const desc = document.getElementById('lb-desc');
+  const thumbsContainer = document.getElementById('lb-subgallery-thumbs');
 
-  if (img) img.src = item.image;
-  if (counter) counter.textContent = `Foto ${currentLightboxIndex + 1} de ${GALLERY_ITEMS.length}`;
+  const hasSubImages = item.images && item.images.length > 1;
+  const currentSub = hasSubImages ? item.images[currentLightboxSubIndex] || item.images[0] : null;
+
+  const activeSrc = currentSub ? currentSub.src : item.image;
+  const activeTitle = currentSub ? currentSub.title : item.title;
+  const activeDesc = currentSub ? currentSub.description : item.description;
+
+  if (img) {
+    img.src = activeSrc;
+    img.onerror = () => { img.src = item.image; };
+  }
+
+  if (counter) {
+    if (hasSubImages) {
+      counter.textContent = `${item.title} · Foto ${currentLightboxSubIndex + 1} de ${item.images.length}`;
+    } else {
+      counter.textContent = `Foto ${currentLightboxIndex + 1} de ${GALLERY_ITEMS.length}`;
+    }
+  }
+
   if (badge) badge.textContent = item.badge;
-  if (title) title.textContent = item.title;
-  if (desc) desc.textContent = item.description;
+  if (title) title.textContent = activeTitle;
+  if (desc) desc.textContent = activeDesc;
+
+  if (thumbsContainer) {
+    if (hasSubImages) {
+      thumbsContainer.innerHTML = item.images.map((sub, sIdx) => {
+        const isActive = sIdx === currentLightboxSubIndex;
+        return `
+          <button onclick="selectLightboxSubImage(${sIdx})" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+            isActive
+              ? 'bg-vital-lime text-vital-950 shadow-md ring-2 ring-vital-lime scale-105'
+              : 'bg-white/10 text-white hover:bg-white/20'
+          }">
+            <span>📸 Foto ${sIdx + 1}</span>
+          </button>
+        `;
+      }).join('');
+      thumbsContainer.classList.remove('is-hidden');
+    } else {
+      thumbsContainer.innerHTML = '';
+      thumbsContainer.classList.add('is-hidden');
+    }
+  }
 }
 
 function openCustomLightbox(imgSrc, badgeText, titleText, descText) {
