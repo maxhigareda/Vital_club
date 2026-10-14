@@ -45,10 +45,14 @@
       </a>
 
       <!-- CLIENT NAVIGATION (Visible ONLY in Client Mode) -->
-      <nav id="client-nav" class="hidden md:flex items-center gap-6 text-sm font-medium text-vital-cream/80">
+      <nav id="client-nav" class="hidden md:flex items-center gap-5 text-sm font-medium text-vital-cream/80">
+        <a href="#canchas-3d" class="hover:text-vital-lime transition flex items-center gap-1.5 font-bold text-vital-lime">
+          <span class="w-2 h-2 rounded-full bg-vital-lime animate-ping"></span> Canchas 3D
+        </a>
         <a href="#canchas" class="hover:text-vital-lime transition">Rentas y Retas</a>
         <a href="#clases" class="hover:text-vital-lime transition">Clases</a>
         <a href="#clinicas" class="hover:text-vital-lime transition">Clínicas</a>
+        <a href="#galeria" class="hover:text-vital-lime transition">Galería Real</a>
         <a href="#nosotros" class="hover:text-vital-lime transition">Coaches</a>
       </nav>
 
@@ -94,15 +98,15 @@
           </h1>
 
           <p class="text-vital-cream/75 text-base sm:text-lg max-w-xl leading-relaxed">
-            Pádel techado sin pretexto en Zitácuaro. Renta tu cancha, únete a retas organizadas o entrena en clases y clínicas con nuestros coaches.
+            Pádel techado sin pretexto en Zitácuaro. Renta tu cancha, únete a retas organizadas o entrena en clases y clínicas con nuestros coaches oficiales.
           </p>
 
           <div class="flex flex-wrap items-center gap-3 pt-1">
             <a href="#canchas" class="px-6 py-3.5 rounded-2xl bg-vital-lime hover:opacity-95 text-vital-950 font-bold text-sm transition shadow-lg">
               Apartar Cancha o Reta
             </a>
-            <a href="#clases" class="px-5 py-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-vital-cream font-semibold text-sm transition">
-              Ver Clases y Tarifas
+            <a href="#canchas-3d" class="px-5 py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-vital-lime/30 text-vital-lime font-bold text-sm transition flex items-center gap-2">
+              <span>🔄</span> Ver Canchas 3D & Fotos
             </a>
             <button onclick="openClubInfoModal()" class="px-4 py-3.5 rounded-2xl text-xs text-vital-cream/70 hover:text-white transition flex items-center gap-1.5">
               <i data-lucide="info" class="w-4 h-4 text-vital-orange"></i> Info & Ubicación
@@ -111,15 +115,181 @@
         </div>
 
         <div class="lg:col-span-5 relative">
-          <div class="relative rounded-3xl overflow-hidden border border-white/15 shadow-2xl bg-vital-950">
-            <img src="assets/vital-hero-ball.jpg" alt="Pádel Vital Club" class="w-full h-80 sm:h-96 object-cover opacity-90 hover:scale-105 transition duration-700" />
-            <div class="absolute inset-0 bg-gradient-to-t from-vital-950 via-vital-950/20 to-transparent"></div>
+          <div class="relative rounded-3xl overflow-hidden border border-white/15 shadow-2xl bg-vital-950 group">
+            <img src="assets/real/cancha-panoramica-red.jpg" alt="Canchas Techadas Vital Club Zitácuaro" class="w-full h-80 sm:h-96 object-cover opacity-90 group-hover:scale-105 transition duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-vital-950 via-vital-950/25 to-transparent"></div>
             
+            <div class="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-vital-950/80 backdrop-blur-md border border-white/20 text-[10px] font-bold text-vital-cream">
+              <span class="w-2 h-2 rounded-full bg-vital-lime"></span> Instalaciones Reales · Zitácuaro
+            </div>
+
             <div class="absolute bottom-5 left-5 right-5 space-y-2">
               <span class="text-[10px] uppercase font-bold tracking-widest text-vital-orange">Tarifas Oficiales Club</span>
               <div id="hero-courts-status" class="grid grid-cols-2 gap-2"></div>
             </div>
           </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 0: VISOR INTERACTIVO 3D DE CANCHAS Y FOTOS REALES -->
+    <section id="canchas-3d" class="py-16 sm:py-20 bg-vital-950 text-vital-cream border-b border-white/10 relative overflow-hidden">
+      <!-- Glow ambience -->
+      <div class="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-vital-lime/10 blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-40 -right-40 w-96 h-96 rounded-full bg-vital-orange/10 blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-8 relative z-10">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-vital-lime/10 border border-vital-lime/25 text-xs text-vital-lime font-bold mb-2">
+              <span class="w-2 h-2 rounded-full bg-vital-lime animate-ping"></span>
+              RENDER 3D & FOTOS REALES EN VIVO
+            </div>
+            <h2 class="font-brand text-3xl sm:text-5xl text-vital-cream">Visor Interactivo de Canchas</h2>
+            <p class="text-sm text-vital-cream/75 max-w-2xl mt-1 leading-relaxed">
+              Gira los ángulos de nuestras pistas de cristal templado en render CAD 3D y compáralos al instante con las fotografías reales de las canchas techadas en Zitácuaro.
+            </p>
+          </div>
+
+          <!-- Cancha 1 / Cancha 2 Selector -->
+          <div class="flex items-center gap-2 p-1.5 rounded-2xl bg-white/5 border border-white/10 shrink-0">
+            <button id="btn-court-1" onclick="switchCourt3D('cancha-1')" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-vital-lime text-vital-950 shadow-sm">
+              🎾 Cancha 1 Techada
+            </button>
+            <button id="btn-court-2" onclick="switchCourt3D('cancha-2')" class="px-4 py-2 rounded-xl text-xs font-bold transition text-vital-cream/80 hover:text-white">
+              🎾 Cancha 2 Techada
+            </button>
+          </div>
+        </div>
+
+        <!-- Main Interactive 3D + Side Real Photos Stage -->
+        <div class="grid lg:grid-cols-12 gap-6 items-start">
+          
+          <!-- 3D Interactive Stage (8 cols) -->
+          <div class="lg:col-span-8 bg-black/40 rounded-3xl p-4 sm:p-6 border border-white/10 space-y-4 backdrop-blur-sm">
+            
+            <!-- Controls bar: Angle Switcher ("Girar / Cambiar Ángulos") -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10">
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-vital-lime">Girar Ángulo 3D:</span>
+                <span id="active-angle-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-vital-cream border border-white/15">
+                  Isométrica Frontal
+                </span>
+              </div>
+
+              <!-- Action buttons to rotate/switch angles -->
+              <div class="flex flex-wrap items-center gap-2">
+                <button id="btn-ang-iso1" onclick="switch3DAngle('iso1')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-lime text-vital-950 shadow-sm" title="Vista isométrica principal">
+                  🔄 Isométrica 3D
+                </button>
+                <button id="btn-ang-iso2" onclick="switch3DAngle('iso2')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-white/10 text-vital-cream hover:bg-white/20" title="Girar 180 grados">
+                  🔄 Giro 180°
+                </button>
+                <button id="btn-ang-tactica" onclick="switch3DAngle('tactica')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-white/10 text-vital-cream hover:bg-white/20" title="Vista aérea táctica con medidas">
+                  📐 Táctica 20x10m
+                </button>
+                <button id="btn-compare-mode" onclick="toggleCompareMode()" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-orange text-white hover:opacity-90 shadow-sm" title="Alternar entre render y foto real">
+                  ⚖️ Comparar Real
+                </button>
+              </div>
+            </div>
+
+            <!-- Viewport Container with Hotspots -->
+            <div id="render-viewport" class="relative rounded-2xl overflow-hidden bg-vital-950 aspect-[16/9] border border-white/10 select-none group">
+              
+              <img id="render-display-img" src="assets/render-cancha-iso1.jpg" alt="Render Cancha Vital Club" class="w-full h-full object-cover transition-all duration-300 ease-out" />
+              
+              <!-- Hotspots Layer -->
+              <div id="render-hotspots" class="absolute inset-0 pointer-events-auto"></div>
+
+              <!-- Quick Fullscreen Lightbox Button -->
+              <button onclick="openCurrentRenderLightbox()" class="absolute top-3 right-3 px-3 py-1.5 rounded-xl bg-vital-950/85 hover:bg-vital-950 border border-white/20 text-[11px] font-bold text-vital-cream backdrop-blur-md transition flex items-center gap-1.5 shadow-lg">
+                🔍 Ver en Grande
+              </button>
+
+              <!-- Hotspot Active Tooltip Card -->
+              <div id="hotspot-tooltip-card" class="is-hidden absolute bottom-4 left-4 right-4 sm:left-6 sm:right-auto sm:max-w-md p-4 rounded-2xl bg-vital-950/95 border border-vital-lime/50 backdrop-blur-md shadow-2xl text-xs space-y-1 z-30 transition-all duration-300">
+                <div class="flex items-center justify-between">
+                  <span id="tooltip-title" class="font-bold text-vital-lime uppercase tracking-wider text-[11px]"></span>
+                  <button onclick="hideHotspotTooltip()" class="text-white/60 hover:text-white text-base leading-none px-1">✕</button>
+                </div>
+                <p id="tooltip-desc" class="text-vital-cream/85 leading-relaxed"></p>
+              </div>
+
+              <!-- Angle Label in corner -->
+              <div class="absolute bottom-3 right-3 pointer-events-none px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur-sm border border-white/10 text-[10px] font-bold uppercase tracking-widest text-vital-cream/80">
+                <span id="render-mode-label">Render 3D · Pista Reglamentaria</span>
+              </div>
+            </div>
+
+            <!-- Technical Specifications Bar -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 text-center text-xs">
+              <div class="p-3 rounded-2xl bg-white/5 border border-white/5">
+                <span class="text-[10px] uppercase tracking-wider text-vital-cream/50 block font-bold">Dimensiones FIP</span>
+                <span class="font-bold text-vital-cream">20.00 x 10.00 m</span>
+              </div>
+              <div class="p-3 rounded-2xl bg-white/5 border border-white/5">
+                <span class="text-[10px] uppercase tracking-wider text-vital-cream/50 block font-bold">Cristal Templado</span>
+                <span class="font-bold text-vital-cream">12 mm Panorámico</span>
+              </div>
+              <div class="p-3 rounded-2xl bg-white/5 border border-white/5">
+                <span class="text-[10px] uppercase tracking-wider text-vital-cream/50 block font-bold">Techo Autoportante</span>
+                <span class="font-bold text-vital-lime">8.5 m Altura Libre</span>
+              </div>
+              <div class="p-3 rounded-2xl bg-white/5 border border-white/5">
+                <span class="text-[10px] uppercase tracking-wider text-vital-cream/50 block font-bold">Iluminación LED</span>
+                <span class="font-bold text-vital-orange">8 Reflectores Curvos</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Side Real Photos Panel ("A lado las fotos") (4 cols) -->
+          <div class="lg:col-span-4 bg-white/5 rounded-3xl p-5 sm:p-6 border border-white/10 space-y-4 backdrop-blur-sm flex flex-col justify-between">
+            
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-vital-lime">📸 Foto Real Sincronizada</span>
+                <span id="side-court-pill" class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  Cancha 1 Real
+                </span>
+              </div>
+              
+              <h4 id="side-photo-title" class="font-brand text-xl text-vital-cream leading-tight">
+                Pista 1 Techada con Cristal
+              </h4>
+              
+              <!-- Synchronized Photo Card -->
+              <div class="relative rounded-2xl overflow-hidden border border-white/15 aspect-[4/5] bg-vital-900 group cursor-pointer" onclick="openCurrentSidePhotoModal()">
+                <img id="side-real-img" src="assets/real/cancha-1-frontal.jpg" alt="Foto real Vital Club" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
+                
+                <div class="absolute bottom-3.5 left-3.5 right-3.5 space-y-1">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-vital-orange flex items-center gap-1">
+                    <i data-lucide="camera" class="w-3 h-3"></i> Instalaciones Reales · Zitácuaro
+                  </span>
+                  <p id="side-photo-desc" class="text-xs text-vital-cream/90 leading-snug">
+                    Cristal templado de seguridad serigrafiado con logotipo oficial Vital Club y cubierta industrial.
+                  </p>
+                </div>
+
+                <div class="absolute top-3 right-3 px-2 py-1 rounded-lg bg-black/60 text-[10px] text-white font-bold backdrop-blur-sm">
+                  Ampliar foto ↗
+                </div>
+              </div>
+            </div>
+
+            <!-- Strip of other photos for this court -->
+            <div class="space-y-2 pt-2 border-t border-white/10">
+              <span class="text-[11px] font-bold text-vital-cream/60 block">Más fotos de esta cancha:</span>
+              <div id="side-thumbnails-strip" class="grid grid-cols-3 gap-2"></div>
+            </div>
+
+          </div>
+
         </div>
 
       </div>
@@ -216,29 +386,42 @@
 
     </section>
 
-    <!-- SECTION 4: COMING SOON BANNER (COCINA, BARRE & GYM) -->
-    <section class="max-w-6xl mx-auto px-4 sm:px-6 pb-12">
-      <div class="rounded-3xl bg-vital-900 text-vital-cream p-8 sm:p-12 border border-white/10 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
-        <div class="space-y-4 max-w-xl z-10">
-          <span class="inline-block px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-widest bg-vital-orange text-white">
-            COMING SOON
-          </span>
-          <h3 class="font-brand text-3xl sm:text-4xl text-vital-cream">
-            Juega. Come. Conecta.
-          </h3>
-          <p class="text-sm text-vital-cream/80 leading-relaxed">
-            “Actualmente contamos con canchas de pádel abiertas y estamos trabajando en la integración de nuevas experiencias como cocina, barre y gym.”
-          </p>
-          <p class="text-xs text-vital-lime font-semibold">
-            Muy pronto podrás disfrutar de snacks, smoothies, café de especialidad y zona wellness en Vital Club.
-          </p>
+    <!-- SECTION 4: GALERÍA FOTOGRÁFICA OFICIAL -->
+    <section id="galeria" class="py-20 bg-vital-cream border-t border-vital-900/10">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-vital-orange/10 border border-vital-orange/20 text-xs font-bold text-vital-orange mb-2">
+              <i data-lucide="camera" class="w-3.5 h-3.5"></i> FOTOS 100% REALES DE INSTALACIONES
+            </div>
+            <h2 class="font-brand text-3xl sm:text-5xl text-vital-900">Galería Vital Club</h2>
+            <p class="text-sm text-vital-900/60 mt-0.5">Explora nuestras canchas techadas, entrenamientos con coaches, cafetería y ambiente familiar en Zitácuaro.</p>
+          </div>
+
+          <!-- Category Filter Pills -->
+          <div id="gallery-filter-tabs" class="flex flex-wrap gap-2 text-xs">
+            <button onclick="filterGallery('todos')" class="gal-filter-btn px-4 py-2 rounded-xl font-bold bg-vital-900 text-vital-cream transition shadow-sm" data-category="todos">
+              Todas (14)
+            </button>
+            <button onclick="filterGallery('canchas')" class="gal-filter-btn px-4 py-2 rounded-xl font-bold bg-white text-stone-700 border border-vital-900/10 hover:bg-stone-50 transition" data-category="canchas">
+              Canchas Techadas (8)
+            </button>
+            <button onclick="filterGallery('coaches')" class="gal-filter-btn px-4 py-2 rounded-xl font-bold bg-white text-stone-700 border border-vital-900/10 hover:bg-stone-50 transition" data-category="coaches">
+              Coaches (3)
+            </button>
+            <button onclick="filterGallery('comunidad')" class="gal-filter-btn px-4 py-2 rounded-xl font-bold bg-white text-stone-700 border border-vital-900/10 hover:bg-stone-50 transition" data-category="comunidad">
+              Comunidad (1)
+            </button>
+            <button onclick="filterGallery('social')" class="gal-filter-btn px-4 py-2 rounded-xl font-bold bg-white text-stone-700 border border-vital-900/10 hover:bg-stone-50 transition" data-category="social">
+              Club House & Bar (2)
+            </button>
+          </div>
         </div>
-        <div class="z-10 shrink-0 text-center bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm">
-          <p class="text-xs uppercase tracking-widest text-vital-cream/60 font-bold mb-1">Experiencia Vital</p>
-          <p class="font-brand text-2xl text-vital-lime font-bold">Cocina & Gym</p>
-          <span class="text-xs text-vital-cream/70 mt-2 block">Próxima apertura</span>
-        </div>
-        <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-vital-lime/10 blur-3xl pointer-events-none"></div>
+
+        <!-- Gallery Grid -->
+        <div id="official-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5"></div>
+
       </div>
     </section>
 
@@ -256,6 +439,44 @@
 
         <div id="client-coaches-grid" class="grid sm:grid-cols-2 gap-8"></div>
 
+      </div>
+    </section>
+
+    <!-- SECTION 6: COMING SOON BANNER (COCINA, BARRE & GYM) -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+      <div class="rounded-3xl bg-vital-950 text-vital-cream p-8 sm:p-12 border border-white/10 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8">
+        <div class="space-y-4 max-w-xl z-10">
+          <span class="inline-block px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-widest bg-vital-orange text-white">
+            COMING SOON
+          </span>
+          <h3 class="font-brand text-3xl sm:text-4xl text-vital-cream">
+            Juega. Come. Conecta.
+          </h3>
+          <p class="text-sm text-vital-cream/80 leading-relaxed">
+            “Actualmente contamos con canchas de pádel abiertas y estamos trabajando en la integración de nuevas experiencias como cocina, barre y gym.”
+          </p>
+          <p class="text-xs text-vital-lime font-semibold">
+            Muy pronto podrás disfrutar de snacks, smoothies, café de especialidad y zona wellness en Vital Club.
+          </p>
+        </div>
+
+        <!-- Preview photos of the real social club house -->
+        <div class="z-10 grid grid-cols-2 gap-3 shrink-0 max-w-sm">
+          <div class="rounded-2xl overflow-hidden border border-white/15 bg-vital-900 group cursor-pointer" onclick="openGalleryLightbox(12)">
+            <img src="assets/real/social-recepcion-proshop.jpg" alt="Recepción y Pro Shop" class="w-full h-32 object-cover group-hover:scale-105 transition duration-500" />
+            <div class="p-2 text-[10px] font-bold text-vital-cream/80 bg-black/60 text-center">
+              Pro Shop & Barra
+            </div>
+          </div>
+          <div class="rounded-2xl overflow-hidden border border-white/15 bg-vital-900 group cursor-pointer" onclick="openGalleryLightbox(13)">
+            <img src="assets/real/social-comedor-terraza.jpg" alt="Comedor Terraza" class="w-full h-32 object-cover group-hover:scale-105 transition duration-500" />
+            <div class="p-2 text-[10px] font-bold text-vital-cream/80 bg-black/60 text-center">
+              Comedor & Terraza
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-vital-lime/10 blur-3xl pointer-events-none"></div>
       </div>
     </section>
 
@@ -529,6 +750,43 @@
   <!-- UNIVERSAL MODAL -->
   <div id="universal-modal" class="fixed inset-0 z-50 is-hidden bg-vital-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
     <div id="universal-modal-content" class="bg-white text-vital-950 rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-vital-900/10 relative my-8"></div>
+  </div>
+
+  <!-- GALLERY & 3D LIGHTBOX MODAL -->
+  <div id="gallery-lightbox" class="fixed inset-0 z-50 is-hidden lightbox-backdrop flex items-center justify-center p-3 sm:p-6" onclick="handleLightboxBackdropClick(event)">
+    <div class="relative max-w-5xl w-full max-h-[92vh] flex flex-col items-center justify-center space-y-3">
+      
+      <!-- Top Bar: Counter & Close button -->
+      <div class="w-full flex items-center justify-between text-white text-xs px-2">
+        <span id="lb-counter" class="font-bold text-vital-lime tracking-widest uppercase text-[11px]">Foto 1 de 14</span>
+        <button onclick="closeGalleryLightbox()" class="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition flex items-center gap-1.5">
+          <span>✕</span> Cerrar (Esc)
+        </button>
+      </div>
+
+      <!-- Main Image Viewport with Previous & Next navigation -->
+      <div class="relative w-full flex items-center justify-center max-h-[75vh]">
+        <button onclick="navigateGalleryLightbox(-1)" class="absolute left-2 sm:left-4 z-10 w-11 h-11 rounded-2xl bg-black/60 hover:bg-black/90 text-vital-cream border border-white/20 backdrop-blur-md transition shadow-xl flex items-center justify-center text-lg font-bold" title="Foto Anterior (Flecha Izquierda)">
+          ❮
+        </button>
+        
+        <img id="lb-image" src="" alt="Vista en detalle" class="max-h-[72vh] w-auto max-w-full rounded-2xl shadow-2xl object-contain border border-white/15 bg-black/40" />
+        
+        <button onclick="navigateGalleryLightbox(1)" class="absolute right-2 sm:right-4 z-10 w-11 h-11 rounded-2xl bg-black/60 hover:bg-black/90 text-vital-cream border border-white/20 backdrop-blur-md transition shadow-xl flex items-center justify-center text-lg font-bold" title="Siguiente Foto (Flecha Derecha)">
+          ❯
+        </button>
+      </div>
+
+      <!-- Caption & Metadata Card -->
+      <div class="w-full p-4 rounded-2xl bg-vital-950/90 border border-white/15 backdrop-blur-md text-vital-cream text-center max-w-2xl space-y-1">
+        <div class="flex items-center justify-center gap-2">
+          <span id="lb-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-vital-lime text-vital-950"></span>
+          <h4 id="lb-title" class="font-brand font-bold text-base text-vital-cream"></h4>
+        </div>
+        <p id="lb-desc" class="text-xs text-vital-cream/80 max-w-xl mx-auto"></p>
+      </div>
+
+    </div>
   </div>
 
   <!-- TOAST -->

@@ -179,6 +179,8 @@ const COACHES_DATA = [
     id: 'COACH-1',
     name: 'Lucas Morilla',
     role: 'Director Deportivo & Head Coach',
+    photo: 'assets/real/coach-lucas-morilla.jpg',
+    actionPhoto: 'assets/real/entrenamiento-pareja.jpg',
     commissionRate: 0.40,
     clubRate: 0.60,
     hasBaseSalary: true,
@@ -191,6 +193,8 @@ const COACHES_DATA = [
     id: 'COACH-2',
     name: 'Leo Marín',
     role: 'Coach Infantil, Juvenil & Principiantes',
+    photo: 'assets/real/coach-leo-marin.jpg',
+    actionPhoto: 'assets/real/coach-leo-marin.jpg',
     commissionRate: 0.50,
     clubRate: 0.50,
     hasBaseSalary: false,
@@ -328,6 +332,206 @@ const OFFICIAL_SERVICES = [
     price: 1080,
     badge: 'Descuento Familiar',
     description: 'Tarifa infantil con 10% de descuento al inscribirse 3 o más familiares.'
+  }
+];
+
+// ----------------------------------------------------------------------------
+// 3D COURT VIEWER & OFFICIAL REAL GALLERY DATA
+// ----------------------------------------------------------------------------
+const COURT_3D_DATA = {
+  angles: {
+    iso1: {
+      id: 'iso1',
+      label: 'Isométrica 3D',
+      badge: 'Vista Isométrica Principal',
+      modeLabel: 'Render CAD 3D · Perspectiva Isométrica',
+      image: 'assets/render-cancha-iso1.jpg',
+      realPhoto: 'assets/real/cancha-1-frontal.jpg',
+      realTitle: 'Cancha 1 Techada · Vista Frontal',
+      realDesc: 'Perspectiva real de Cancha 1 mostrando cerramiento perimetral de cristal templado y cubierta industrial contra lluvia.',
+      hotspots: [
+        { x: 50, y: 15, title: 'Cubierta Techada Curva', desc: 'Estructura autoportante de 8.5 metros de altura libre para juego aéreo sin limitaciones y protección ante lluvia o sol.' },
+        { x: 26, y: 55, title: 'Cristal Templado Panorámico 12mm', desc: 'Vidrio de seguridad templado de 12 mm sin postes de esquina para una visión limpia y rebote uniforme.' },
+        { x: 50, y: 62, title: 'Césped Texturado Monofilamento', desc: 'Fibras de última generación con arena de sílice homogénea para agarre óptimo de zapatilla y bote predecible.' },
+        { x: 78, y: 28, title: '8 Reflectores LED en Torretas Curvas', desc: 'Torretas elevadas con tecnología antideslumbrante para visibilidad homogénea en partidos nocturnos.' },
+        { x: 50, y: 52, title: 'Red Reglamentaria FIP', desc: 'Red de alta tenacidad con banda superior blanca y tensor de cable de acero regulable a 88 cm en el centro.' }
+      ]
+    },
+    iso2: {
+      id: 'iso2',
+      label: 'Giro 180°',
+      badge: 'Perspectiva Posterior Rotada',
+      modeLabel: 'Render CAD 3D · Vista Posterior (180°)',
+      image: 'assets/render-cancha-iso2.jpg',
+      realPhoto: 'assets/real/cancha-2-lateral.jpg',
+      realTitle: 'Cancha 2 · Vista Lateral y Andador',
+      realDesc: 'Foto real de Cancha 2 con andador perimetral de grava y módulos de cristal panorámico continuo.',
+      hotspots: [
+        { x: 42, y: 45, title: 'Malla Perimetral Electrosoldada', desc: 'Malla metálica de 50x50 mm enrasada al paño interior del cristal para evitar botes irregulares.' },
+        { x: 24, y: 70, title: 'Pared de Cristal de Fondo (3m)', desc: 'Frontis de 3 metros de altura complementado con 1 metro de malla metálica superior reglamentaria.' },
+        { x: 67, y: 58, title: 'Accesos Amplios para Salida de Pista', desc: 'Puertas reglamentarias dobles con marco protector de caucho para juego exterior oficial.' }
+      ]
+    },
+    tactica: {
+      id: 'tactica',
+      label: 'Táctica 20x10m',
+      badge: 'Plano Blueprint Aéreo',
+      modeLabel: 'Render CAD 3D · Vista Cenital Blueprint (20m x 10m)',
+      image: 'assets/render-cancha-tactica.jpg',
+      realPhoto: 'assets/real/cancha-panoramica-red.jpg',
+      realTitle: 'Pista Completa a Nivel de Suelo',
+      realDesc: 'Foto real longitudinal de la cancha mostrando la amplitud de pista, el rayado reglamentario y la red central.',
+      hotspots: [
+        { x: 50, y: 50, title: 'Medidas Oficiales FIP', desc: 'Pista de 20.00 metros de longitud por 10.00 metros de anchura neta interior.' },
+        { x: 33, y: 50, title: 'Línea de Saque (6.95m)', desc: 'Línea transversal situada a 6.95 metros de la red y a 3.00 metros de la pared de fondo.' },
+        { x: 50, y: 30, title: 'Línea Central de Servicio', desc: 'Divide perpendicularmente la zona de saque en dos recuadros iguales de 5.00 x 6.95 metros.' }
+      ]
+    }
+  },
+  courts: {
+    'cancha-1': {
+      id: 'cancha-1',
+      name: 'Cancha 1 Techada',
+      badge: 'Pista Principal',
+      realPhoto: 'assets/real/cancha-1-frontal.jpg',
+      realTitle: 'Cancha 1 Techada · Vista Frontal',
+      realDesc: 'Rotulado oficial Vital Club en cristal templado y cubierta industrial con estructura de acero.',
+      photos: [
+        'assets/real/cancha-1-frontal.jpg',
+        'assets/real/cancha-techada-azul.jpg',
+        'assets/real/cancha-angulo-vidrio.jpg',
+        'assets/real/cancha-techo-perspectiva.jpg'
+      ]
+    },
+    'cancha-2': {
+      id: 'cancha-2',
+      name: 'Cancha 2 Techada',
+      badge: 'Cristal Panorámico',
+      realPhoto: 'assets/real/cancha-2-corner.jpg',
+      realTitle: 'Cancha 2 Techada · Ángulo Esquina',
+      realDesc: 'Vista angular de Cancha 2 con patrocinadores locales, gravilla perimetral y césped pro verde.',
+      photos: [
+        'assets/real/cancha-2-corner.jpg',
+        'assets/real/cancha-2-lateral.jpg',
+        'assets/real/cancha-patrocinadores.jpg',
+        'assets/real/cancha-panoramica-red.jpg'
+      ]
+    }
+  }
+};
+
+const GALLERY_ITEMS = [
+  {
+    id: 'gal-1',
+    category: 'canchas',
+    title: 'Cancha 1 Techada · Acceso y Cristal',
+    badge: 'Cancha 1',
+    description: 'Pista techada con cristal templado serigrafiado Vital Club, iluminación LED y césped monofilamento pro.',
+    image: 'assets/real/cancha-1-frontal.jpg'
+  },
+  {
+    id: 'gal-2',
+    category: 'canchas',
+    title: 'Cancha 2 Techada · Ángulo Esquina',
+    badge: 'Cancha 2',
+    description: 'Vista exterior de Cancha 2 mostrando cerramiento perimetral de cristal y cubierta autoportante.',
+    image: 'assets/real/cancha-2-corner.jpg'
+  },
+  {
+    id: 'gal-3',
+    category: 'canchas',
+    title: 'Cancha 2 · Vista Lateral Panorámica',
+    badge: 'Cancha 2',
+    description: 'Perspectiva lateral con andador de grava perimetral y altura libre superior a 8 metros para globos.',
+    image: 'assets/real/cancha-2-lateral.jpg'
+  },
+  {
+    id: 'gal-4',
+    category: 'canchas',
+    title: 'Pista Completa y Techo Industrial',
+    badge: 'Instalaciones',
+    description: 'Vista longitudinal de la cancha bajo la cubierta que protege de lluvia y radiación solar en Zitácuaro.',
+    image: 'assets/real/cancha-techo-perspectiva.jpg'
+  },
+  {
+    id: 'gal-5',
+    category: 'canchas',
+    title: 'Pista Techada y Cielo Despejado',
+    badge: 'Canchas Techadas',
+    description: 'Estructura techada con iluminación natural y reflectores de alta potencia para juego nocturno.',
+    image: 'assets/real/cancha-techada-azul.jpg'
+  },
+  {
+    id: 'gal-6',
+    category: 'canchas',
+    title: 'Logotipo Oficial en Cristal Panorámico',
+    badge: 'Detalle Pista',
+    description: 'Cristal templado de seguridad de 12 mm con el imagotipo oficial de Vital Club Zitácuaro.',
+    image: 'assets/real/cancha-angulo-vidrio.jpg'
+  },
+  {
+    id: 'gal-7',
+    category: 'canchas',
+    title: 'Perspectiva de Juego a Nivel de Pista',
+    badge: 'Pista Central',
+    description: 'Perspectiva desde el fondo de pista mostrando la red reglamentaria y el césped sintético pro.',
+    image: 'assets/real/cancha-panoramica-red.jpg'
+  },
+  {
+    id: 'gal-8',
+    category: 'canchas',
+    title: 'Cristal Trasero y Alianzas Oficiales',
+    badge: 'Patrocinadores',
+    description: 'Alianzas con empresas locales y regionales que impulsan el pádel familiar en Zitácuaro.',
+    image: 'assets/real/cancha-patrocinadores.jpg'
+  },
+  {
+    id: 'gal-9',
+    category: 'coaches',
+    title: 'Lucas Morilla · Director Deportivo',
+    badge: 'Head Coach',
+    description: 'Lucas Morilla en sesión de entrenamiento en pista, coordinando técnica, bandeja y juego táctico.',
+    image: 'assets/real/coach-lucas-morilla.jpg'
+  },
+  {
+    id: 'gal-10',
+    category: 'coaches',
+    title: 'Leo Marín · Coach Infantil & Principiantes',
+    badge: 'Coach Oficial',
+    description: 'Leo Marín impartiendo clínicas de desarrollo dinámico, psicomotricidad y fundamentos de pádel.',
+    image: 'assets/real/coach-leo-marin.jpg'
+  },
+  {
+    id: 'gal-11',
+    category: 'coaches',
+    title: 'Entrenamiento Particular y Parejas',
+    badge: 'Clases Particulares',
+    description: 'Corrección de jugadas en tiempo real: voleas, bandejas, salidas de pared y posicionamiento.',
+    image: 'assets/real/entrenamiento-pareja.jpg'
+  },
+  {
+    id: 'gal-12',
+    category: 'comunidad',
+    title: 'Comunidad y Partidos Femeniles',
+    badge: 'Partidos & Retas',
+    description: 'Jugadoras celebrando al finalizar su partido en la red. Ambiente 100% familiar y deportivo.',
+    image: 'assets/real/jugadoras-celebracion.jpg'
+  },
+  {
+    id: 'gal-13',
+    category: 'social',
+    title: 'Recepción, Bar y Pro Shop',
+    badge: 'Club House',
+    description: 'Mostrador de madera con pantalla gigante, exhibidor de palas oficiales, accesorios y zona de hidratación.',
+    image: 'assets/real/social-recepcion-proshop.jpg'
+  },
+  {
+    id: 'gal-14',
+    category: 'social',
+    title: 'Comedor y Terraza Social',
+    badge: 'Zona de Convivencia',
+    description: 'Mesas en madera natural y sillas nórdicas para relajarse antes y después de cada partido.',
+    image: 'assets/real/social-comedor-terraza.jpg'
   }
 ];
 
@@ -1017,34 +1221,354 @@ function renderClientCoaches() {
   if (!container) return;
 
   container.innerHTML = COACHES_DATA.map(coach => `
-    <div class="bg-vital-950/80 rounded-3xl p-6 sm:p-8 border border-white/10 flex flex-col justify-between space-y-5">
-      <div class="space-y-3">
-        <div class="flex items-center gap-3.5">
-          <div class="w-12 h-12 rounded-2xl bg-vital-lime text-vital-950 font-brand font-bold text-xl flex items-center justify-center">
-            ${coach.name.split(' ').map(n => n[0]).join('')}
+    <div class="bg-vital-950/80 rounded-3xl p-6 sm:p-7 border border-white/10 flex flex-col justify-between space-y-5 group">
+      <div class="space-y-4">
+        
+        <div class="flex items-center gap-4">
+          <!-- Real Coach Photo -->
+          <div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 border-vital-lime/50 shrink-0 shadow-lg group-hover:border-vital-lime transition duration-300">
+            <img src="${coach.photo}" alt="${coach.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
           </div>
-          <div>
-            <h4 class="font-brand text-2xl text-vital-cream font-bold">${coach.name}</h4>
+
+          <div class="space-y-0.5">
+            <span class="inline-block px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-vital-lime/15 text-vital-lime border border-vital-lime/30">
+              Coach Oficial
+            </span>
+            <h4 class="font-brand text-2xl text-vital-cream font-bold leading-tight">${coach.name}</h4>
             <p class="text-xs font-semibold text-vital-orange">${coach.role}</p>
           </div>
         </div>
+
         <p class="text-xs text-vital-cream/80 leading-relaxed">${coach.bio}</p>
       </div>
 
-      <div class="pt-4 border-t border-white/10 space-y-1 text-xs">
+      <div class="pt-4 border-t border-white/10 space-y-1.5 text-xs">
         <div class="text-vital-cream/60">Especialidad: <span class="text-vital-cream font-medium">${coach.specialty}</span></div>
-        <div class="text-vital-cream/60">Horarios: <span class="text-vital-lime font-medium">${coach.schedule}</span></div>
+        <div class="text-vital-cream/60">Disponibilidad: <span class="text-vital-lime font-medium">${coach.schedule}</span></div>
+        <div class="pt-2 flex items-center gap-2">
+          <a href="#clases" class="px-3.5 py-1.5 rounded-xl bg-vital-lime text-vital-950 font-bold text-xs hover:opacity-95 transition shadow-sm">
+            Agendar con ${coach.name.split(' ')[0]}
+          </a>
+          <button onclick="openCustomLightbox('${coach.photo}', 'Coach Oficial', '${coach.name}', '${coach.bio}')" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium text-xs transition">
+            Ver Foto ↗
+          </button>
+        </div>
       </div>
     </div>
   `).join('');
 }
 
+// ----------------------------------------------------------------------------
+// VISOR INTERACTIVO 3D DE CANCHAS Y FOTOS REALES
+// ----------------------------------------------------------------------------
+let current3DAngle = 'iso1';
+let current3DCourt = 'cancha-1';
+let isCompareRealMode = false;
+let currentLightboxIndex = 0;
+let currentGalleryCategory = 'todos';
+
+function render3DCourtViewer() {
+  const angle = COURT_3D_DATA.angles[current3DAngle] || COURT_3D_DATA.angles.iso1;
+  const court = COURT_3D_DATA.courts[current3DCourt] || COURT_3D_DATA.courts['cancha-1'];
+
+  // Update Angle Switcher Buttons
+  ['iso1', 'iso2', 'tactica'].forEach(ang => {
+    const btn = document.getElementById(`btn-ang-${ang}`);
+    if (btn) {
+      if (ang === current3DAngle && !isCompareRealMode) {
+        btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-lime text-vital-950 shadow-sm';
+      } else {
+        btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition bg-white/10 text-vital-cream hover:bg-white/20';
+      }
+    }
+  });
+
+  const compareBtn = document.getElementById('btn-compare-mode');
+  if (compareBtn) {
+    if (isCompareRealMode) {
+      compareBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-lime text-vital-950 shadow-sm';
+      compareBtn.innerHTML = '🔄 Volver a Render 3D';
+    } else {
+      compareBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-orange text-white hover:opacity-90 shadow-sm';
+      compareBtn.innerHTML = '⚖️ Comparar Real';
+    }
+  }
+
+  // Update Court toggle buttons
+  const btnC1 = document.getElementById('btn-court-1');
+  const btnC2 = document.getElementById('btn-court-2');
+  if (btnC1) {
+    btnC1.className = current3DCourt === 'cancha-1'
+      ? 'px-4 py-2 rounded-xl text-xs font-bold transition bg-vital-lime text-vital-950 shadow-sm'
+      : 'px-4 py-2 rounded-xl text-xs font-bold transition text-vital-cream/80 hover:text-white';
+  }
+  if (btnC2) {
+    btnC2.className = current3DCourt === 'cancha-2'
+      ? 'px-4 py-2 rounded-xl text-xs font-bold transition bg-vital-lime text-vital-950 shadow-sm'
+      : 'px-4 py-2 rounded-xl text-xs font-bold transition text-vital-cream/80 hover:text-white';
+  }
+
+  // Update Badge & Labels
+  const badgeEl = document.getElementById('active-angle-badge');
+  if (badgeEl) badgeEl.textContent = isCompareRealMode ? 'Foto Real en Directo' : angle.badge;
+
+  const modeLabel = document.getElementById('render-mode-label');
+  if (modeLabel) modeLabel.textContent = isCompareRealMode ? 'Instalaciones Reales · Zitácuaro' : angle.modeLabel;
+
+  // Update Viewport Image
+  const imgEl = document.getElementById('render-display-img');
+  if (imgEl) {
+    imgEl.classList.remove('fade-in-quick');
+    void imgEl.offsetWidth; // trigger reflow
+    imgEl.src = isCompareRealMode ? angle.realPhoto : angle.image;
+    imgEl.classList.add('fade-in-quick');
+  }
+
+  // Render Hotspots (only when in 3D CAD mode)
+  const hotspotsContainer = document.getElementById('render-hotspots');
+  if (hotspotsContainer) {
+    if (isCompareRealMode) {
+      hotspotsContainer.innerHTML = '';
+      hideHotspotTooltip();
+    } else {
+      hotspotsContainer.innerHTML = (angle.hotspots || []).map((h, idx) => `
+        <button
+          type="button"
+          onclick="showHotspotTooltip(${idx})"
+          class="hotspot-btn hotspot-pulse"
+          style="left: ${h.x}%; top: ${h.y}%;"
+          title="${h.title}"
+        >
+          ${idx + 1}
+        </button>
+      `).join('');
+    }
+  }
+
+  // Update Synchronized Side Real Photo Card
+  const sidePill = document.getElementById('side-court-pill');
+  if (sidePill) sidePill.textContent = court.name;
+
+  const sideTitle = document.getElementById('side-photo-title');
+  if (sideTitle) sideTitle.textContent = court.realTitle;
+
+  const sideDesc = document.getElementById('side-photo-desc');
+  if (sideDesc) sideDesc.textContent = court.realDesc;
+
+  const sideImg = document.getElementById('side-real-img');
+  if (sideImg) sideImg.src = court.realPhoto;
+
+  // Render Side Thumbnails Strip
+  const thumbsContainer = document.getElementById('side-thumbnails-strip');
+  if (thumbsContainer) {
+    thumbsContainer.innerHTML = (court.photos || []).map((photoSrc) => `
+      <div
+        onclick="setSideRealPhoto('${photoSrc}')"
+        class="rounded-xl overflow-hidden aspect-square border-2 ${sideImg && sideImg.src.includes(photoSrc) ? 'border-vital-lime' : 'border-white/10'} cursor-pointer hover:border-vital-lime transition"
+      >
+        <img src="${photoSrc}" alt="Vista pista" class="w-full h-full object-cover" />
+      </div>
+    `).join('');
+  }
+}
+
+function switch3DAngle(angleId) {
+  isCompareRealMode = false;
+  current3DAngle = angleId;
+  render3DCourtViewer();
+}
+
+function switchCourt3D(courtId) {
+  current3DCourt = courtId;
+  render3DCourtViewer();
+}
+
+function toggleCompareMode() {
+  isCompareRealMode = !isCompareRealMode;
+  render3DCourtViewer();
+}
+
+function showHotspotTooltip(idx) {
+  const angle = COURT_3D_DATA.angles[current3DAngle];
+  if (!angle || !angle.hotspots || !angle.hotspots[idx]) return;
+  const hotspot = angle.hotspots[idx];
+
+  const card = document.getElementById('hotspot-tooltip-card');
+  const title = document.getElementById('tooltip-title');
+  const desc = document.getElementById('tooltip-desc');
+  if (!card || !title || !desc) return;
+
+  title.textContent = `Punto ${idx + 1}: ${hotspot.title}`;
+  desc.textContent = hotspot.desc;
+  card.classList.remove('is-hidden');
+}
+
+function hideHotspotTooltip() {
+  const card = document.getElementById('hotspot-tooltip-card');
+  if (card) card.classList.add('is-hidden');
+}
+
+function setSideRealPhoto(src) {
+  const sideImg = document.getElementById('side-real-img');
+  if (sideImg) sideImg.src = src;
+  const court = COURT_3D_DATA.courts[current3DCourt];
+  const thumbsContainer = document.getElementById('side-thumbnails-strip');
+  if (thumbsContainer && court) {
+    thumbsContainer.innerHTML = (court.photos || []).map((photoSrc) => `
+      <div
+        onclick="setSideRealPhoto('${photoSrc}')"
+        class="rounded-xl overflow-hidden aspect-square border-2 ${photoSrc === src ? 'border-vital-lime' : 'border-white/10'} cursor-pointer hover:border-vital-lime transition"
+      >
+        <img src="${photoSrc}" alt="Vista pista" class="w-full h-full object-cover" />
+      </div>
+    `).join('');
+  }
+}
+
+function openCurrentRenderLightbox() {
+  const angle = COURT_3D_DATA.angles[current3DAngle] || COURT_3D_DATA.angles.iso1;
+  const targetImg = isCompareRealMode ? angle.realPhoto : angle.image;
+  openCustomLightbox(targetImg, angle.badge, isCompareRealMode ? 'Fotografía de Instalaciones Reales' : 'Render CAD Arquitectónico 3D', angle.realDesc);
+}
+
+function openCurrentSidePhotoModal() {
+  const sideImg = document.getElementById('side-real-img');
+  const court = COURT_3D_DATA.courts[current3DCourt];
+  if (sideImg && court) {
+    openCustomLightbox(sideImg.src, court.name, court.realTitle, court.realDesc);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// GALERÍA FOTOGRÁFICA OFICIAL CON LIGHTBOX
+// ----------------------------------------------------------------------------
+function renderOfficialGallery(category = currentGalleryCategory) {
+  currentGalleryCategory = category;
+  const container = document.getElementById('official-gallery-grid');
+  if (!container) return;
+
+  // Update Filter Tabs styles
+  document.querySelectorAll('.gal-filter-btn').forEach(btn => {
+    if (btn.getAttribute('data-category') === category) {
+      btn.className = 'gal-filter-btn px-4 py-2 rounded-xl font-bold bg-vital-900 text-vital-cream transition shadow-sm';
+    } else {
+      btn.className = 'gal-filter-btn px-4 py-2 rounded-xl font-bold bg-white text-stone-700 border border-vital-900/10 hover:bg-stone-50 transition';
+    }
+  });
+
+  const list = category === 'todos'
+    ? GALLERY_ITEMS
+    : GALLERY_ITEMS.filter(item => item.category === category);
+
+  container.innerHTML = list.map((item) => {
+    const globalIdx = GALLERY_ITEMS.findIndex(g => g.id === item.id);
+    return `
+      <div
+        onclick="openGalleryLightbox(${globalIdx})"
+        class="group relative rounded-2xl overflow-hidden bg-vital-900 aspect-[4/5] border border-vital-900/10 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-end"
+      >
+        <img src="${item.image}" alt="${item.title}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
+        
+        <div class="relative z-10 p-3.5 sm:p-4 space-y-1">
+          <span class="inline-block px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-vital-lime text-vital-950">
+            ${item.badge}
+          </span>
+          <h4 class="font-brand font-bold text-white text-sm sm:text-base leading-tight">${item.title}</h4>
+          <p class="text-[11px] text-white/75 line-clamp-2">${item.description}</p>
+        </div>
+
+        <div class="absolute top-2.5 right-2.5 w-7 h-7 rounded-xl bg-black/60 text-white flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition backdrop-blur-sm">
+          ↗
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function filterGallery(cat) {
+  renderOfficialGallery(cat);
+}
+
+function openGalleryLightbox(index) {
+  currentLightboxIndex = (index + GALLERY_ITEMS.length) % GALLERY_ITEMS.length;
+  updateLightboxContent();
+  const modal = document.getElementById('gallery-lightbox');
+  if (modal) modal.classList.remove('is-hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function navigateGalleryLightbox(direction) {
+  currentLightboxIndex = (currentLightboxIndex + direction + GALLERY_ITEMS.length) % GALLERY_ITEMS.length;
+  updateLightboxContent();
+}
+
+function updateLightboxContent() {
+  const item = GALLERY_ITEMS[currentLightboxIndex];
+  if (!item) return;
+
+  const img = document.getElementById('lb-image');
+  const counter = document.getElementById('lb-counter');
+  const badge = document.getElementById('lb-badge');
+  const title = document.getElementById('lb-title');
+  const desc = document.getElementById('lb-desc');
+
+  if (img) img.src = item.image;
+  if (counter) counter.textContent = `Foto ${currentLightboxIndex + 1} de ${GALLERY_ITEMS.length}`;
+  if (badge) badge.textContent = item.badge;
+  if (title) title.textContent = item.title;
+  if (desc) desc.textContent = item.description;
+}
+
+function openCustomLightbox(imgSrc, badgeText, titleText, descText) {
+  const img = document.getElementById('lb-image');
+  const counter = document.getElementById('lb-counter');
+  const badge = document.getElementById('lb-badge');
+  const title = document.getElementById('lb-title');
+  const desc = document.getElementById('lb-desc');
+
+  if (img) img.src = imgSrc;
+  if (counter) counter.textContent = 'Detalle en Alta Definición';
+  if (badge) badge.textContent = badgeText;
+  if (title) title.textContent = titleText;
+  if (desc) desc.textContent = descText;
+
+  const modal = document.getElementById('gallery-lightbox');
+  if (modal) modal.classList.remove('is-hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGalleryLightbox() {
+  const modal = document.getElementById('gallery-lightbox');
+  if (modal) modal.classList.add('is-hidden');
+  document.body.style.overflow = '';
+}
+
+function handleLightboxBackdropClick(e) {
+  if (e.target.id === 'gallery-lightbox') {
+    closeGalleryLightbox();
+  }
+}
+
+// Keyboard shortcuts for Lightbox (Esc, Left, Right)
+window.addEventListener('keydown', (e) => {
+  const modal = document.getElementById('gallery-lightbox');
+  if (!modal || modal.classList.contains('is-hidden')) return;
+
+  if (e.key === 'Escape') closeGalleryLightbox();
+  if (e.key === 'ArrowLeft') navigateGalleryLightbox(-1);
+  if (e.key === 'ArrowRight') navigateGalleryLightbox(1);
+});
+
 function renderAllClientViews() {
   renderHeroLiveStatus();
   renderDateStrip();
+  render3DCourtViewer();
   renderCourtsGrid();
   renderClientClasses();
   renderClientClinics();
+  renderOfficialGallery();
   renderClientCoaches();
 }
 

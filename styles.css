@@ -105,3 +105,64 @@ html {
     box-shadow: none !important;
   }
 }
+
+/* 3D Court Interactive Hotspots */
+.hotspot-btn {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--vital-lime);
+  color: var(--vital-green-950);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(197, 232, 39, 0.45), 0 4px 14px rgba(0, 0, 0, 0.4);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translate(-50%, -50%);
+  z-index: 20;
+}
+
+.hotspot-btn:hover, .hotspot-btn.is-active {
+  transform: translate(-50%, -50%) scale(1.22);
+  background: #ffffff;
+  color: var(--vital-orange);
+  box-shadow: 0 0 0 6px rgba(232, 122, 36, 0.6), 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(197, 232, 39, 0.7), 0 4px 14px rgba(0, 0, 0, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(197, 232, 39, 0), 0 4px 14px rgba(0, 0, 0, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(197, 232, 39, 0), 0 4px 14px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.hotspot-pulse {
+  animation: pulse-ring 2.2s infinite ease-out;
+}
+
+/* Smooth fade for 3D Viewport transitions */
+.fade-in-quick {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0.35; transform: scale(0.99); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Lightbox overlay */
+.lightbox-backdrop {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background-color: rgba(12, 31, 22, 0.94);
+}
+
