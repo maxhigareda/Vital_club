@@ -26,7 +26,7 @@
     }
   </script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <link rel="stylesheet" href="styles.css?v=6" />
+  <link rel="stylesheet" href="styles.css?v=7" />
 </head>
 <body class="bg-vital-cream text-vital-950 antialiased selection:bg-vital-lime selection:text-vital-950 min-h-screen flex flex-col">
 
@@ -155,11 +155,11 @@
           </div>
 
           <!-- Cancha 1 / Cancha 2 Selector -->
-          <div class="flex items-center gap-2 p-1.5 rounded-2xl bg-white/5 border border-white/10 shrink-0">
-            <button id="btn-court-1" onclick="switchCourt3D('cancha-1')" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-vital-lime text-vital-950 shadow-sm">
+          <div class="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-white/5 border border-white/10 w-full sm:w-auto shrink-0">
+            <button id="btn-court-1" onclick="switchCourt3D('cancha-1')" class="px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition bg-vital-lime text-vital-950 shadow-sm text-center">
               🎾 Cancha 1 Techada
             </button>
-            <button id="btn-court-2" onclick="switchCourt3D('cancha-2')" class="px-4 py-2 rounded-xl text-xs font-bold transition text-vital-cream/80 hover:text-white">
+            <button id="btn-court-2" onclick="switchCourt3D('cancha-2')" class="px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition text-vital-cream/80 hover:text-white text-center">
               🎾 Cancha 2 Techada
             </button>
           </div>
@@ -172,7 +172,7 @@
           <div class="lg:col-span-8 bg-black/40 rounded-3xl p-4 sm:p-6 border border-white/10 space-y-4 backdrop-blur-sm">
             
             <!-- Controls bar: Angle Switcher ("Girar / Cambiar Ángulos") -->
-            <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
               <div class="flex items-center gap-2">
                 <span class="text-[11px] font-bold uppercase tracking-wider text-vital-lime">Girar Ángulo 3D:</span>
                 <span id="active-angle-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-vital-cream border border-white/15">
@@ -181,17 +181,17 @@
               </div>
 
               <!-- Action buttons to rotate/switch angles -->
-              <div class="flex flex-wrap items-center gap-2">
-                <button id="btn-ang-iso1" onclick="switch3DAngle('iso1')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-lime text-vital-950 shadow-sm" title="Vista isométrica de Pistas 1 y 2 con techo">
+              <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 w-full sm:w-auto">
+                <button id="btn-ang-iso1" onclick="switch3DAngle('iso1')" class="w-full sm:w-auto px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-lime text-vital-950 shadow-sm text-center" title="Vista isométrica de Pistas 1 y 2 con techo">
                   🏟️ Pistas 1 & 2
                 </button>
-                <button id="btn-ang-iso2" onclick="switch3DAngle('iso2')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-white/10 text-vital-cream hover:bg-white/20" title="Vista frontal con hangar y techo">
+                <button id="btn-ang-iso2" onclick="switch3DAngle('iso2')" class="w-full sm:w-auto px-3 py-1.5 rounded-xl text-xs font-bold transition bg-white/10 text-vital-cream hover:bg-white/20 text-center" title="Vista frontal con hangar y techo">
                   📐 Hangar & Techo
                 </button>
-                <button id="btn-ang-cancha2" onclick="switch3DAngle('cancha2')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-white/10 text-vital-cream hover:bg-white/20" title="Detalle de esquina de Cancha 2">
+                <button id="btn-ang-cancha2" onclick="switch3DAngle('cancha2')" class="w-full sm:w-auto px-3 py-1.5 rounded-xl text-xs font-bold transition bg-white/10 text-vital-cream hover:bg-white/20 text-center" title="Detalle de esquina de Cancha 2">
                   🎾 Esquina Cancha 2
                 </button>
-                <button id="btn-compare-mode" onclick="toggleCompareMode()" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-orange text-white hover:opacity-90 shadow-sm" title="Alternar entre render y foto real">
+                <button id="btn-compare-mode" onclick="toggleCompareMode()" class="w-full sm:w-auto px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-orange text-white hover:opacity-90 shadow-sm text-center" title="Alternar entre render y foto real">
                   ⚖️ Comparar Real
                 </button>
               </div>
@@ -335,12 +335,12 @@
       </div>
 
       <!-- Date strip -->
-      <div class="flex items-center justify-between gap-4 pb-2 border-b border-vital-900/10">
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-bold text-vital-900/60 uppercase tracking-wider">Fecha:</span>
-          <div id="date-strip" class="flex items-center gap-2 overflow-x-auto pb-1 max-w-xl"></div>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-vital-900/10 min-w-0 w-full overflow-hidden">
+        <div class="flex items-center gap-2 min-w-0 w-full flex-1 overflow-hidden">
+          <span class="text-xs font-bold text-vital-900/60 uppercase tracking-wider shrink-0">Fecha:</span>
+          <div id="date-strip" class="flex items-center gap-2 overflow-x-auto pb-1 flex-1 min-w-0 w-full"></div>
         </div>
-        <input type="date" id="booking-date-input" onchange="handleDateInputChange(this.value)" class="px-3 py-2 rounded-xl bg-white border border-vital-900/15 text-xs font-bold text-vital-900 focus:outline-none" />
+        <input type="date" id="booking-date-input" onchange="handleDateInputChange(this.value)" class="self-start sm:self-auto px-3 py-2 rounded-xl bg-white border border-vital-900/15 text-xs font-bold text-vital-900 focus:outline-none shrink-0" />
       </div>
 
       <!-- Court Schedule Grid -->
@@ -505,7 +505,9 @@
       </div>
 
       <div id="coach-kpi-cards" class="grid grid-cols-2 lg:grid-cols-4 gap-4"></div>
-      <div id="coach-date-strip" class="flex items-center gap-2 overflow-x-auto pb-1"></div>
+      <div class="w-full overflow-hidden min-w-0">
+        <div id="coach-date-strip" class="flex items-center gap-2 overflow-x-auto pb-1 min-w-0 w-full"></div>
+      </div>
       <div id="coach-hourly-timeline" class="grid md:grid-cols-2 gap-6"></div>
 
     </div>
@@ -793,6 +795,6 @@
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=7"></script>
+  <script src="app.js?v=8"></script>
 </body>
 </html>
