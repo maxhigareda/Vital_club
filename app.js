@@ -342,49 +342,51 @@ const COURT_3D_DATA = {
   angles: {
     iso1: {
       id: 'iso1',
-      label: 'Isométrica 3D',
-      badge: 'Vista Isométrica Principal',
-      modeLabel: 'Render CAD 3D · Perspectiva Isométrica',
+      label: 'Pistas 1 & 2',
+      badge: 'Vista Isométrica Pistas 1 y 2',
+      modeLabel: 'Render 3D Vital Club · Cubierta Techada Industrial y Pistas 1 & 2',
       image: 'assets/render-cancha-iso1.jpg',
       realPhoto: 'assets/real/cancha-1-frontal.jpg',
       realTitle: 'Cancha 1 Techada · Vista Frontal',
       realDesc: 'Perspectiva real de Cancha 1 mostrando cerramiento perimetral de cristal templado y cubierta industrial contra lluvia.',
       hotspots: [
-        { x: 50, y: 15, title: 'Cubierta Techada Curva', desc: 'Estructura autoportante de 8.5 metros de altura libre para juego aéreo sin limitaciones y protección ante lluvia o sol.' },
-        { x: 26, y: 55, title: 'Cristal Templado Panorámico 12mm', desc: 'Vidrio de seguridad templado de 12 mm sin postes de esquina para una visión limpia y rebote uniforme.' },
-        { x: 50, y: 62, title: 'Césped Texturado Monofilamento', desc: 'Fibras de última generación con arena de sílice homogénea para agarre óptimo de zapatilla y bote predecible.' },
-        { x: 78, y: 28, title: '8 Reflectores LED en Torretas Curvas', desc: 'Torretas elevadas con tecnología antideslumbrante para visibilidad homogénea en partidos nocturnos.' },
-        { x: 50, y: 52, title: 'Red Reglamentaria FIP', desc: 'Red de alta tenacidad con banda superior blanca y tensor de cable de acero regulable a 88 cm en el centro.' }
+        { x: 45, y: 15, title: 'Techo Metálico Reticular', desc: 'Armadura de acero negro y lámina galvanizada que cubre ambas pistas protegiendo del sol y la lluvia en Zitácuaro.' },
+        { x: 35, y: 62, title: 'Cancha 1 con Cristales y Patrocinadores', desc: 'Vidrios templados con rótulo de Cancha 1, Notaría No. 38 y M@IL Asado y Azúcar.' },
+        { x: 80, y: 55, title: 'Cancha 2 con Letrero Verde', desc: 'Pista contigua con señalética verde reglamentaria de Cancha 2 y accesos perimetrales.' },
+        { x: 55, y: 72, title: 'VITAL CLUB en Cristal Central', desc: 'Tipografía oficial Vital Club en blanco serigrafiada en el vidrio divisor.' },
+        { x: 20, y: 88, title: 'Andador de Adoquín y Grava Blanca', desc: 'Piso perimetral antiderrapante con piedra triturada blanca decorativa.' }
       ]
     },
     iso2: {
       id: 'iso2',
-      label: 'Giro 180°',
-      badge: 'Perspectiva Posterior Rotada',
-      modeLabel: 'Render CAD 3D · Vista Posterior (180°)',
+      label: 'Hangar & Techo',
+      badge: 'Perspectiva Hangar Frontal',
+      modeLabel: 'Render 3D Vital Club · Vista Frontal Hangar Techado (Cancha 2 y 1)',
       image: 'assets/render-cancha-iso2.jpg',
-      realPhoto: 'assets/real/cancha-2-lateral.jpg',
-      realTitle: 'Cancha 2 · Vista Lateral y Andador',
-      realDesc: 'Foto real de Cancha 2 con andador perimetral de grava y módulos de cristal panorámico continuo.',
+      realPhoto: 'assets/real/cancha-techo-perspectiva.jpg',
+      realTitle: 'Pista Completa y Techo Industrial',
+      realDesc: 'Foto real de la cancha bajo la armadura de acero que cubre ambas canchas en Zitácuaro.',
       hotspots: [
-        { x: 42, y: 45, title: 'Malla Perimetral Electrosoldada', desc: 'Malla metálica de 50x50 mm enrasada al paño interior del cristal para evitar botes irregulares.' },
-        { x: 24, y: 70, title: 'Pared de Cristal de Fondo (3m)', desc: 'Frontis de 3 metros de altura complementado con 1 metro de malla metálica superior reglamentaria.' },
-        { x: 67, y: 58, title: 'Accesos Amplios para Salida de Pista', desc: 'Puertas reglamentarias dobles con marco protector de caucho para juego exterior oficial.' }
+        { x: 50, y: 18, title: 'Cubierta Techada a Gran Altura', desc: 'Altura superior a 8.5 metros en cumbrera que garantiza juego aéreo sin limitaciones.' },
+        { x: 12, y: 63, title: 'Cancha 2 con Notaría No. 38', desc: 'Cristal panorámico trasero con datos del patrocinador y letrero verde Cancha 2.' },
+        { x: 88, y: 63, title: 'Cristal con MMK Sushi y Hize', desc: 'Módulos de cristal templado de 12 mm serigrafiados con marcas locales.' },
+        { x: 50, y: 78, title: 'Césped Sintético Verde Padel', desc: 'Superficie de pasto sintético con arena de sílice homogénea para bote uniforme.' }
       ]
     },
-    tactica: {
-      id: 'tactica',
-      label: 'Táctica 20x10m',
-      badge: 'Plano Blueprint Aéreo',
-      modeLabel: 'Render CAD 3D · Vista Cenital Blueprint (20m x 10m)',
-      image: 'assets/render-cancha-tactica.jpg',
-      realPhoto: 'assets/real/cancha-panoramica-red.jpg',
-      realTitle: 'Pista Completa a Nivel de Suelo',
-      realDesc: 'Foto real longitudinal de la cancha mostrando la amplitud de pista, el rayado reglamentario y la red central.',
+    cancha2: {
+      id: 'cancha2',
+      label: 'Esquina Cancha 2',
+      badge: 'Detalle Esquina Cancha 2',
+      modeLabel: 'Render 3D Vital Club · Esquina Cancha 2 con Rótulos y Grava Real',
+      image: 'assets/render-cancha-cancha2.jpg',
+      realPhoto: 'assets/real/cancha-2-corner.jpg',
+      realTitle: 'Cancha 2 Techada · Ángulo Esquina',
+      realDesc: 'Foto real de Cancha 2 con patrocinadores locales, gravilla perimetral y césped pro verde.',
       hotspots: [
-        { x: 50, y: 50, title: 'Medidas Oficiales FIP', desc: 'Pista de 20.00 metros de longitud por 10.00 metros de anchura neta interior.' },
-        { x: 33, y: 50, title: 'Línea de Saque (6.95m)', desc: 'Línea transversal situada a 6.95 metros de la red y a 3.00 metros de la pared de fondo.' },
-        { x: 50, y: 30, title: 'Línea Central de Servicio', desc: 'Divide perpendicularmente la zona de saque en dos recuadros iguales de 5.00 x 6.95 metros.' }
+        { x: 58, y: 42, title: 'Letrero Oficial CANCHA 2', desc: 'Señalética verde reglamentaria idéntica a la instalada en la pista real.' },
+        { x: 44, y: 64, title: 'Notaría Pública No. 38', desc: 'Rótulo serigrafiado en cristal con datos de la notaría en Zitácuaro.' },
+        { x: 71, y: 28, title: 'Lonas de Energía Eléctrica HIZE', desc: 'Malla electrosoldada con lonas de patrocinio superior.' },
+        { x: 50, y: 88, title: 'Franja Inferior Energía Sustentable', desc: 'Vinil perimetral de protección inferior contra golpes de pala.' }
       ]
     }
   },
@@ -1273,7 +1275,7 @@ function render3DCourtViewer() {
   const court = COURT_3D_DATA.courts[current3DCourt] || COURT_3D_DATA.courts['cancha-1'];
 
   // Update Angle Switcher Buttons
-  ['iso1', 'iso2', 'tactica'].forEach(ang => {
+  ['iso1', 'iso2', 'cancha2'].forEach(ang => {
     const btn = document.getElementById(`btn-ang-${ang}`);
     if (btn) {
       if (ang === current3DAngle && !isCompareRealMode) {
