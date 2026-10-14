@@ -350,11 +350,11 @@ const COURT_3D_DATA = {
       realTitle: 'Cancha 1 Techada · Vista Frontal',
       realDesc: 'Perspectiva real de Cancha 1 mostrando cerramiento perimetral de cristal templado y cubierta industrial contra lluvia.',
       hotspots: [
-        { x: 45, y: 15, title: 'Techo Metálico Reticular', desc: 'Armadura de acero negro y lámina galvanizada que cubre ambas pistas protegiendo del sol y la lluvia en Zitácuaro.' },
-        { x: 35, y: 62, title: 'Cancha 1 con Cristales y Patrocinadores', desc: 'Vidrios templados con rótulo de Cancha 1, Notaría No. 38 y M@IL Asado y Azúcar.' },
-        { x: 80, y: 55, title: 'Cancha 2 con Letrero Verde', desc: 'Pista contigua con señalética verde reglamentaria de Cancha 2 y accesos perimetrales.' },
-        { x: 55, y: 72, title: 'VITAL CLUB en Cristal Central', desc: 'Tipografía oficial Vital Club en blanco serigrafiada en el vidrio divisor.' },
-        { x: 20, y: 88, title: 'Andador de Adoquín y Grava Blanca', desc: 'Piso perimetral antiderrapante con piedra triturada blanca decorativa.' }
+        { x: 45, y: 15, title: 'Cubierta Techada a Dos Aguas', desc: 'Estructura metálica reticular de alta resistencia que cubre ambas pistas protegiendo del sol y la lluvia en Zitácuaro.' },
+        { x: 35, y: 62, title: 'Cristales Templados de 12 mm', desc: 'Módulos de vidrio de seguridad que garantizan un rebote limpio y visión panorámica continua.' },
+        { x: 80, y: 55, title: 'Cancha Techada 2', desc: 'Pista contigua con acceso lateral independiente y medidas reglamentarias.' },
+        { x: 55, y: 72, title: 'Malla Electrosoldada Antilesión', desc: 'Cerramiento metálico perimetral enrasado con el cristal para evitar rebotes irregulares.' },
+        { x: 20, y: 88, title: 'Andador Perimetral y Drenaje', desc: 'Piso perimetral antiderrapante con zona de grava triturada para absorción.' }
       ]
     },
     iso2: {
@@ -365,28 +365,28 @@ const COURT_3D_DATA = {
       image: 'assets/render-cancha-iso2.jpg',
       realPhoto: 'assets/real/cancha-techo-perspectiva.jpg',
       realTitle: 'Pista Completa y Techo Industrial',
-      realDesc: 'Foto real de la cancha bajo la armadura de acero que cubre ambas canchas en Zitácuaro.',
+      realDesc: 'Vista longitudinal de las pistas techadas mostrando la amplitud de juego y altura de techo.',
       hotspots: [
-        { x: 50, y: 18, title: 'Cubierta Techada a Gran Altura', desc: 'Altura superior a 8.5 metros en cumbrera que garantiza juego aéreo sin limitaciones.' },
-        { x: 12, y: 63, title: 'Cancha 2 con Notaría No. 38', desc: 'Cristal panorámico trasero con datos del patrocinador y letrero verde Cancha 2.' },
-        { x: 88, y: 63, title: 'Cristal con MMK Sushi y Hize', desc: 'Módulos de cristal templado de 12 mm serigrafiados con marcas locales.' },
-        { x: 50, y: 78, title: 'Césped Sintético Verde Padel', desc: 'Superficie de pasto sintético con arena de sílice homogénea para bote uniforme.' }
+        { x: 50, y: 18, title: 'Altura Libre de Cumbrera (8.5 m)', desc: 'Espacio vertical superior para globos defensivos y juego aéreo sin obstrucciones.' },
+        { x: 12, y: 63, title: 'Frontis de Cristal Reglamentario', desc: 'Paredes traseras de 3 metros de altura para salidas de pared y contra-pared.' },
+        { x: 88, y: 63, title: 'Iluminación LED Antideslumbrante', desc: 'Proyectores distribuidos estratégicamente para juego nocturno uniforme sin sombras.' },
+        { x: 50, y: 78, title: 'Césped Texturado Monofilamento', desc: 'Superficie de pasto sintético con carga de arena de sílice homogénea para agarre óptimo.' }
       ]
     },
     cancha2: {
       id: 'cancha2',
       label: 'Esquina Cancha 2',
       badge: 'Detalle Esquina Cancha 2',
-      modeLabel: 'Render 3D Vital Club · Esquina Cancha 2 con Rótulos y Grava Real',
+      modeLabel: 'Render 3D Vital Club · Esquina Cancha 2 y Andadores',
       image: 'assets/render-cancha-cancha2.jpg',
       realPhoto: 'assets/real/cancha-2-corner.jpg',
       realTitle: 'Cancha 2 Techada · Ángulo Esquina',
-      realDesc: 'Foto real de Cancha 2 con patrocinadores locales, gravilla perimetral y césped pro verde.',
+      realDesc: 'Vista angular de Cancha 2 mostrando la estructura perimetral de cristal y andadores.',
       hotspots: [
-        { x: 58, y: 42, title: 'Letrero Oficial CANCHA 2', desc: 'Señalética verde reglamentaria idéntica a la instalada en la pista real.' },
-        { x: 44, y: 64, title: 'Notaría Pública No. 38', desc: 'Rótulo serigrafiado en cristal con datos de la notaría en Zitácuaro.' },
-        { x: 71, y: 28, title: 'Lonas de Energía Eléctrica HIZE', desc: 'Malla electrosoldada con lonas de patrocinio superior.' },
-        { x: 50, y: 88, title: 'Franja Inferior Energía Sustentable', desc: 'Vinil perimetral de protección inferior contra golpes de pala.' }
+        { x: 58, y: 42, title: 'Señalización de Pista', desc: 'Identificador oficial de cancha y accesos para jugadores.' },
+        { x: 44, y: 64, title: 'Cerramiento Posterior Panorámico', desc: 'Paneles de cristal templado fijados con herrajes de acero de alta resistencia.' },
+        { x: 71, y: 28, title: 'Estructura Tubular de Acero', desc: 'Postes y perfiles tubulares con acabado electrostático anticorrosivo.' },
+        { x: 50, y: 88, title: 'Protección Inferior Perimetral', desc: 'Borde inferior de seguridad en la base del cristal.' }
       ]
     }
   },
@@ -397,11 +397,10 @@ const COURT_3D_DATA = {
       badge: 'Pista Principal',
       realPhoto: 'assets/real/cancha-1-frontal.jpg',
       realTitle: 'Cancha 1 Techada · Vista Frontal',
-      realDesc: 'Rotulado oficial Vital Club en cristal templado y cubierta industrial con estructura de acero.',
+      realDesc: 'Pista reglamentaria con cerramiento de cristal templado y cubierta de acero contra lluvia.',
       photos: [
         'assets/real/cancha-1-frontal.jpg',
         'assets/real/cancha-techada-azul.jpg',
-        'assets/real/cancha-angulo-vidrio.jpg',
         'assets/real/cancha-techo-perspectiva.jpg'
       ]
     },
@@ -411,11 +410,9 @@ const COURT_3D_DATA = {
       badge: 'Cristal Panorámico',
       realPhoto: 'assets/real/cancha-2-corner.jpg',
       realTitle: 'Cancha 2 Techada · Ángulo Esquina',
-      realDesc: 'Vista angular de Cancha 2 con patrocinadores locales, gravilla perimetral y césped pro verde.',
+      realDesc: 'Vista exterior de Cancha 2 con cerramiento perimetral de cristal y andador.',
       photos: [
         'assets/real/cancha-2-corner.jpg',
-        'assets/real/cancha-2-lateral.jpg',
-        'assets/real/cancha-patrocinadores.jpg',
         'assets/real/cancha-panoramica-red.jpg'
       ]
     }
@@ -428,7 +425,7 @@ const GALLERY_ITEMS = [
     category: 'canchas',
     title: 'Cancha 1 Techada · Acceso y Cristal',
     badge: 'Cancha 1',
-    description: 'Pista techada con cristal templado serigrafiado Vital Club, iluminación LED y césped monofilamento pro.',
+    description: 'Pista techada con cristal templado de seguridad de 12 mm, iluminación LED y césped monofilamento pro.',
     image: 'assets/real/cancha-1-frontal.jpg'
   },
   {
@@ -442,61 +439,37 @@ const GALLERY_ITEMS = [
   {
     id: 'gal-3',
     category: 'canchas',
-    title: 'Cancha 2 · Vista Lateral Panorámica',
-    badge: 'Cancha 2',
-    description: 'Perspectiva lateral con andador de grava perimetral y altura libre superior a 8 metros para globos.',
-    image: 'assets/real/cancha-2-lateral.jpg'
-  },
-  {
-    id: 'gal-4',
-    category: 'canchas',
     title: 'Pista Completa y Techo Industrial',
     badge: 'Instalaciones',
     description: 'Vista longitudinal de la cancha bajo la cubierta que protege de lluvia y radiación solar en Zitácuaro.',
     image: 'assets/real/cancha-techo-perspectiva.jpg'
   },
   {
-    id: 'gal-5',
+    id: 'gal-4',
     category: 'canchas',
-    title: 'Pista Techada y Cielo Despejado',
+    title: 'Pista Techada con Luz Natural',
     badge: 'Canchas Techadas',
     description: 'Estructura techada con iluminación natural y reflectores de alta potencia para juego nocturno.',
     image: 'assets/real/cancha-techada-azul.jpg'
   },
   {
-    id: 'gal-6',
+    id: 'gal-5',
     category: 'canchas',
-    title: 'Logotipo Oficial en Cristal Panorámico',
-    badge: 'Detalle Pista',
-    description: 'Cristal templado de seguridad de 12 mm con el imagotipo oficial de Vital Club Zitácuaro.',
-    image: 'assets/real/cancha-angulo-vidrio.jpg'
-  },
-  {
-    id: 'gal-7',
-    category: 'canchas',
-    title: 'Perspectiva de Juego a Nivel de Pista',
+    title: 'Perspectiva de Juego a Nivel de Red',
     badge: 'Pista Central',
     description: 'Perspectiva desde el fondo de pista mostrando la red reglamentaria y el césped sintético pro.',
     image: 'assets/real/cancha-panoramica-red.jpg'
   },
   {
-    id: 'gal-8',
-    category: 'canchas',
-    title: 'Cristal Trasero y Alianzas Oficiales',
-    badge: 'Patrocinadores',
-    description: 'Alianzas con empresas locales y regionales que impulsan el pádel familiar en Zitácuaro.',
-    image: 'assets/real/cancha-patrocinadores.jpg'
-  },
-  {
-    id: 'gal-9',
+    id: 'gal-6',
     category: 'coaches',
     title: 'Lucas Morilla · Director Deportivo',
     badge: 'Head Coach',
-    description: 'Lucas Morilla en sesión de entrenamiento en pista, coordinando técnica, bandeja y juego táctico.',
+    description: 'Lucas Morilla en sesión de entrenamiento en pista, coordinando técnica, volea y táctica de juego.',
     image: 'assets/real/coach-lucas-morilla.jpg'
   },
   {
-    id: 'gal-10',
+    id: 'gal-7',
     category: 'coaches',
     title: 'Leo Marín · Coach Infantil & Principiantes',
     badge: 'Coach Oficial',
@@ -504,15 +477,15 @@ const GALLERY_ITEMS = [
     image: 'assets/real/coach-leo-marin.jpg'
   },
   {
-    id: 'gal-11',
+    id: 'gal-8',
     category: 'coaches',
     title: 'Entrenamiento Particular y Parejas',
-    badge: 'Clases Particulares',
+    badge: 'Clases',
     description: 'Corrección de jugadas en tiempo real: voleas, bandejas, salidas de pared y posicionamiento.',
     image: 'assets/real/entrenamiento-pareja.jpg'
   },
   {
-    id: 'gal-12',
+    id: 'gal-9',
     category: 'comunidad',
     title: 'Comunidad y Partidos Femeniles',
     badge: 'Partidos & Retas',
@@ -520,15 +493,15 @@ const GALLERY_ITEMS = [
     image: 'assets/real/jugadoras-celebracion.jpg'
   },
   {
-    id: 'gal-13',
+    id: 'gal-10',
     category: 'social',
-    title: 'Recepción, Bar y Pro Shop',
+    title: 'Recepción y Pro Shop',
     badge: 'Club House',
-    description: 'Mostrador de madera con pantalla gigante, exhibidor de palas oficiales, accesorios y zona de hidratación.',
+    description: 'Mostrador de recepción en madera con exhibidor de palas, accesorios deportivos y zona de hidratación.',
     image: 'assets/real/social-recepcion-proshop.jpg'
   },
   {
-    id: 'gal-14',
+    id: 'gal-11',
     category: 'social',
     title: 'Comedor y Terraza Social',
     badge: 'Zona de Convivencia',
