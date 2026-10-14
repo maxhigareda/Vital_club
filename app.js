@@ -510,18 +510,18 @@ const GALLERY_ITEMS = [
     images: [
       {
         src: 'assets/real/social-comedor-terraza.jpg',
-        title: 'Comedor y Terraza Social · Mesas Nórdicas',
+        title: 'Comedor Interior · Mesas Nórdicas',
         description: 'Mesas en madera natural y sillas nórdicas para relajarse antes y después de cada partido.'
       },
       {
         src: 'assets/real/social-comedor-terraza-2.jpg',
-        title: 'Comedor y Terraza Social · Vista Terraza',
-        description: 'Espacio de terraza y área de convivencia familiar en Vital Club Zitácuaro.'
+        title: 'Cafetería y Barra de Hidratación',
+        description: 'Barra de servicio, cafetería y zona de alimentos con diseño cálido y confortable.'
       },
       {
         src: 'assets/real/social-comedor-terraza-3.jpg',
-        title: 'Comedor y Terraza Social · Zona Convivencia',
-        description: 'Ambiente confortable para descansar y compartir bebidas después de jugar.'
+        title: 'Terraza Lounge y Área de Convivencia',
+        description: 'Terraza techada con salas de mimbre, iluminación cálida y ambiente familiar para disfrutar los partidos.'
       }
     ]
   }
