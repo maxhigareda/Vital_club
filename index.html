@@ -758,37 +758,85 @@
           <!-- KPI Summary Strip -->
           <div id="attendance-kpi-summary" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 pt-2"></div>
 
-          <!-- Coach Color Legend -->
-          <div class="p-3.5 rounded-2xl bg-vital-cream/60 border border-vital-900/10 flex flex-wrap items-center justify-between gap-3 text-xs">
-            <span class="font-bold text-[11px] uppercase tracking-wider text-vital-900/70">Código de Coaches por Sesión:</span>
-            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-100 border border-purple-200 text-purple-900 font-semibold text-[11px]">
-                <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span> <strong>LM</strong>: Coach Lucas Morilla
-              </span>
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-100 border border-amber-200 text-amber-900 font-semibold text-[11px]">
-                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> <strong>EM</strong>: Coach Emiliano Matta
-              </span>
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-100 border border-emerald-200 text-emerald-900 font-semibold text-[11px]">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span> <strong>ALM</strong>: Coach Leo Marín
-              </span>
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sky-100 border border-sky-200 text-sky-900 font-semibold text-[11px]">
-                <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span> <strong>OT</strong>: Coach Anterior / Suplente
-              </span>
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-dashed border-stone-300 text-stone-500 text-[11px]">
-                <span class="w-2.5 h-2.5 rounded-full bg-stone-300"></span> <strong>○</strong>: Pendiente
-              </span>
+          <!-- Coach Color Legend with Live Counters -->
+          <div class="p-4 rounded-2xl bg-vital-cream/70 border border-vital-900/10 space-y-2.5 text-xs">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <span class="font-bold text-[11px] uppercase tracking-wider text-vital-900/80">Código de Coaches & Sesiones Impartidas:</span>
+              <span class="text-[11px] text-stone-500 font-medium">Pasa el cursor sobre cada sesión (ej. LM 1) para ver la fecha exacta</span>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+              <!-- Lucas Morilla -->
+              <div class="p-2.5 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-purple-600 shrink-0"></span>
+                  <div>
+                    <span class="font-bold text-purple-950 text-xs block">LM · Lucas Morilla</span>
+                    <span class="text-[10px] text-purple-700">Head Coach</span>
+                  </div>
+                </div>
+                <span id="legend-count-lucas" class="px-2 py-0.5 rounded-lg bg-purple-200 text-purple-950 font-brand font-bold text-sm">0</span>
+              </div>
+
+              <!-- Emiliano Matta -->
+              <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-amber-500 shrink-0"></span>
+                  <div>
+                    <span class="font-bold text-amber-950 text-xs block">EM · Emiliano Matta</span>
+                    <span class="text-[10px] text-amber-700">Coach en Formación</span>
+                  </div>
+                </div>
+                <span id="legend-count-emiliano" class="px-2 py-0.5 rounded-lg bg-amber-200 text-amber-950 font-brand font-bold text-sm">0</span>
+              </div>
+
+              <!-- Leo Marín -->
+              <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-emerald-600 shrink-0"></span>
+                  <div>
+                    <span class="font-bold text-emerald-950 text-xs block">ALM · Leo Marín</span>
+                    <span class="text-[10px] text-emerald-700">Segundo Coach</span>
+                  </div>
+                </div>
+                <span id="legend-count-leo" class="px-2 py-0.5 rounded-lg bg-emerald-200 text-emerald-950 font-brand font-bold text-sm">0</span>
+              </div>
+
+              <!-- Otro Coach -->
+              <div class="p-2.5 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-sky-500 shrink-0"></span>
+                  <div>
+                    <span class="font-bold text-sky-950 text-xs block">OT · Otro Coach</span>
+                    <span class="text-[10px] text-sky-700">Anterior / Suplente</span>
+                  </div>
+                </div>
+                <span id="legend-count-otro" class="px-2 py-0.5 rounded-lg bg-sky-200 text-sky-950 font-brand font-bold text-sm">0</span>
+              </div>
+
+              <!-- Pendiente -->
+              <div class="p-2.5 rounded-xl bg-white border border-dashed border-stone-300 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-stone-300 shrink-0"></span>
+                  <div>
+                    <span class="font-bold text-stone-700 text-xs block">○ · Pendientes</span>
+                    <span class="text-[10px] text-stone-400">Por cursar</span>
+                  </div>
+                </div>
+                <span id="legend-count-pendientes" class="px-2 py-0.5 rounded-lg bg-stone-100 text-stone-700 font-brand font-bold text-sm">0</span>
+              </div>
             </div>
           </div>
 
           <!-- Filters Bar -->
           <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 pt-1">
             <div class="sm:col-span-5 relative">
-              <input type="text" id="att-search-input" oninput="renderAttendanceTable()" placeholder="Buscar alumno, grupo o coach..." class="w-full px-3.5 py-2.5 pl-9 rounded-xl bg-vital-cream text-xs font-medium focus:outline-none focus:ring-2 focus:ring-vital-lime border border-vital-900/10" />
+              <input type="text" id="att-search-input" oninput="renderAttendanceTable()" placeholder="Buscar alumno o horario..." class="w-full px-3.5 py-2.5 pl-9 rounded-xl bg-vital-cream text-xs font-medium focus:outline-none focus:ring-2 focus:ring-vital-lime border border-vital-900/10" />
               <span class="absolute left-3 top-2.5 text-stone-400 text-xs">🔍</span>
             </div>
             <div class="sm:col-span-3">
               <select id="att-filter-group" onchange="renderAttendanceTable()" class="w-full px-3 py-2.5 rounded-xl bg-vital-cream text-xs font-bold border border-vital-900/10">
-                <option value="all">Todos los Grupos (G01 - G13)</option>
+                <option value="all">Todos los Horarios</option>
               </select>
             </div>
             <div class="sm:col-span-2">
@@ -813,16 +861,14 @@
 
           <!-- Matrix Table -->
           <div class="overflow-x-auto rounded-2xl border border-vital-900/10 shadow-sm">
-            <table class="w-full text-left text-xs bg-white min-w-[950px]">
+            <table class="w-full text-left text-xs bg-white min-w-[850px]">
               <thead class="bg-vital-900 text-vital-cream uppercase tracking-wider font-bold text-[10px]">
                 <tr>
-                  <th class="py-3 px-3">Grupo & Días</th>
+                  <th class="py-3 px-3">Días & Horario</th>
                   <th class="py-3 px-3">Alumno</th>
-                  <th class="py-3 px-2 text-center">Pago</th>
+                  <th class="py-3 px-2 text-center">Estatus Pago</th>
                   <th class="py-3 px-2 text-center">Importe</th>
-                  <th class="py-3 px-3 text-center">Sesiones 1 a 8 (Click para interactuar)</th>
-                  <th class="py-3 px-2 text-center">LM</th>
-                  <th class="py-3 px-2 text-center">Nuevo</th>
+                  <th class="py-3 px-3 text-center">Sesiones 1 a 8 (Hover: Fecha · Clic: Editar)</th>
                   <th class="py-3 px-2 text-center">Total</th>
                   <th class="py-3 px-2 text-center">Saldo</th>
                   <th class="py-3 px-3 text-center">Situación</th>
@@ -909,6 +955,6 @@
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=12"></script>
+  <script src="app.js?v=13"></script>
 </body>
 </html>

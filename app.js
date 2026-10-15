@@ -2741,19 +2741,57 @@ function exportIncomeToCSV() {
 }
 
 
+
 // ============================================================================
 // MÓDULO OFICIAL DE CONTROL DE ASISTENCIA & PAQUETES DE CLÍNICAS (ADMIN)
 // ============================================================================
 
-function makeAttendanceSessions(total, attendedCoaches) {
+function generateRealisticDates(paymentDate, days, count) {
+  const dates = [];
+  const dayNames = (days && days.length > 0) ? days : ['Lun', 'Mié'];
+  
+  let startDay = 1;
+  let month = 'oct';
+  
+  const m = String(paymentDate || '').match(/(\d+)-([a-zA-Z]+)/);
+  if (m) {
+    startDay = parseInt(m[1], 10) + 1;
+    month = m[2].toLowerCase();
+  }
+
+  const monthMaxDays = { 'jul': 31, 'ago': 31, 'sep': 30, 'oct': 31, 'nov': 30, 'dic': 31 };
+  const nextMonth = { 'jul': 'ago', 'ago': 'sep', 'sep': 'oct', 'oct': 'nov', 'nov': 'dic' };
+
+  let currentD = startDay;
+  let curMonth = month;
+  let dayIdx = 0;
+
+  for (let i = 0; i < count; i++) {
+    const dayLabel = dayNames[dayIdx % dayNames.length];
+    const maxD = monthMaxDays[curMonth] || 30;
+    if (currentD > maxD) {
+      currentD = currentD - maxD;
+      curMonth = nextMonth[curMonth] || 'oct';
+    }
+    const padD = currentD < 10 ? '0' + currentD : currentD;
+    dates.push(`${dayLabel} ${padD}-${curMonth}`);
+
+    currentD += 2;
+    dayIdx++;
+  }
+  return dates;
+}
+
+function makeAttendanceSessions(total, attendedCoaches, payDate, days) {
   const list = [];
+  const dates = generateRealisticDates(payDate, days, total);
   for (let i = 1; i <= total; i++) {
     const coach = (attendedCoaches && attendedCoaches[i - 1]) ? attendedCoaches[i - 1] : null;
     list.push({
       num: i,
       attended: !!coach,
       coach: coach,
-      date: coach ? 'Registrada' : '',
+      date: coach ? (dates[i - 1] || 'Registrada') : '',
       note: ''
     });
   }
@@ -2764,64 +2802,64 @@ const DEFAULT_ATTENDANCE_STUDENTS = [
   {
     id: 'ATT-001',
     code: 'G01',
-    schedule: 'Lun y mié · 7:00 am',
+    schedule: '7:00 am',
     days: ["Lun", "Mi\u00e9"],
-    time: '07:00',
+    time: '7:00 am',
     court: 'Cancha 1',
     client: 'Oscar Rubio',
     paymentDate: '30-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas"], '30-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-002',
     code: 'G01',
-    schedule: 'Lun y mié · 7:00 am',
+    schedule: '7:00 am',
     days: ["Lun", "Mi\u00e9"],
-    time: '07:00',
+    time: '7:00 am',
     court: 'Cancha 1',
     client: 'Alejandro Hernández',
     paymentDate: 'Pendiente',
     paymentStatus: 'PENDIENTE',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas"], 'Pendiente', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: 'Pago pendiente'
   },
   {
     id: 'ATT-003',
     code: 'G01',
-    schedule: 'Lun y mié · 7:00 am',
+    schedule: '7:00 am',
     days: ["Lun", "Mi\u00e9"],
-    time: '07:00',
+    time: '7:00 am',
     court: 'Cancha 1',
     client: 'Enrique Sandoval',
     paymentDate: '30-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '30-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-004',
     code: 'G01',
-    schedule: 'Lun y mié · 7:00 am',
+    schedule: '7:00 am',
     days: ["Lun", "Mi\u00e9"],
-    time: '07:00',
+    time: '7:00 am',
     court: 'Cancha 1',
     client: 'Max Tenorio',
     paymentDate: '20-ago',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"], '20-ago', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
@@ -2830,14 +2868,14 @@ const DEFAULT_ATTENDANCE_STUDENTS = [
     code: 'G02',
     schedule: 'Lun 8:00 am / Jue 7:30 am',
     days: ["Lun", "Jue"],
-    time: '08:00 / 07:30',
+    time: '8:00 am',
     court: 'Cancha 1',
     client: 'Rafa Cova jr',
     paymentDate: '30-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '30-sep', ["Lun", "Jue"]),
     situation: 'EN CURSO',
     notes: ''
   },
@@ -2846,14 +2884,14 @@ const DEFAULT_ATTENDANCE_STUDENTS = [
     code: 'G02',
     schedule: 'Lun 8:00 am / Jue 7:30 am',
     days: ["Lun", "Jue"],
-    time: '08:00 / 07:30',
+    time: '8:00 am',
     court: 'Cancha 1',
     client: 'Paulina Cova',
     paymentDate: '28-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '28-sep', ["Lun", "Jue"]),
     situation: 'EN CURSO',
     notes: ''
   },
@@ -2862,14 +2900,14 @@ const DEFAULT_ATTENDANCE_STUDENTS = [
     code: 'G02',
     schedule: 'Lun 8:00 am / Jue 7:30 am',
     days: ["Lun", "Jue"],
-    time: '08:00 / 07:30',
+    time: '8:00 am',
     court: 'Cancha 1',
     client: 'Ana Victoria',
     paymentDate: '29-jul',
     paymentStatus: 'PAGADO',
     amount: 1360,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '29-jul', ["Lun", "Jue"]),
     situation: 'TERMINADO / RENOVAR',
     notes: '8 sesiones concluidas'
   },
@@ -2878,677 +2916,677 @@ const DEFAULT_ATTENDANCE_STUDENTS = [
     code: 'G02',
     schedule: 'Lun 8:00 am / Jue 7:30 am',
     days: ["Lun", "Jue"],
-    time: '08:00 / 07:30',
+    time: '8:00 am',
     court: 'Cancha 1',
     client: 'Zara Huertado',
     paymentDate: '12-oct',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["emiliano"]),
+    sessions: makeAttendanceSessions(8, ["emiliano"], '12-oct', ["Lun", "Jue"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-009',
     code: 'G03',
-    schedule: 'Lun y mié · 9:00 am',
+    schedule: '9:00 am',
     days: ["Lun", "Mi\u00e9"],
-    time: '09:00',
+    time: '9:00 am',
     court: 'Cancha 1',
     client: 'Mari Carmen',
     paymentDate: '5-sep',
     paymentStatus: 'PAGADO',
     amount: 1360,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '5-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-010',
     code: 'G03',
-    schedule: 'Lun y mié · 9:00 am',
+    schedule: '9:00 am',
     days: ["Lun", "Mi\u00e9"],
-    time: '09:00',
+    time: '9:00 am',
     court: 'Cancha 1',
     client: 'Cecilia Alcántara',
     paymentDate: '18-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '18-sep', ["Lun", "Mi\u00e9"]),
     situation: 'TERMINADO / RENOVAR',
     notes: '8 sesiones concluidas'
   },
   {
     id: 'ATT-011',
     code: 'G03',
-    schedule: 'Lun y mié · 9:00 am',
+    schedule: '9:00 am',
     days: ["Lun", "Mi\u00e9"],
-    time: '09:00',
+    time: '9:00 am',
     court: 'Cancha 1',
     client: 'Valeria Estefan',
     paymentDate: '5-oct',
     paymentStatus: 'PAGADO',
     amount: 1360,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "emiliano"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "emiliano"], '5-oct', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-012',
     code: 'G03',
-    schedule: 'Lun y mié · 9:00 am',
+    schedule: '9:00 am',
     days: ["Lun", "Mi\u00e9"],
-    time: '09:00',
+    time: '9:00 am',
     court: 'Cancha 1',
     client: 'Ezzin Estefan',
     paymentDate: '5-oct',
     paymentStatus: 'PAGADO',
     amount: 1360,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "emiliano"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "emiliano"], '5-oct', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-013',
     code: 'G04',
-    schedule: 'Lun y mié · 10:00 am',
+    schedule: '10:00 am',
     days: ["Lun", "Mi\u00e9"],
-    time: '10:00',
+    time: '10:00 am',
     court: 'Cancha 1',
     client: 'Marisa',
     paymentDate: '5-oct',
     paymentStatus: 'PAGADO',
     amount: 2000,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas"], '5-oct', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-014',
     code: 'G04',
-    schedule: 'Lun y mié · 10:00 am',
+    schedule: '10:00 am',
     days: ["Lun", "Mi\u00e9"],
-    time: '10:00',
+    time: '10:00 am',
     court: 'Cancha 1',
     client: 'Valeria Rubio Trev',
     paymentDate: '30-sep',
     paymentStatus: 'PAGADO',
     amount: 2000,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '30-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-015',
     code: 'G05',
-    schedule: 'Lun y mié · 4:00 pm',
+    schedule: '4:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '16:00',
+    time: '4:00 pm',
     court: 'Cancha 1',
     client: 'Fernando Romero',
     paymentDate: '28-sep',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas"], '28-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-016',
     code: 'G05',
-    schedule: 'Lun y mié · 4:00 pm',
+    schedule: '4:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '16:00',
+    time: '4:00 pm',
     court: 'Cancha 1',
     client: 'Arath',
     paymentDate: '5-oct',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas"], '5-oct', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-017',
     code: 'G05',
-    schedule: 'Lun y mié · 4:00 pm',
+    schedule: '4:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '16:00',
+    time: '4:00 pm',
     court: 'Cancha 1',
     client: 'Gonzalo Sámano hijo',
     paymentDate: '5-sep',
     paymentStatus: 'PAGADO',
     amount: 1080,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '5-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-018',
     code: 'G05',
-    schedule: 'Lun y mié · 4:00 pm',
+    schedule: '4:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '16:00',
+    time: '4:00 pm',
     court: 'Cancha 1',
     client: 'Anette',
     paymentDate: '7-sep',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"], '7-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-019',
     code: 'G05',
-    schedule: 'Lun y mié · 4:00 pm',
+    schedule: '4:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '16:00',
+    time: '4:00 pm',
     court: 'Cancha 1',
     client: 'Alejandro Manzur',
     paymentDate: '30-sep',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas"], '30-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-020',
     code: 'G05',
-    schedule: 'Lun y mié · 4:00 pm',
+    schedule: '4:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '16:00',
+    time: '4:00 pm',
     court: 'Cancha 1',
     client: 'Karla',
     paymentDate: '7-sep',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"], '7-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-021',
     code: 'G05',
-    schedule: 'Lun y mié · 4:00 pm',
+    schedule: '4:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '16:00',
+    time: '4:00 pm',
     court: 'Cancha 1',
     client: 'Pía Orihuela',
     paymentDate: '22-sep',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas"], '22-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-022',
     code: 'G05',
-    schedule: 'Lun y mié · 4:00 pm',
+    schedule: '4:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '16:00',
+    time: '4:00 pm',
     court: 'Cancha 1',
     client: 'Farah Orihuela',
     paymentDate: '22-sep',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas"], '22-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-023',
     code: 'G05',
-    schedule: 'Lun y mié · 4:00 pm',
+    schedule: '4:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '16:00',
+    time: '4:00 pm',
     court: 'Cancha 1',
     client: 'Ricardo González',
     paymentDate: '30-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, []),
+    sessions: makeAttendanceSessions(8, [], '30-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-024',
     code: 'G05',
-    schedule: 'Lun y mié · 4:00 pm',
+    schedule: '4:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '16:00',
+    time: '4:00 pm',
     court: 'Cancha 1',
     client: 'Manolo Herrera',
     paymentDate: 'Pendiente',
     paymentStatus: 'PENDIENTE',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas"], 'Pendiente', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: 'Pago pendiente'
   },
   {
     id: 'ATT-025',
     code: 'G05',
-    schedule: 'Lun y mié · 4:00 pm',
+    schedule: '4:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '16:00',
+    time: '4:00 pm',
     court: 'Cancha 1',
     client: 'Luciana Herrera',
     paymentDate: 'Pendiente',
     paymentStatus: 'PENDIENTE',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas"], 'Pendiente', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: 'Pago pendiente'
   },
   {
     id: 'ATT-026',
     code: 'G05',
-    schedule: 'Lun y mié · 4:00 pm',
+    schedule: '4:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '16:00',
+    time: '4:00 pm',
     court: 'Cancha 1',
     client: 'Enrique Bustamante',
     paymentDate: '31-ago',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '31-ago', ["Lun", "Mi\u00e9"]),
     situation: 'TERMINADO / RENOVAR',
     notes: '8 sesiones concluidas'
   },
   {
     id: 'ATT-027',
     code: 'G06',
-    schedule: 'Lun y mié · 5:00 pm',
+    schedule: '5:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '17:00',
+    time: '5:00 pm',
     court: 'Cancha 1',
     client: 'Memo Estefan',
     paymentDate: '12-oct',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["emiliano"]),
+    sessions: makeAttendanceSessions(8, ["emiliano"], '12-oct', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-028',
     code: 'G06',
-    schedule: 'Lun y mié · 5:00 pm',
+    schedule: '5:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '17:00',
+    time: '5:00 pm',
     court: 'Cancha 1',
     client: 'Marlen',
     paymentDate: '28-sep',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"], '28-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-029',
     code: 'G06',
-    schedule: 'Lun y mié · 5:00 pm',
+    schedule: '5:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '17:00',
+    time: '5:00 pm',
     court: 'Cancha 1',
     client: 'Arantza',
     paymentDate: '28-sep',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"], '28-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-030',
     code: 'G06',
-    schedule: 'Lun y mié · 5:00 pm',
+    schedule: '5:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '17:00',
+    time: '5:00 pm',
     court: 'Cancha 1',
     client: 'Natalia García',
     paymentDate: '28-sep',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"], '28-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-031',
     code: 'G06',
-    schedule: 'Lun y mié · 5:00 pm',
+    schedule: '5:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '17:00',
+    time: '5:00 pm',
     court: 'Cancha 1',
     client: 'Mauricio Navas',
     paymentDate: '16-sep',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '16-sep', ["Lun", "Mi\u00e9"]),
     situation: 'TERMINADO / RENOVAR',
     notes: '8 sesiones concluidas'
   },
   {
     id: 'ATT-032',
     code: 'G06',
-    schedule: 'Lun y mié · 5:00 pm',
+    schedule: '5:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '17:00',
+    time: '5:00 pm',
     court: 'Cancha 1',
     client: 'Sebastián Rubio',
     paymentDate: '21-sep',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '21-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-033',
     code: 'G06',
-    schedule: 'Lun y mié · 5:00 pm',
+    schedule: '5:00 pm',
     days: ["Lun", "Mi\u00e9"],
-    time: '17:00',
+    time: '5:00 pm',
     court: 'Cancha 1',
     client: 'Emiliano Rubio',
     paymentDate: '28-sep',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas"], '28-sep', ["Lun", "Mi\u00e9"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-034',
     code: 'G07',
-    schedule: 'Mar y Jue · 7:00 am',
+    schedule: '7:00 am',
     days: ["Mar", "Jue"],
-    time: '07:00',
+    time: '7:00 am',
     court: 'Cancha 1',
     client: 'Eduardo Orihuela',
     paymentDate: '29-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas"], '29-sep', ["Mar", "Jue"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-035',
     code: 'G07',
-    schedule: 'Mar y Jue · 7:00 am',
+    schedule: '7:00 am',
     days: ["Mar", "Jue"],
-    time: '07:00',
+    time: '7:00 am',
     court: 'Cancha 1',
     client: 'Karina Orihuela',
     paymentDate: '29-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas"], '29-sep', ["Mar", "Jue"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-036',
     code: 'G07',
-    schedule: 'Mar y Jue · 7:00 am',
+    schedule: '7:00 am',
     days: ["Mar", "Jue"],
-    time: '07:00',
+    time: '7:00 am',
     court: 'Cancha 1',
     client: 'Amelieli',
     paymentDate: '29-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, []),
+    sessions: makeAttendanceSessions(8, [], '29-sep', ["Mar", "Jue"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-037',
     code: 'G07',
-    schedule: 'Mar y Jue · 7:00 am',
+    schedule: '7:00 am',
     days: ["Mar", "Jue"],
-    time: '07:00',
+    time: '7:00 am',
     court: 'Cancha 1',
     client: 'Jacobo Ortiz',
     paymentDate: '29-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, []),
+    sessions: makeAttendanceSessions(8, [], '29-sep', ["Mar", "Jue"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-038',
     code: 'G08',
-    schedule: 'Mar y Jue · 8:30 am',
+    schedule: '8:30 am',
     days: ["Mar", "Jue"],
-    time: '08:30',
+    time: '8:30 am',
     court: 'Cancha 1',
     client: 'Eduardo Salazar',
     paymentDate: '22-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '22-sep', ["Mar", "Jue"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-039',
     code: 'G08',
-    schedule: 'Mar y Jue · 8:30 am',
+    schedule: '8:30 am',
     days: ["Mar", "Jue"],
-    time: '08:30',
+    time: '8:30 am',
     court: 'Cancha 1',
     client: 'Rubén',
     paymentDate: '22-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '22-sep', ["Mar", "Jue"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-040',
     code: 'G08',
-    schedule: 'Mar y Jue · 8:30 am',
+    schedule: '8:30 am',
     days: ["Mar", "Jue"],
-    time: '08:30',
+    time: '8:30 am',
     court: 'Cancha 1',
     client: 'Carlos Beamonte',
     paymentDate: '24-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"], '24-sep', ["Mar", "Jue"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-041',
     code: 'G09',
-    schedule: 'Mar y Jue · 3:00 pm / 5:00 pm',
+    schedule: '3:00 pm',
     days: ["Mar", "Jue"],
-    time: '15:00',
+    time: '3:00 pm',
     court: 'Cancha 1',
     client: 'Yunuen Higareda',
     paymentDate: 'Pendiente',
     paymentStatus: 'PENDIENTE',
     amount: 3000,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas"], 'Pendiente', ["Mar", "Jue"]),
     situation: 'EN CURSO',
     notes: 'Pago pendiente'
   },
   {
     id: 'ATT-042',
     code: 'G09',
-    schedule: 'Mar y Jue · 3:00 pm / 5:00 pm',
+    schedule: '3:00 pm',
     days: ["Mar", "Jue"],
-    time: '15:00',
+    time: '3:00 pm',
     court: 'Cancha 1',
     client: 'Ethan Arollo',
     paymentDate: '6-oct',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "emiliano"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "emiliano"], '6-oct', ["Mar", "Jue"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-043',
     code: 'G09',
-    schedule: 'Mar y Jue · 3:00 pm / 5:00 pm',
+    schedule: '5:00 pm',
     days: ["Mar", "Jue"],
-    time: '17:00',
+    time: '5:00 pm',
     court: 'Cancha 1',
     client: 'Max Garduño',
     paymentDate: 'Pendiente',
     paymentStatus: 'PENDIENTE',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["emiliano"]),
+    sessions: makeAttendanceSessions(8, ["emiliano"], 'Pendiente', ["Mar", "Jue"]),
     situation: 'EN CURSO',
     notes: 'Pago pendiente'
   },
   {
     id: 'ATT-044',
     code: 'G09',
-    schedule: 'Mar y Jue · 3:00 pm / 5:00 pm',
+    schedule: '5:00 pm',
     days: ["Mar", "Jue"],
-    time: '17:00',
+    time: '5:00 pm',
     court: 'Cancha 1',
     client: 'Juan Niño',
     paymentDate: '13-oct',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["emiliano"]),
+    sessions: makeAttendanceSessions(8, ["emiliano"], '13-oct', ["Mar", "Jue"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-045',
     code: 'G10',
-    schedule: 'Jue y Vie · 6:00 pm',
+    schedule: '6:00 pm',
     days: ["Jue", "Vie"],
-    time: '18:00',
+    time: '6:00 pm',
     court: 'Cancha 1',
     client: 'Iker',
     paymentDate: '4-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '4-sep', ["Jue", "Vie"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-046',
     code: 'G10',
-    schedule: 'Jue y Vie · 6:00 pm',
+    schedule: '6:00 pm',
     days: ["Jue", "Vie"],
-    time: '18:00',
+    time: '6:00 pm',
     court: 'Cancha 1',
     client: 'George',
     paymentDate: '4-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '4-sep', ["Jue", "Vie"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-047',
     code: 'G10',
-    schedule: 'Jue y Vie · 6:00 pm',
+    schedule: '6:00 pm',
     days: ["Jue", "Vie"],
-    time: '18:00',
+    time: '6:00 pm',
     court: 'Cancha 1',
     client: 'Gerardo',
     paymentDate: '4-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '4-sep', ["Jue", "Vie"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-048',
     code: 'G11',
-    schedule: 'Mié y Vie · 2:00 pm',
+    schedule: '2:00 pm',
     days: ["Mi\u00e9", "Vie"],
-    time: '14:00',
+    time: '2:00 pm',
     court: 'Cancha 1',
     client: 'Don César',
     paymentDate: '27-ago',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '27-ago', ["Mi\u00e9", "Vie"]),
     situation: 'TERMINADO / RENOVAR',
     notes: '8 sesiones concluidas'
   },
   {
     id: 'ATT-049',
     code: 'G11',
-    schedule: 'Mié y Vie · 2:00 pm',
+    schedule: '2:00 pm',
     days: ["Mi\u00e9", "Vie"],
-    time: '14:00',
+    time: '2:00 pm',
     court: 'Cancha 1',
     client: 'César hijo',
     paymentDate: '27-ago',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '27-ago', ["Mi\u00e9", "Vie"]),
     situation: 'TERMINADO / RENOVAR',
     notes: '8 sesiones concluidas'
   },
   {
     id: 'ATT-050',
     code: 'G12',
-    schedule: 'Particulares · Horario variable',
+    schedule: 'Horario variable',
     days: ["Lun", "Mi\u00e9", "Vie"],
     time: 'Variable',
     court: 'Cancha 1',
@@ -3557,14 +3595,14 @@ const DEFAULT_ATTENDANCE_STUDENTS = [
     paymentStatus: 'PAGADO',
     amount: 3000,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"], '14-sep', ["Lun", "Mi\u00e9", "Vie"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-051',
     code: 'G12',
-    schedule: 'Particulares · Horario variable',
+    schedule: 'Horario variable',
     days: ["Lun", "Mi\u00e9", "Vie"],
     time: 'Variable',
     court: 'Cancha 1',
@@ -3573,14 +3611,14 @@ const DEFAULT_ATTENDANCE_STUDENTS = [
     paymentStatus: 'PAGADO',
     amount: 1350,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '5-sep', ["Lun", "Mi\u00e9", "Vie"]),
     situation: 'TERMINADO / RENOVAR',
     notes: '8 sesiones concluidas'
   },
   {
     id: 'ATT-052',
     code: 'G12',
-    schedule: 'Particulares · Horario variable',
+    schedule: 'Horario variable',
     days: ["Lun", "Mi\u00e9", "Vie"],
     time: 'Variable',
     court: 'Cancha 1',
@@ -3589,14 +3627,14 @@ const DEFAULT_ATTENDANCE_STUDENTS = [
     paymentStatus: 'PAGADO',
     amount: 2000,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '27-ago', ["Lun", "Mi\u00e9", "Vie"]),
     situation: 'TERMINADO / RENOVAR',
     notes: '8 sesiones concluidas'
   },
   {
     id: 'ATT-053',
     code: 'G12',
-    schedule: 'Particulares · Horario variable',
+    schedule: 'Horario variable',
     days: ["Lun", "Mi\u00e9", "Vie"],
     time: 'Variable',
     court: 'Cancha 1',
@@ -3605,14 +3643,14 @@ const DEFAULT_ATTENDANCE_STUDENTS = [
     paymentStatus: 'PAGADO',
     amount: 3000,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '27-ago', ["Lun", "Mi\u00e9", "Vie"]),
     situation: 'TERMINADO / RENOVAR',
     notes: '8 sesiones concluidas'
   },
   {
     id: 'ATT-054',
     code: 'G12',
-    schedule: 'Particulares · Horario variable',
+    schedule: 'Horario variable',
     days: ["Lun", "Mi\u00e9", "Vie"],
     time: 'Variable',
     court: 'Cancha 1',
@@ -3621,39 +3659,39 @@ const DEFAULT_ATTENDANCE_STUDENTS = [
     paymentStatus: 'PAGADO',
     amount: 3000,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"], '27-ago', ["Lun", "Mi\u00e9", "Vie"]),
     situation: 'EN CURSO',
     notes: ''
   },
   {
     id: 'ATT-055',
     code: 'G13',
-    schedule: 'Sin Horario Registrado',
+    schedule: 'Por definir',
     days: ["Lun"],
-    time: 'Por Definir',
+    time: 'Por definir',
     court: 'Cancha 1',
     client: 'Richie',
     paymentDate: '30-sep',
     paymentStatus: 'PAGADO',
     amount: 1500,
     packageSessions: 8,
-    sessions: makeAttendanceSessions(8, []),
+    sessions: makeAttendanceSessions(8, [], '30-sep', ["Lun"]),
     situation: 'EN CURSO',
     notes: 'Pendiente horario'
   },
   {
     id: 'ATT-056',
     code: 'G13',
-    schedule: 'Muestra Especial',
+    schedule: 'Muestra',
     days: ["Lun"],
-    time: 'Por Definir',
+    time: 'Muestra',
     court: 'Cancha 1',
     client: 'Jose Eduardo Orihuela',
     paymentDate: '22-sep',
     paymentStatus: 'PAGADO',
     amount: 1200,
     packageSessions: 4,
-    sessions: makeAttendanceSessions(4, ["lucas"]),
+    sessions: makeAttendanceSessions(4, ["lucas"], '22-sep', ["Lun"]),
     situation: 'VALIDAR MUESTRA',
     notes: 'Paquete muestra 4 sesiones'
   }
@@ -3712,21 +3750,25 @@ function populateAttendanceGroupFilter() {
   const sel = document.getElementById('att-filter-group');
   if (!sel) return;
   const students = getAttendanceStudents();
-  const groups = Array.from(new Set(students.map(s => s.code))).sort();
+  
+  // Unique schedules
+  const scheds = Array.from(new Set(students.map(s => {
+    const dStr = (s.days || []).join(' y ');
+    return `${dStr} · ${s.time || s.schedule}`;
+  }))).sort();
+
   const currentVal = sel.value || 'all';
 
-  sel.innerHTML = '<option value="all">Todos los Grupos (G01 - G13)</option>' +
-    groups.map(g => `<option value="${g}">${g} · ${students.find(s => s.code === g)?.schedule || ''}</option>`).join('');
+  sel.innerHTML = '<option value="all">Todos los Horarios</option>' +
+    scheds.map(sch => `<option value="${sch}">${sch}</option>`).join('');
   
-  if (groups.includes(currentVal)) {
+  if (scheds.includes(currentVal)) {
     sel.value = currentVal;
   }
 }
 
 function renderAttendanceKPIs(students) {
   const container = document.getElementById('attendance-kpi-summary');
-  if (!container) return;
-
   const list = students || getAttendanceStudents();
   const totalStudents = list.length;
   const enCurso = list.filter(s => s.situation === 'EN CURSO').length;
@@ -3734,42 +3776,71 @@ function renderAttendanceKPIs(students) {
   const pendientesPago = list.filter(s => s.paymentStatus === 'PENDIENTE' || String(s.paymentDate).toUpperCase().includes('PENDIENTE')).length;
   
   let totalLM = 0;
-  let totalNuevo = 0;
+  let totalEmiliano = 0;
+  let totalLeo = 0;
   let totalOtro = 0;
-  list.forEach(s => {
-    totalLM += getStudentLM(s);
-    totalNuevo += getStudentNuevo(s);
-    totalOtro += getStudentOtro(s);
-  });
-  const totalDadas = totalLM + totalNuevo + totalOtro;
+  let totalPendientes = 0;
 
-  container.innerHTML = `
-    <div class="p-3.5 rounded-2xl bg-vital-cream border border-vital-900/10">
-      <span class="text-[10px] uppercase font-bold tracking-wider text-stone-500 block">Total Alumnos</span>
-      <p class="text-2xl font-brand font-bold text-vital-900 mt-0.5">${totalStudents}</p>
-      <span class="text-[10px] text-stone-500">13 grupos oficiales</span>
-    </div>
-    <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200">
-      <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-800 block">En Curso</span>
-      <p class="text-2xl font-brand font-bold text-emerald-950 mt-0.5">${enCurso}</p>
-      <span class="text-[10px] text-emerald-700">Paquetes activos</span>
-    </div>
-    <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200">
-      <span class="text-[10px] uppercase font-bold tracking-wider text-amber-800 block">Por Renovar</span>
-      <p class="text-2xl font-brand font-bold text-amber-950 mt-0.5">${porRenovar}</p>
-      <span class="text-[10px] text-amber-700">0 sesiones restantes</span>
-    </div>
-    <div class="p-3.5 rounded-2xl bg-red-50 border border-red-200">
-      <span class="text-[10px] uppercase font-bold tracking-wider text-red-800 block">⚠️ Pendientes Pago</span>
-      <p class="text-2xl font-brand font-bold text-red-950 mt-0.5">${pendientesPago}</p>
-      <span class="text-[10px] text-red-700">Cobro urgente</span>
-    </div>
-    <div class="p-3.5 rounded-2xl bg-vital-900 text-vital-cream col-span-2 sm:col-span-4 lg:col-span-1 border border-vital-900">
-      <span class="text-[10px] uppercase font-bold tracking-wider text-vital-lime block">Sesiones Impartidas</span>
-      <p class="text-2xl font-brand font-bold text-white mt-0.5">${totalDadas}</p>
-      <span class="text-[10px] text-vital-cream/80 block">LM: ${totalLM} · Nuevo: ${totalNuevo}</span>
-    </div>
-  `;
+  list.forEach(s => {
+    (s.sessions || []).forEach(ses => {
+      if (ses.attended) {
+        if (ses.coach === 'lucas') totalLM++;
+        else if (ses.coach === 'emiliano') totalEmiliano++;
+        else if (ses.coach === 'leo') totalLeo++;
+        else totalOtro++;
+      } else {
+        totalPendientes++;
+      }
+    });
+  });
+
+  const totalDadas = totalLM + totalEmiliano + totalLeo + totalOtro;
+
+  // Update Legend live counters
+  const elLucas = document.getElementById('legend-count-lucas');
+  if (elLucas) elLucas.textContent = `${totalLM}`;
+
+  const elEmi = document.getElementById('legend-count-emiliano');
+  if (elEmi) elEmi.textContent = `${totalEmiliano}`;
+
+  const elLeo = document.getElementById('legend-count-leo');
+  if (elLeo) elLeo.textContent = `${totalLeo}`;
+
+  const elOtro = document.getElementById('legend-count-otro');
+  if (elOtro) elOtro.textContent = `${totalOtro}`;
+
+  const elPend = document.getElementById('legend-count-pendientes');
+  if (elPend) elPend.textContent = `${totalPendientes}`;
+
+  if (container) {
+    container.innerHTML = `
+      <div class="p-3.5 rounded-2xl bg-vital-cream border border-vital-900/10">
+        <span class="text-[10px] uppercase font-bold tracking-wider text-stone-500 block">Total Alumnos</span>
+        <p class="text-2xl font-brand font-bold text-vital-900 mt-0.5">${totalStudents}</p>
+        <span class="text-[10px] text-stone-500">Clínicas registradas</span>
+      </div>
+      <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200">
+        <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-800 block">En Curso</span>
+        <p class="text-2xl font-brand font-bold text-emerald-950 mt-0.5">${enCurso}</p>
+        <span class="text-[10px] text-emerald-700">Paquetes activos</span>
+      </div>
+      <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200">
+        <span class="text-[10px] uppercase font-bold tracking-wider text-amber-800 block">Por Renovar</span>
+        <p class="text-2xl font-brand font-bold text-amber-950 mt-0.5">${porRenovar}</p>
+        <span class="text-[10px] text-amber-700">0 sesiones restantes</span>
+      </div>
+      <div class="p-3.5 rounded-2xl bg-red-50 border border-red-200">
+        <span class="text-[10px] uppercase font-bold tracking-wider text-red-800 block">⚠️ Pendientes Pago</span>
+        <p class="text-2xl font-brand font-bold text-red-950 mt-0.5">${pendientesPago}</p>
+        <span class="text-[10px] text-red-700">Cobro pendiente</span>
+      </div>
+      <div class="p-3.5 rounded-2xl bg-vital-900 text-vital-cream col-span-2 sm:col-span-4 lg:col-span-1 border border-vital-900">
+        <span class="text-[10px] uppercase font-bold tracking-wider text-vital-lime block">Sesiones Impartidas</span>
+        <p class="text-2xl font-brand font-bold text-white mt-0.5">${totalDadas}</p>
+        <span class="text-[10px] text-vital-cream/80 block">LM: ${totalLM} · Nuevos: ${totalEmiliano + totalLeo}</span>
+      </div>
+    `;
+  }
 }
 
 function renderAttendanceTable() {
@@ -3781,18 +3852,22 @@ function renderAttendanceTable() {
   renderAttendanceKPIs(allStudents);
 
   const query = (document.getElementById('att-search-input')?.value || '').trim().toLowerCase();
-  const filterGroup = document.getElementById('att-filter-group')?.value || 'all';
+  const filterSched = document.getElementById('att-filter-group')?.value || 'all';
   const filterStatus = document.getElementById('att-filter-status')?.value || 'all';
   const filterCoach = document.getElementById('att-filter-coach')?.value || 'all';
 
   let filtered = allStudents.filter(s => {
     if (query) {
       const matchName = s.client.toLowerCase().includes(query);
-      const matchGroup = s.code.toLowerCase().includes(query);
-      const matchSched = s.schedule.toLowerCase().includes(query);
-      if (!matchName && !matchGroup && !matchSched) return false;
+      const matchSched = (s.schedule || '').toLowerCase().includes(query);
+      const matchTime = (s.time || '').toLowerCase().includes(query);
+      if (!matchName && !matchSched && !matchTime) return false;
     }
-    if (filterGroup !== 'all' && s.code !== filterGroup) return false;
+    if (filterSched !== 'all') {
+      const dStr = (s.days || []).join(' y ');
+      const sComp = `${dStr} · ${s.time || s.schedule}`;
+      if (sComp !== filterSched) return false;
+    }
     if (filterStatus !== 'all' && s.situation !== filterStatus) return false;
     if (filterCoach !== 'all') {
       const hasCoach = s.sessions.some(ses => ses.attended && ses.coach === filterCoach);
@@ -3809,9 +3884,9 @@ function renderAttendanceTable() {
   if (filtered.length === 0) {
     body.innerHTML = `
       <tr>
-        <td colspan="11" class="py-12 text-center text-stone-400">
+        <td colspan="9" class="py-12 text-center text-stone-400">
           <p class="text-base font-semibold text-stone-600">No se encontraron alumnos con los filtros seleccionados</p>
-          <p class="text-xs mt-1">Prueba cambiando el grupo o término de búsqueda.</p>
+          <p class="text-xs mt-1">Prueba cambiando el horario o término de búsqueda.</p>
         </td>
       </tr>
     `;
@@ -3822,14 +3897,14 @@ function renderAttendanceTable() {
     const attended = getStudentAttended(s);
     const total = Number(s.packageSessions || 8);
     const saldo = Math.max(0, total - attended);
-    const lm = getStudentLM(s);
-    const nuevo = getStudentNuevo(s);
 
+    // Payment chip
     const isPendingPayment = s.paymentStatus === 'PENDIENTE' || String(s.paymentDate).toUpperCase().includes('PENDIENTE');
-    const paymentBadge = isPendingPayment
-      ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-800 border border-red-200 animate-pulse">⚠️ PENDIENTE</span>`
-      : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">✓ ${s.paymentDate}</span>`;
+    const paymentChip = isPendingPayment
+      ? `<button type="button" onclick="quickEditPaymentModal('${s.id}')" class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-100 hover:bg-red-200 text-red-800 border border-red-300 transition shadow-xs cursor-pointer animate-pulse" title="Clic para registrar o cambiar pago"><span>⚠️ PENDIENTE</span> <span class="text-[9px] opacity-60 group-hover:opacity-100">✏️</span></button>`
+      : `<button type="button" onclick="quickEditPaymentModal('${s.id}')" class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 hover:bg-emerald-200 text-emerald-800 border border-emerald-300 transition shadow-xs cursor-pointer" title="Clic para editar fecha o marcar pendiente"><span>✓ ${s.paymentDate || 'Pagado'}</span> <span class="text-[9px] opacity-60 group-hover:opacity-100">✏️</span></button>`;
 
+    // Situation badge
     let situationBadge = '';
     if (s.situation === 'TERMINADO / RENOVAR' || saldo === 0) {
       situationBadge = `<span class="px-2 py-1 rounded-lg text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300">TERMINADO / RENOVAR</span>`;
@@ -3842,36 +3917,38 @@ function renderAttendanceTable() {
     }
 
     // Days pill strip
-    const daysBadges = (s.days || []).map(d => `<span class="px-1 py-0.2 rounded text-[9px] font-bold bg-vital-900/10 text-vital-900">${d}</span>`).join(' ');
+    const daysBadges = (s.days || ['Lun']).map(d => `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-vital-900/10 text-vital-900 border border-vital-900/10">${d}</span>`).join(' ');
 
-    // Render 8 session cells
+    // Render 8 session cells with informative hover tooltip
     const sessionPills = (s.sessions || []).map(ses => {
       let cls = 'bg-stone-50 text-stone-400 border-dashed border-stone-300 hover:border-stone-400';
       let text = `○ ${ses.num}`;
-      let title = `Sesión ${ses.num}: Pendiente`;
+      let coachName = 'Sin Asignar';
+      let title = `Sesión ${ses.num}: Pendiente por cursar (Haz clic para asignar)`;
 
       if (ses.attended) {
         if (ses.coach === 'lucas') {
           cls = 'bg-purple-100 text-purple-900 border-purple-300 hover:bg-purple-200 font-bold';
           text = `LM ${ses.num}`;
-          title = `Sesión ${ses.num}: Impartida por Lucas Morilla (Head Coach)`;
+          coachName = 'Lucas Morilla (Head Coach)';
         } else if (ses.coach === 'emiliano') {
           cls = 'bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200 font-bold';
           text = `EM ${ses.num}`;
-          title = `Sesión ${ses.num}: Impartida por Emiliano Matta`;
+          coachName = 'Emiliano Matta (Coach en Formación)';
         } else if (ses.coach === 'leo') {
           cls = 'bg-emerald-100 text-emerald-900 border-emerald-300 hover:bg-emerald-200 font-bold';
           text = `ALM ${ses.num}`;
-          title = `Sesión ${ses.num}: Impartida por Ángel Leonardo Marín`;
+          coachName = 'Ángel Leonardo Marín (Segundo Coach)';
         } else {
           cls = 'bg-sky-100 text-sky-900 border-sky-300 hover:bg-sky-200 font-bold';
           text = `OT ${ses.num}`;
-          title = `Sesión ${ses.num}: Impartida por Coach Anterior / Suplente`;
+          coachName = 'Coach Anterior / Suplente';
         }
+        title = `Sesión ${ses.num}: ${ses.date || 'Fecha registrada'} · ${coachName} (Haz clic para editar)`;
       }
 
       return `
-        <button type="button" onclick="openAttendanceSessionModal('${s.id}', ${ses.num})" class="px-1.5 py-1 rounded-md border text-[10px] transition cursor-pointer shrink-0 ${cls}" title="${title}">
+        <button type="button" onclick="openAttendanceSessionModal('${s.id}', ${ses.num})" class="px-2 py-1 rounded-md border text-[10px] transition cursor-pointer shrink-0 ${cls}" title="${title}">
           ${text}
         </button>
       `;
@@ -3879,33 +3956,32 @@ function renderAttendanceTable() {
 
     return `
       <tr class="hover:bg-vital-cream/40 transition">
-        <!-- Grupo & Horario -->
-        <td class="py-3 px-3">
-          <div class="flex items-center gap-1.5">
-            <span class="px-2 py-0.5 rounded-md bg-vital-900 text-white font-brand font-bold text-[11px]">${s.code}</span>
-            <span class="font-medium text-stone-700">${s.schedule}</span>
-          </div>
-          <div class="flex items-center gap-1 mt-1">
-            ${daysBadges}
-            <span class="text-[10px] text-stone-400">· ${s.court || 'Cancha 1'}</span>
+        <!-- Días & Horario -->
+        <td class="py-3 px-3 whitespace-nowrap">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <div class="flex items-center gap-1">
+              ${daysBadges}
+            </div>
+            <span class="font-bold text-xs text-stone-800">${s.time || s.schedule}</span>
+            <button type="button" onclick="openQuickDaysModal('${s.id}')" class="p-1 rounded-md text-stone-400 hover:text-vital-900 hover:bg-stone-100 text-[11px] transition" title="Cambiar días de la semana y horario">✏️</button>
           </div>
         </td>
 
         <!-- Alumno -->
-        <td class="py-3 px-3 font-bold text-vital-900">
-          <div class="flex items-center gap-1.5">
-            <span>${s.client}</span>
-          </div>
+        <td class="py-3 px-3">
+          <button type="button" onclick="openEditAttendanceModal('${s.id}')" class="font-bold text-vital-900 hover:text-vital-orange text-left text-xs transition cursor-pointer" title="Ver ficha completa">
+            ${s.client}
+          </button>
           ${s.notes ? `<p class="text-[10px] font-normal text-stone-400 italic">${s.notes}</p>` : ''}
         </td>
 
         <!-- Estatus Pago -->
         <td class="py-3 px-2 text-center whitespace-nowrap">
-          ${paymentBadge}
+          ${paymentChip}
         </td>
 
         <!-- Importe -->
-        <td class="py-3 px-2 text-center font-bold text-stone-800">
+        <td class="py-3 px-2 text-center font-bold text-stone-800 whitespace-nowrap">
           $${Number(s.amount || 0).toLocaleString()}
         </td>
 
@@ -3916,23 +3992,13 @@ function renderAttendanceTable() {
           </div>
         </td>
 
-        <!-- Dadas LM -->
-        <td class="py-3 px-2 text-center">
-          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-purple-900 border border-purple-200">${lm}</span>
-        </td>
-
-        <!-- Dadas Nuevo -->
-        <td class="py-3 px-2 text-center">
-          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-900 border border-amber-200">${nuevo}</span>
-        </td>
-
         <!-- Asistencias Totales -->
-        <td class="py-3 px-2 text-center font-bold text-vital-900">
+        <td class="py-3 px-2 text-center font-bold text-vital-900 whitespace-nowrap">
           ${attended} / ${total}
         </td>
 
         <!-- Saldo -->
-        <td class="py-3 px-2 text-center">
+        <td class="py-3 px-2 text-center whitespace-nowrap">
           <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${saldo === 0 ? 'bg-stone-100 text-stone-500' : 'bg-emerald-100 text-emerald-900 border border-emerald-300'}">
             ${saldo}
           </span>
@@ -3966,6 +4032,187 @@ function renderAttendanceTable() {
 }
 
 // ----------------------------------------------------------------------------
+// MODAL PARA EDITAR PAGO RÁPIDO
+// ----------------------------------------------------------------------------
+function quickEditPaymentModal(studentId) {
+  const students = getAttendanceStudents();
+  const s = students.find(x => x.id === studentId);
+  if (!s) return;
+
+  const isPending = s.paymentStatus === 'PENDIENTE' || String(s.paymentDate).toUpperCase().includes('PENDIENTE');
+
+  const html = `
+    <div class="space-y-4 max-w-sm">
+      <div class="flex items-center justify-between pb-3 border-b border-vital-900/10">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-vital-orange">Gestión de Pago</span>
+          <h3 class="font-brand text-xl text-vital-900">${s.client}</h3>
+          <p class="text-xs text-stone-500">Importe actual: <strong>$${Number(s.amount || 0).toLocaleString()}</strong></p>
+        </div>
+        <button onclick="closeModal()" class="text-stone-400 hover:text-stone-700 text-lg">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <label class="block font-bold text-stone-700">Estado del Pago:</label>
+        
+        <div class="space-y-2">
+          <label class="flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition ${!isPending ? 'bg-emerald-50 border-emerald-400 text-emerald-950 font-bold ring-1 ring-emerald-400' : 'bg-white border-stone-200 hover:bg-stone-50'}">
+            <input type="radio" name="quick_pay_status" value="PAGADO" ${!isPending ? 'checked' : ''} onchange="togglePayDateGroup(true)" class="text-emerald-600" />
+            <span class="w-3 h-3 rounded-full bg-emerald-500 shrink-0"></span>
+            <div class="flex-1">
+              <span class="font-bold">✓ Pagado</span>
+              <p class="text-[10px] text-stone-500">El alumno ya cubrió la cuota del paquete</p>
+            </div>
+          </label>
+
+          <label class="flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition ${isPending ? 'bg-red-50 border-red-400 text-red-950 font-bold ring-1 ring-red-400' : 'bg-white border-stone-200 hover:bg-stone-50'}">
+            <input type="radio" name="quick_pay_status" value="PENDIENTE" ${isPending ? 'checked' : ''} onchange="togglePayDateGroup(false)" class="text-red-600" />
+            <span class="w-3 h-3 rounded-full bg-red-500 shrink-0"></span>
+            <div class="flex-1">
+              <span class="font-bold">⚠️ Pendiente de Pago</span>
+              <p class="text-[10px] text-stone-500">Marcar como adeudo pendiente de cobro</p>
+            </div>
+          </label>
+        </div>
+
+        <div id="quick-paydate-group" class="${isPending ? 'is-hidden' : ''}">
+          <label class="block font-bold text-stone-700 mb-1">Fecha de Pago (Día o texto):</label>
+          <div class="flex items-center gap-2">
+            <input type="text" id="quick-pay-date" value="${s.paymentDate && !s.paymentDate.toUpperCase().includes('PENDIENTE') ? s.paymentDate : 'Hoy'}" placeholder="Ej: 30-sep o Hoy" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
+            <button type="button" onclick="document.getElementById('quick-pay-date').value = 'Hoy'" class="px-2.5 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-[10px] font-bold text-stone-700 shrink-0">Hoy</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-stone-700 mb-1">Importe del Paquete ($):</label>
+          <input type="number" id="quick-pay-amount" value="${s.amount || 1500}" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-3 border-t border-vital-900/10">
+        <button onclick="closeModal()" class="px-4 py-2 rounded-xl bg-vital-cream hover:bg-vital-sand text-vital-900 text-xs font-bold transition">Cancelar</button>
+        <button onclick="saveQuickPayment('${s.id}')" class="px-5 py-2 rounded-xl bg-vital-900 hover:bg-black text-vital-cream text-xs font-bold transition shadow-md">Guardar Pago</button>
+      </div>
+    </div>
+  `;
+
+  openModal(html);
+}
+
+function togglePayDateGroup(show) {
+  const grp = document.getElementById('quick-paydate-group');
+  if (grp) grp.classList.toggle('is-hidden', !show);
+}
+
+function saveQuickPayment(studentId) {
+  const students = getAttendanceStudents();
+  const s = students.find(x => x.id === studentId);
+  if (!s) return;
+
+  const status = document.querySelector('input[name="quick_pay_status"]:checked')?.value || 'PAGADO';
+  const dateVal = document.getElementById('quick-pay-date')?.value.trim() || 'Hoy';
+  const amountVal = Number(document.getElementById('quick-pay-amount')?.value || 1500);
+
+  s.paymentStatus = status;
+  s.amount = amountVal;
+  if (status === 'PENDIENTE') {
+    s.paymentDate = 'Pendiente';
+  } else {
+    s.paymentDate = dateVal;
+    if (s.situation === 'PENDIENTE DE PAGO') {
+      s.situation = 'EN CURSO';
+    }
+  }
+
+  saveAttendanceStudents(students);
+  closeModal();
+  renderAttendanceTable();
+  showToast(`Pago de ${s.client} actualizado exitosamente.`);
+}
+
+// ----------------------------------------------------------------------------
+// MODAL RÁPIDO PARA CAMBIAR DÍAS & HORARIO
+// ----------------------------------------------------------------------------
+function openQuickDaysModal(studentId) {
+  const students = getAttendanceStudents();
+  const s = students.find(x => x.id === studentId);
+  if (!s) return;
+
+  const allWeekDays = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+  const curDays = s.days || ['Lun', 'Mié'];
+
+  const dayButtons = allWeekDays.map(d => {
+    const isAct = curDays.includes(d);
+    return `
+      <button type="button" onclick="toggleEditDayPill(this, '${d}')" data-day="${d}" class="att-day-pill px-3 py-1.5 rounded-xl text-xs font-bold transition ${isAct ? 'bg-vital-900 text-vital-cream ring-2 ring-vital-lime' : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'}">
+        ${d}
+      </button>
+    `;
+  }).join('');
+
+  const html = `
+    <div class="space-y-4 max-w-sm">
+      <div class="flex items-center justify-between pb-3 border-b border-vital-900/10">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-vital-orange">Días & Horario</span>
+          <h3 class="font-brand text-xl text-vital-900">${s.client}</h3>
+          <p class="text-xs text-stone-500">Selecciona los días y hora de sus clases:</p>
+        </div>
+        <button onclick="closeModal()" class="text-stone-400 hover:text-stone-700 text-lg">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-stone-700 mb-1.5">Días de la Semana (Haz clic para activar/desactivar):</label>
+          <div id="edit-att-days-container" class="flex flex-wrap gap-1.5">
+            ${dayButtons}
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-stone-700 mb-1">Horario Oficial:</label>
+          <input type="text" id="quick-att-time" value="${s.time || s.schedule || '7:00 am'}" placeholder="Ej: 7:00 am o 16:00" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-3 border-t border-vital-900/10">
+        <button onclick="closeModal()" class="px-4 py-2 rounded-xl bg-vital-cream hover:bg-vital-sand text-vital-900 text-xs font-bold transition">Cancelar</button>
+        <button onclick="saveQuickDays('${s.id}')" class="px-5 py-2 rounded-xl bg-vital-900 hover:bg-black text-vital-cream text-xs font-bold transition shadow-md">Guardar Días</button>
+      </div>
+    </div>
+  `;
+
+  openModal(html);
+}
+
+function saveQuickDays(studentId) {
+  const students = getAttendanceStudents();
+  const s = students.find(x => x.id === studentId);
+  if (!s) return;
+
+  const timeVal = document.getElementById('quick-att-time')?.value.trim() || s.time || '7:00 am';
+  
+  const activeDays = [];
+  document.querySelectorAll('.att-day-pill.bg-vital-900').forEach(btn => {
+    activeDays.push(btn.getAttribute('data-day'));
+  });
+
+  if (activeDays.length === 0) {
+    alert('Debes seleccionar al menos un día de la semana.');
+    return;
+  }
+
+  s.days = activeDays;
+  s.time = timeVal;
+  s.schedule = timeVal;
+
+  saveAttendanceStudents(students);
+  closeModal();
+  renderAttendanceTable();
+  showToast(`Días y horario de ${s.client} actualizados.`);
+}
+
+// ----------------------------------------------------------------------------
 // MODAL PARA EDITAR SESIÓN INDIVIDUAL (ASIGNAR COACH Y FECHA)
 // ----------------------------------------------------------------------------
 function openAttendanceSessionModal(studentId, sessionNum) {
@@ -3982,7 +4229,7 @@ function openAttendanceSessionModal(studentId, sessionNum) {
         <div>
           <span class="text-[10px] font-bold uppercase tracking-wider text-vital-orange">Control de Asistencia</span>
           <h3 class="font-brand text-xl text-vital-900">Sesión #${sessionNum} · ${student.client}</h3>
-          <p class="text-xs text-stone-500">Grupo: <strong>${student.code}</strong> (${student.schedule})</p>
+          <p class="text-xs text-stone-500">Horario: <strong>${(student.days || []).join(' y ')} · ${student.time || student.schedule}</strong></p>
         </div>
         <button onclick="closeModal()" class="text-stone-400 hover:text-stone-700 text-lg">✕</button>
       </div>
@@ -4039,12 +4286,12 @@ function openAttendanceSessionModal(studentId, sessionNum) {
 
         <div class="grid grid-cols-2 gap-3 pt-2">
           <div>
-            <label class="block font-bold text-stone-700 mb-1">Fecha de la Sesión:</label>
-            <input type="text" id="att-ses-date" value="${ses.date || getTodayISO(0)}" placeholder="Ej: 15-oct" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+            <label class="block font-bold text-stone-700 mb-1">Día y Fecha de la Sesión:</label>
+            <input type="text" id="att-ses-date" value="${ses.date || getTodayISO(0)}" placeholder="Ej: Lun 02-oct" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
           </div>
           <div>
             <label class="block font-bold text-stone-700 mb-1">Nota opcional:</label>
-            <input type="text" id="att-ses-note" value="${ses.note || ''}" placeholder="Ej: Recuperación" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+            <input type="text" id="att-ses-note" value="${ses.note || ''}" placeholder="Ej: Recuperación de clase" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
           </div>
         </div>
       </div>
@@ -4082,7 +4329,7 @@ function saveAttendanceSession(studentId, sessionNum) {
     } else {
       ses.attended = true;
       ses.coach = selectedCoach;
-      ses.date = dateVal;
+      ses.date = dateVal || 'Hoy';
       ses.note = noteVal;
     }
   }
@@ -4110,7 +4357,7 @@ function openEditAttendanceModal(studentId) {
   if (!student) return;
 
   const allWeekDays = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
-  const curDays = student.days || [];
+  const curDays = student.days || ['Lun'];
 
   const dayButtons = allWeekDays.map(d => {
     const isAct = curDays.includes(d);
@@ -4127,53 +4374,36 @@ function openEditAttendanceModal(studentId) {
         <div>
           <span class="text-[10px] font-bold uppercase tracking-wider text-vital-orange">Ficha Oficial de Alumno</span>
           <h3 class="font-brand text-2xl text-vital-900">${student.client}</h3>
-          <p class="text-xs text-stone-500">Código Grupo: ${student.code}</p>
+          <p class="text-xs text-stone-500">Horario: ${(student.days || []).join(' y ')} · ${student.time || student.schedule}</p>
         </div>
         <button onclick="closeModal()" class="text-stone-400 hover:text-stone-700 text-lg">✕</button>
       </div>
 
       <div class="space-y-3 text-xs">
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-bold text-stone-700 mb-1">Nombre Completo:</label>
-            <input type="text" id="edit-att-client" value="${student.client}" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
-          </div>
-          <div>
-            <label class="block font-bold text-stone-700 mb-1">Código de Grupo:</label>
-            <input type="text" id="edit-att-code" value="${student.code}" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
-          </div>
+        <div>
+          <label class="block font-bold text-stone-700 mb-1">Nombre Completo:</label>
+          <input type="text" id="edit-att-client" value="${student.client}" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
         </div>
 
         <div>
-          <label class="block font-bold text-stone-700 mb-1">Días de Clase (Selecciona los días):</label>
+          <label class="block font-bold text-stone-700 mb-1">Días de Clase (Haz clic para seleccionar/deseleccionar):</label>
           <div id="edit-att-days-container" class="flex flex-wrap gap-1.5">
             ${dayButtons}
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-3">
+        <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-bold text-stone-700 mb-1">Horario Oficial:</label>
-            <input type="text" id="edit-att-schedule" value="${student.schedule}" placeholder="Ej: Lun y mié · 7:00 am" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+            <label class="block font-bold text-stone-700 mb-1">Hora de Clase:</label>
+            <input type="text" id="edit-att-time" value="${student.time || student.schedule || '7:00 am'}" placeholder="Ej: 7:00 am" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
           </div>
-          <div>
-            <label class="block font-bold text-stone-700 mb-1">Hora inicio:</label>
-            <input type="text" id="edit-att-time" value="${student.time || '07:00'}" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
-          </div>
-          <div>
-            <label class="block font-bold text-stone-700 mb-1">Cancha Asignada:</label>
-            <select id="edit-att-court" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold">
-              <option value="Cancha 1" ${student.court === 'Cancha 1' ? 'selected' : ''}>Cancha 1 Techada</option>
-              <option value="Cancha 2" ${student.court === 'Cancha 2' ? 'selected' : ''}>Cancha 2 Techada</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-3 gap-3">
           <div>
             <label class="block font-bold text-stone-700 mb-1">Importe Cobrado ($):</label>
             <input type="number" id="edit-att-amount" value="${student.amount || 1500}" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
           </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-bold text-stone-700 mb-1">Estatus Pago:</label>
             <select id="edit-att-paystatus" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold">
@@ -4183,7 +4413,7 @@ function openEditAttendanceModal(studentId) {
           </div>
           <div>
             <label class="block font-bold text-stone-700 mb-1">Fecha Pago / Referencia:</label>
-            <input type="text" id="edit-att-paydate" value="${student.paymentDate || ''}" placeholder="Ej: 30-sep" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+            <input type="text" id="edit-att-paydate" value="${student.paymentDate || ''}" placeholder="Ej: 30-sep o Hoy" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
           </div>
         </div>
 
@@ -4247,10 +4477,7 @@ function saveAttendanceStudentDetails(studentId) {
   if (!student) return;
 
   const client = document.getElementById('edit-att-client')?.value.trim();
-  const code = document.getElementById('edit-att-code')?.value.trim();
-  const schedule = document.getElementById('edit-att-schedule')?.value.trim();
   const time = document.getElementById('edit-att-time')?.value.trim();
-  const court = document.getElementById('edit-att-court')?.value;
   const amount = Number(document.getElementById('edit-att-amount')?.value || 0);
   const paymentStatus = document.getElementById('edit-att-paystatus')?.value;
   const paymentDate = document.getElementById('edit-att-paydate')?.value.trim();
@@ -4258,7 +4485,6 @@ function saveAttendanceStudentDetails(studentId) {
   const packageSessions = Number(document.getElementById('edit-att-pkg-sessions')?.value || 8);
   const notes = document.getElementById('edit-att-notes')?.value.trim();
 
-  // Gather active days
   const activeDays = [];
   document.querySelectorAll('.att-day-pill.bg-vital-900').forEach(btn => {
     activeDays.push(btn.getAttribute('data-day'));
@@ -4270,18 +4496,15 @@ function saveAttendanceStudentDetails(studentId) {
   }
 
   student.client = client;
-  student.code = code || 'G01';
-  student.schedule = schedule || student.schedule;
-  student.time = time || '07:00';
-  student.court = court || 'Cancha 1';
+  student.time = time || '7:00 am';
+  student.schedule = time || '7:00 am';
   student.amount = amount;
   student.paymentStatus = paymentStatus;
-  student.paymentDate = paymentDate;
+  student.paymentDate = paymentDate || (paymentStatus === 'PENDIENTE' ? 'Pendiente' : 'Hoy');
   student.situation = situation;
   student.notes = notes;
   student.days = activeDays.length > 0 ? activeDays : student.days;
 
-  // Adjust sessions length if package size changed
   if (student.packageSessions !== packageSessions) {
     student.packageSessions = packageSessions;
     while (student.sessions.length < packageSessions) {
@@ -4308,6 +4531,16 @@ function saveAttendanceStudentDetails(studentId) {
 // MODAL PARA NUEVO ALUMNO
 // ----------------------------------------------------------------------------
 function openNewAttendanceModal() {
+  const allWeekDays = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+  const dayButtons = allWeekDays.map((d, idx) => {
+    const isAct = idx === 0 || idx === 2; // Lun and Mié by default
+    return `
+      <button type="button" onclick="toggleEditDayPill(this, '${d}')" data-day="${d}" class="att-day-pill px-3 py-1.5 rounded-xl text-xs font-bold transition ${isAct ? 'bg-vital-900 text-vital-cream ring-2 ring-vital-lime' : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'}">
+        ${d}
+      </button>
+    `;
+  }).join('');
+
   const html = `
     <div class="space-y-4 max-w-xl">
       <div class="flex items-center justify-between pb-3 border-b border-vital-900/10">
@@ -4320,40 +4553,30 @@ function openNewAttendanceModal() {
       </div>
 
       <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-stone-700 mb-1">Nombre Completo del Alumno:</label>
+          <input type="text" id="new-att-client" placeholder="Ej: Roberto Gómez" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-stone-700 mb-1">Días de Clase (Haz clic para seleccionar los días):</label>
+          <div id="new-att-days-container" class="flex flex-wrap gap-1.5">
+            ${dayButtons}
+          </div>
+        </div>
+
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-bold text-stone-700 mb-1">Nombre Completo:</label>
-            <input type="text" id="new-att-client" placeholder="Ej: Roberto Gómez" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+            <label class="block font-bold text-stone-700 mb-1">Hora de Clase:</label>
+            <input type="text" id="new-att-time" value="7:00 am" placeholder="Ej: 7:00 am" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
           </div>
-          <div>
-            <label class="block font-bold text-stone-700 mb-1">Grupo / Código:</label>
-            <input type="text" id="new-att-code" placeholder="Ej: G01" value="G01" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
-          </div>
-        </div>
-
-        <div class="grid grid-cols-3 gap-3">
-          <div>
-            <label class="block font-bold text-stone-700 mb-1">Horario Descripción:</label>
-            <input type="text" id="new-att-schedule" placeholder="Ej: Lun y mié · 7:00 am" value="Lun y mié · 7:00 am" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
-          </div>
-          <div>
-            <label class="block font-bold text-stone-700 mb-1">Hora Inicio:</label>
-            <input type="text" id="new-att-time" value="07:00" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
-          </div>
-          <div>
-            <label class="block font-bold text-stone-700 mb-1">Cancha:</label>
-            <select id="new-att-court" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold">
-              <option value="Cancha 1">Cancha 1 Techada</option>
-              <option value="Cancha 2">Cancha 2 Techada</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-3 gap-3">
           <div>
             <label class="block font-bold text-stone-700 mb-1">Importe ($):</label>
             <input type="number" id="new-att-amount" value="1500" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
           </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-bold text-stone-700 mb-1">Estatus Pago:</label>
             <select id="new-att-paystatus" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold">
@@ -4362,7 +4585,7 @@ function openNewAttendanceModal() {
             </select>
           </div>
           <div>
-            <label class="block font-bold text-stone-700 mb-1">Fecha Pago:</label>
+            <label class="block font-bold text-stone-700 mb-1">Fecha Pago / Referencia:</label>
             <input type="text" id="new-att-paydate" value="Hoy" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
           </div>
         </div>
@@ -4374,6 +4597,11 @@ function openNewAttendanceModal() {
             <option value="4">4 Sesiones (Muestra)</option>
             <option value="12">12 Sesiones (Intensivo)</option>
           </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-stone-700 mb-1">Notas Administrativas:</label>
+          <input type="text" id="new-att-notes" placeholder="Comentarios de contacto o acuerdos" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
         </div>
       </div>
 
@@ -4393,14 +4621,17 @@ function openNewAttendanceModal() {
 
 function createNewAttendanceStudent() {
   const client = document.getElementById('new-att-client')?.value.trim();
-  const code = document.getElementById('new-att-code')?.value.trim() || 'G01';
-  const schedule = document.getElementById('new-att-schedule')?.value.trim() || 'Horario a convenir';
-  const time = document.getElementById('new-att-time')?.value.trim() || '07:00';
-  const court = document.getElementById('new-att-court')?.value || 'Cancha 1';
+  const time = document.getElementById('new-att-time')?.value.trim() || '7:00 am';
   const amount = Number(document.getElementById('new-att-amount')?.value || 1500);
   const paymentStatus = document.getElementById('new-att-paystatus')?.value || 'PAGADO';
   const paymentDate = document.getElementById('new-att-paydate')?.value.trim() || 'Hoy';
   const pkgSessions = Number(document.getElementById('new-att-pkg-sessions')?.value || 8);
+  const notes = document.getElementById('new-att-notes')?.value.trim() || '';
+
+  const activeDays = [];
+  document.querySelectorAll('.att-day-pill.bg-vital-900').forEach(btn => {
+    activeDays.push(btn.getAttribute('data-day'));
+  });
 
   if (!client) {
     alert('Por favor introduce el nombre del alumno');
@@ -4408,24 +4639,25 @@ function createNewAttendanceStudent() {
   }
 
   const students = getAttendanceStudents();
+  const daysList = activeDays.length > 0 ? activeDays : ['Lun', 'Mié'];
   const newStudent = {
     id: `ATT-${Date.now()}`,
-    code,
-    schedule,
-    days: ['Lun', 'Mié'],
-    time,
-    court,
-    client,
-    paymentDate,
-    paymentStatus,
-    amount,
+    code: 'G-NEW',
+    schedule: time,
+    days: daysList,
+    time: time,
+    court: 'Cancha 1',
+    client: client,
+    paymentDate: paymentDate,
+    paymentStatus: paymentStatus,
+    amount: amount,
     packageSessions: pkgSessions,
-    sessions: makeAttendanceSessions(pkgSessions, []),
+    sessions: makeAttendanceSessions(pkgSessions, [], paymentDate, daysList),
     situation: paymentStatus === 'PENDIENTE' ? 'PENDIENTE DE PAGO' : 'EN CURSO',
-    notes: 'Inscrito desde panel de administración'
+    notes: notes || 'Inscrito desde panel de administración'
   };
 
-  students.push(newStudent);
+  students.unshift(newStudent);
   saveAttendanceStudents(students);
   closeModal();
   renderAttendanceTable();
@@ -4444,6 +4676,9 @@ function reserveCourtForAttendanceGroup(studentId) {
   const match = String(student.time).match(/(\d+)/);
   if (match) {
     h = parseInt(match[1], 10);
+    if (String(student.time).toLowerCase().includes('pm') && h < 12) {
+      h += 12;
+    }
     if (h < 6) h = 7;
     if (h > 21) h = 21;
   }
@@ -4464,7 +4699,7 @@ function reserveCourtForAttendanceGroup(studentId) {
     hour: h,
     duration: 1,
     service: 'Clínica',
-    customer: `Clínica ${student.code} (${student.client})`,
+    customer: `Clínica ${(student.days || []).join('/')} (${student.client})`,
     phone: '-',
     amount: 0,
     prestadorAmount: 0,
@@ -4496,7 +4731,7 @@ function renewAttendancePackage(studentId) {
   const conf = confirm(`¿Deseas renovar el paquete para ${student.client}? Se reiniciarán las sesiones a pendientes para el nuevo ciclo de 8 sesiones.`);
   if (!conf) return;
 
-  student.sessions = makeAttendanceSessions(student.packageSessions || 8, []);
+  student.sessions = makeAttendanceSessions(student.packageSessions || 8, [], 'Hoy', student.days || ['Lun', 'Mié']);
   student.situation = 'EN CURSO';
   student.paymentDate = getTodayISO(0);
   student.paymentStatus = 'PAGADO';
@@ -4529,7 +4764,7 @@ function deleteAttendanceStudent(studentId) {
 function exportAttendanceToCSV() {
   const students = getAttendanceStudents();
   const headers = [
-    'Código',
+    'Días',
     'Horario',
     'Cliente',
     'Fecha de Pago',
@@ -4543,9 +4778,6 @@ function exportAttendanceToCSV() {
     'Sesión 6',
     'Sesión 7',
     'Sesión 8',
-    'Dadas Coach Lucas',
-    'Dadas Nuevo Coach',
-    'Dadas Otro Coach',
     'Asistencias Totales',
     'Saldo Cliente',
     'Situación'
@@ -4556,16 +4788,14 @@ function exportAttendanceToCSV() {
   students.forEach(s => {
     const sesMap = (s.sessions || []).map(ses => {
       if (!ses.attended) return 'Pendiente';
-      if (ses.coach === 'lucas') return 'Lucas Morilla';
-      if (ses.coach === 'emiliano') return 'Emiliano Matta';
-      if (ses.coach === 'leo') return 'Leonardo Marín';
-      return 'Otro Coach';
+      const cName = ses.coach === 'lucas' ? 'Lucas Morilla' : (ses.coach === 'emiliano' ? 'Emiliano Matta' : (ses.coach === 'leo' ? 'Leonardo Marín' : 'Otro'));
+      return `${ses.date || ''} (${cName})`;
     });
     while (sesMap.length < 8) sesMap.push('-');
 
     rows.push([
-      `"${s.code}"`,
-      `"${s.schedule}"`,
+      `"${(s.days || []).join(' y ')}"`,
+      `"${s.time || s.schedule}"`,
       `"${s.client}"`,
       `"${s.paymentDate}"`,
       s.amount || 0,
@@ -4578,9 +4808,6 @@ function exportAttendanceToCSV() {
       `"${sesMap[5]}"`,
       `"${sesMap[6]}"`,
       `"${sesMap[7]}"`,
-      getStudentLM(s),
-      getStudentNuevo(s),
-      getStudentOtro(s),
       getStudentAttended(s),
       getStudentSaldo(s),
       `"${s.situation}"`
