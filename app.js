@@ -171,37 +171,67 @@ function formatHourLabel(hour24) {
 
 // ----------------------------------------------------------------------------
 // CONFIGURACIÓN DE COACHES Y COMISIONES (ANEXO 2)
-// Lucas Morilla (Prestador): 40% comisión / 60% Vital Club
-// Leo Marín (Coach 2): 50% comisión / 50% Vital Club (sin sueldo base)
+// Lucas Morilla (Head Coach): 40% comisión / 60% Vital Club
+// Emiliano Matta (Coach en Formación): 50% comisión / 50% Vital Club
+// Ángel Leonardo Marín (Segundo Coach): 50% comisión / 50% Vital Club
+// Horarios Oficiales: 7:00 am a 6:00 pm
 // ----------------------------------------------------------------------------
 const COACHES_DATA = [
   {
     id: 'COACH-1',
     name: 'Lucas Morilla',
-    role: 'Director Deportivo & Head Coach',
+    role: 'Head Coach',
     photo: 'assets/real/coach-lucas-morilla.jpg',
-    actionPhoto: 'assets/real/entrenamiento-pareja.jpg',
+    actionPhoto: 'assets/real/coach-lucas-morilla.jpg',
     commissionRate: 0.40,
     clubRate: 0.60,
     hasBaseSalary: true,
     schemeLabel: '40% Prestador / 60% Club',
-    specialty: 'Táctica, Torneos y Clínicas de Alto Rendimiento',
-    bio: 'Director deportivo con amplia trayectoria formando jugadores en pista techada y coordinando clínicas integrales.',
-    schedule: 'Lunes a Sábado · 8:00 AM – 8:00 PM'
+    specialty: 'Táctica, Torneos y Alto Rendimiento',
+    credentials: [
+      'Academia Nito Brea Nivel 2',
+      'APA Nivel 3',
+      'ENEA Nivel 1',
+      'GPA En formación'
+    ],
+    bio: 'Director y Head Coach deportivo certificado. Formación internacional con Academia Nito Brea Nivel 2, APA Nivel 3, ENEA Nivel 1 y GPA en formación. Lidera la metodología técnica y torneos oficiales del club.',
+    schedule: 'Lunes a Sábado · 7:00 am a 6:00 pm'
   },
   {
     id: 'COACH-2',
-    name: 'Leo Marín',
-    role: 'Coach Infantil, Juvenil & Principiantes',
+    name: 'Emiliano Matta',
+    role: 'Jugador de Tenis Profesional · Coach de Pádel en Formación',
     photo: 'assets/real/coach-leo-marin.jpg',
     actionPhoto: 'assets/real/coach-leo-marin.jpg',
     commissionRate: 0.50,
     clubRate: 0.50,
     hasBaseSalary: false,
-    schemeLabel: '50% Prestador / 50% Club (Sin sueldo base)',
-    specialty: 'Iniciación Infantil, Psicomotricidad y Clínicas Familiares',
-    bio: 'Especialista en desarrollo motriz y enseñanza dinámica para niños y jóvenes que inician en el pádel.',
-    schedule: 'Lunes a Sábado · Turnos Matutinos y Vespertinos'
+    schemeLabel: '50% Prestador / 50% Club',
+    specialty: 'Juego Rápido, Definición en Red e Intensidad Física',
+    credentials: [
+      'Jugador de Tenis Profesional',
+      'Coach de Pádel en Formación'
+    ],
+    bio: 'Jugador de tenis profesional y entrenador de pádel en formación continua. Especialista en ritmo competitivo, acondicionamiento y técnica de golpeo acelerado en pista techada.',
+    schedule: 'Lunes a Sábado · 7:00 am a 6:00 pm'
+  },
+  {
+    id: 'COACH-3',
+    name: 'Ángel Leonardo Marín',
+    role: 'Segundo Coach · Coach de Pádel en Formación',
+    photo: 'assets/real/entrenamiento-pareja.jpg',
+    actionPhoto: 'assets/real/entrenamiento-pareja.jpg',
+    commissionRate: 0.50,
+    clubRate: 0.50,
+    hasBaseSalary: false,
+    schemeLabel: '50% Prestador / 50% Club',
+    specialty: 'Iniciación, Fundamentos de Rebote y Clínicas Familiares',
+    credentials: [
+      'Segundo Coach',
+      'Coach de Pádel en Formación'
+    ],
+    bio: 'Segundo coach oficial de Vital Club y coach de pádel en formación. Enfoque integral para el aprendizaje progresivo de niños, jóvenes y adultos principiantes o intermedios.',
+    schedule: 'Lunes a Sábado · 7:00 am a 6:00 pm'
   }
 ];
 
@@ -367,7 +397,7 @@ const COURT_3D_DATA = {
       realTitle: 'Pista Completa y Techo Industrial',
       realDesc: 'Vista longitudinal de las pistas techadas mostrando la amplitud de juego y altura de techo.',
       hotspots: [
-        { x: 50, y: 18, title: 'Altura Libre de Cumbrera (8.5 m)', desc: 'Espacio vertical superior para globos defensivos y juego aéreo sin obstrucciones.' },
+        { x: 50, y: 18, title: 'Altura Libre de Cumbrera (10 m centro / 7 m orillas)', desc: 'Altura de 10 m al centro y 7 m a las orillas para globos defensivos y juego aéreo sin obstrucciones.' },
         { x: 12, y: 63, title: 'Frontis de Cristal Reglamentario', desc: 'Paredes traseras de 3 metros de altura para salidas de pared y contra-pared.' },
         { x: 88, y: 63, title: 'Iluminación LED Antideslumbrante', desc: 'Proyectores distribuidos estratégicamente para juego nocturno uniforme sin sombras.' },
         { x: 50, y: 78, title: 'Césped Texturado Monofilamento', desc: 'Superficie de pasto sintético con carga de arena de sílice homogénea para agarre óptimo.' }
@@ -800,8 +830,9 @@ function showToast(message) {
 // ============================================================================
 
 const STAFF_PINS = {
-  '1111': { role: 'coach', coachId: 'COACH-1', name: 'Lucas Morilla', title: 'Director Deportivo & Head Coach' },
-  '2222': { role: 'coach', coachId: 'COACH-2', name: 'Leo Marín', title: 'Coach Infantil & Juvenil' },
+  '1111': { role: 'coach', coachId: 'COACH-1', name: 'Lucas Morilla', title: 'Head Coach' },
+  '2222': { role: 'coach', coachId: 'COACH-2', name: 'Emiliano Matta', title: 'Coach en Formación' },
+  '3333': { role: 'coach', coachId: 'COACH-3', name: 'Ángel Leonardo Marín', title: 'Segundo Coach' },
   '0000': { role: 'admin', coachId: 'ADMIN', name: 'Jesús Higareda', title: 'Dirección General' },
   '9999': { role: 'admin', coachId: 'ADMIN', name: 'Jesús Higareda', title: 'Dirección General' }
 };
@@ -961,9 +992,10 @@ function switchMainMode(mode) {
 }
 
 function switchAdminTab(tabName) {
-  const tabs = ['dashboard', 'pos', 'registro', 'ingresos'];
+  const tabs = ['dashboard', 'asistencia', 'pos', 'registro', 'ingresos'];
   const titles = {
     dashboard: 'Dashboard y Números',
+    asistencia: 'Control de Asistencia & Paquetes de Clínicas',
     pos: 'Punto de Venta Oficial (POS)',
     registro: 'Calendario Maestro de Canchas',
     ingresos: 'Ingresos y Comisiones'
@@ -1232,12 +1264,25 @@ function renderClientCoaches() {
           </div>
         </div>
 
+        ${coach.credentials && coach.credentials.length ? `
+          <div class="space-y-1.5 pt-1">
+            <span class="text-[10px] uppercase font-bold tracking-wider text-vital-lime/80 block">Certificaciones & Formación:</span>
+            <div class="flex flex-wrap gap-1.5">
+              ${coach.credentials.map(c => `
+                <span class="px-2 py-0.5 rounded-md bg-white/10 text-[10px] text-vital-cream/90 font-medium border border-white/10">
+                  ${c}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
         <p class="text-xs text-vital-cream/80 leading-relaxed">${coach.bio}</p>
       </div>
 
       <div class="pt-4 border-t border-white/10 space-y-1.5 text-xs">
         <div class="text-vital-cream/60">Especialidad: <span class="text-vital-cream font-medium">${coach.specialty}</span></div>
-        <div class="text-vital-cream/60">Disponibilidad: <span class="text-vital-lime font-medium">${coach.schedule}</span></div>
+        <div class="text-vital-cream/60">Horario Oficial: <span class="text-vital-lime font-medium">${coach.schedule}</span></div>
         <div class="pt-2 flex items-center gap-2">
           <a href="#clases" class="px-3.5 py-1.5 rounded-xl bg-vital-lime text-vital-950 font-bold text-xs hover:opacity-95 transition shadow-sm">
             Agendar con ${coach.name.split(' ')[0]}
@@ -2695,12 +2740,1886 @@ function exportIncomeToCSV() {
   link.remove();
 }
 
+
+// ============================================================================
+// MÓDULO OFICIAL DE CONTROL DE ASISTENCIA & PAQUETES DE CLÍNICAS (ADMIN)
+// ============================================================================
+
+function makeAttendanceSessions(total, attendedCoaches) {
+  const list = [];
+  for (let i = 1; i <= total; i++) {
+    const coach = (attendedCoaches && attendedCoaches[i - 1]) ? attendedCoaches[i - 1] : null;
+    list.push({
+      num: i,
+      attended: !!coach,
+      coach: coach,
+      date: coach ? 'Registrada' : '',
+      note: ''
+    });
+  }
+  return list;
+}
+
+const DEFAULT_ATTENDANCE_STUDENTS = [
+  {
+    id: 'ATT-001',
+    code: 'G01',
+    schedule: 'Lun y mié · 7:00 am',
+    days: ["Lun", "Mi\u00e9"],
+    time: '07:00',
+    court: 'Cancha 1',
+    client: 'Oscar Rubio',
+    paymentDate: '30-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-002',
+    code: 'G01',
+    schedule: 'Lun y mié · 7:00 am',
+    days: ["Lun", "Mi\u00e9"],
+    time: '07:00',
+    court: 'Cancha 1',
+    client: 'Alejandro Hernández',
+    paymentDate: 'Pendiente',
+    paymentStatus: 'PENDIENTE',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: 'Pago pendiente'
+  },
+  {
+    id: 'ATT-003',
+    code: 'G01',
+    schedule: 'Lun y mié · 7:00 am',
+    days: ["Lun", "Mi\u00e9"],
+    time: '07:00',
+    court: 'Cancha 1',
+    client: 'Enrique Sandoval',
+    paymentDate: '30-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-004',
+    code: 'G01',
+    schedule: 'Lun y mié · 7:00 am',
+    days: ["Lun", "Mi\u00e9"],
+    time: '07:00',
+    court: 'Cancha 1',
+    client: 'Max Tenorio',
+    paymentDate: '20-ago',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-005',
+    code: 'G02',
+    schedule: 'Lun 8:00 am / Jue 7:30 am',
+    days: ["Lun", "Jue"],
+    time: '08:00 / 07:30',
+    court: 'Cancha 1',
+    client: 'Rafa Cova jr',
+    paymentDate: '30-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-006',
+    code: 'G02',
+    schedule: 'Lun 8:00 am / Jue 7:30 am',
+    days: ["Lun", "Jue"],
+    time: '08:00 / 07:30',
+    court: 'Cancha 1',
+    client: 'Paulina Cova',
+    paymentDate: '28-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-007',
+    code: 'G02',
+    schedule: 'Lun 8:00 am / Jue 7:30 am',
+    days: ["Lun", "Jue"],
+    time: '08:00 / 07:30',
+    court: 'Cancha 1',
+    client: 'Ana Victoria',
+    paymentDate: '29-jul',
+    paymentStatus: 'PAGADO',
+    amount: 1360,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'TERMINADO / RENOVAR',
+    notes: '8 sesiones concluidas'
+  },
+  {
+    id: 'ATT-008',
+    code: 'G02',
+    schedule: 'Lun 8:00 am / Jue 7:30 am',
+    days: ["Lun", "Jue"],
+    time: '08:00 / 07:30',
+    court: 'Cancha 1',
+    client: 'Zara Huertado',
+    paymentDate: '12-oct',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["emiliano"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-009',
+    code: 'G03',
+    schedule: 'Lun y mié · 9:00 am',
+    days: ["Lun", "Mi\u00e9"],
+    time: '09:00',
+    court: 'Cancha 1',
+    client: 'Mari Carmen',
+    paymentDate: '5-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1360,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-010',
+    code: 'G03',
+    schedule: 'Lun y mié · 9:00 am',
+    days: ["Lun", "Mi\u00e9"],
+    time: '09:00',
+    court: 'Cancha 1',
+    client: 'Cecilia Alcántara',
+    paymentDate: '18-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'TERMINADO / RENOVAR',
+    notes: '8 sesiones concluidas'
+  },
+  {
+    id: 'ATT-011',
+    code: 'G03',
+    schedule: 'Lun y mié · 9:00 am',
+    days: ["Lun", "Mi\u00e9"],
+    time: '09:00',
+    court: 'Cancha 1',
+    client: 'Valeria Estefan',
+    paymentDate: '5-oct',
+    paymentStatus: 'PAGADO',
+    amount: 1360,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "emiliano"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-012',
+    code: 'G03',
+    schedule: 'Lun y mié · 9:00 am',
+    days: ["Lun", "Mi\u00e9"],
+    time: '09:00',
+    court: 'Cancha 1',
+    client: 'Ezzin Estefan',
+    paymentDate: '5-oct',
+    paymentStatus: 'PAGADO',
+    amount: 1360,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "emiliano"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-013',
+    code: 'G04',
+    schedule: 'Lun y mié · 10:00 am',
+    days: ["Lun", "Mi\u00e9"],
+    time: '10:00',
+    court: 'Cancha 1',
+    client: 'Marisa',
+    paymentDate: '5-oct',
+    paymentStatus: 'PAGADO',
+    amount: 2000,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-014',
+    code: 'G04',
+    schedule: 'Lun y mié · 10:00 am',
+    days: ["Lun", "Mi\u00e9"],
+    time: '10:00',
+    court: 'Cancha 1',
+    client: 'Valeria Rubio Trev',
+    paymentDate: '30-sep',
+    paymentStatus: 'PAGADO',
+    amount: 2000,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-015',
+    code: 'G05',
+    schedule: 'Lun y mié · 4:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '16:00',
+    court: 'Cancha 1',
+    client: 'Fernando Romero',
+    paymentDate: '28-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-016',
+    code: 'G05',
+    schedule: 'Lun y mié · 4:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '16:00',
+    court: 'Cancha 1',
+    client: 'Arath',
+    paymentDate: '5-oct',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-017',
+    code: 'G05',
+    schedule: 'Lun y mié · 4:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '16:00',
+    court: 'Cancha 1',
+    client: 'Gonzalo Sámano hijo',
+    paymentDate: '5-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1080,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-018',
+    code: 'G05',
+    schedule: 'Lun y mié · 4:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '16:00',
+    court: 'Cancha 1',
+    client: 'Anette',
+    paymentDate: '7-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-019',
+    code: 'G05',
+    schedule: 'Lun y mié · 4:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '16:00',
+    court: 'Cancha 1',
+    client: 'Alejandro Manzur',
+    paymentDate: '30-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-020',
+    code: 'G05',
+    schedule: 'Lun y mié · 4:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '16:00',
+    court: 'Cancha 1',
+    client: 'Karla',
+    paymentDate: '7-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-021',
+    code: 'G05',
+    schedule: 'Lun y mié · 4:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '16:00',
+    court: 'Cancha 1',
+    client: 'Pía Orihuela',
+    paymentDate: '22-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-022',
+    code: 'G05',
+    schedule: 'Lun y mié · 4:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '16:00',
+    court: 'Cancha 1',
+    client: 'Farah Orihuela',
+    paymentDate: '22-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-023',
+    code: 'G05',
+    schedule: 'Lun y mié · 4:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '16:00',
+    court: 'Cancha 1',
+    client: 'Ricardo González',
+    paymentDate: '30-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, []),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-024',
+    code: 'G05',
+    schedule: 'Lun y mié · 4:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '16:00',
+    court: 'Cancha 1',
+    client: 'Manolo Herrera',
+    paymentDate: 'Pendiente',
+    paymentStatus: 'PENDIENTE',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: 'Pago pendiente'
+  },
+  {
+    id: 'ATT-025',
+    code: 'G05',
+    schedule: 'Lun y mié · 4:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '16:00',
+    court: 'Cancha 1',
+    client: 'Luciana Herrera',
+    paymentDate: 'Pendiente',
+    paymentStatus: 'PENDIENTE',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: 'Pago pendiente'
+  },
+  {
+    id: 'ATT-026',
+    code: 'G05',
+    schedule: 'Lun y mié · 4:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '16:00',
+    court: 'Cancha 1',
+    client: 'Enrique Bustamante',
+    paymentDate: '31-ago',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'TERMINADO / RENOVAR',
+    notes: '8 sesiones concluidas'
+  },
+  {
+    id: 'ATT-027',
+    code: 'G06',
+    schedule: 'Lun y mié · 5:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '17:00',
+    court: 'Cancha 1',
+    client: 'Memo Estefan',
+    paymentDate: '12-oct',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["emiliano"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-028',
+    code: 'G06',
+    schedule: 'Lun y mié · 5:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '17:00',
+    court: 'Cancha 1',
+    client: 'Marlen',
+    paymentDate: '28-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-029',
+    code: 'G06',
+    schedule: 'Lun y mié · 5:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '17:00',
+    court: 'Cancha 1',
+    client: 'Arantza',
+    paymentDate: '28-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-030',
+    code: 'G06',
+    schedule: 'Lun y mié · 5:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '17:00',
+    court: 'Cancha 1',
+    client: 'Natalia García',
+    paymentDate: '28-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-031',
+    code: 'G06',
+    schedule: 'Lun y mié · 5:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '17:00',
+    court: 'Cancha 1',
+    client: 'Mauricio Navas',
+    paymentDate: '16-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'TERMINADO / RENOVAR',
+    notes: '8 sesiones concluidas'
+  },
+  {
+    id: 'ATT-032',
+    code: 'G06',
+    schedule: 'Lun y mié · 5:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '17:00',
+    court: 'Cancha 1',
+    client: 'Sebastián Rubio',
+    paymentDate: '21-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-033',
+    code: 'G06',
+    schedule: 'Lun y mié · 5:00 pm',
+    days: ["Lun", "Mi\u00e9"],
+    time: '17:00',
+    court: 'Cancha 1',
+    client: 'Emiliano Rubio',
+    paymentDate: '28-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-034',
+    code: 'G07',
+    schedule: 'Mar y Jue · 7:00 am',
+    days: ["Mar", "Jue"],
+    time: '07:00',
+    court: 'Cancha 1',
+    client: 'Eduardo Orihuela',
+    paymentDate: '29-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-035',
+    code: 'G07',
+    schedule: 'Mar y Jue · 7:00 am',
+    days: ["Mar", "Jue"],
+    time: '07:00',
+    court: 'Cancha 1',
+    client: 'Karina Orihuela',
+    paymentDate: '29-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-036',
+    code: 'G07',
+    schedule: 'Mar y Jue · 7:00 am',
+    days: ["Mar", "Jue"],
+    time: '07:00',
+    court: 'Cancha 1',
+    client: 'Amelieli',
+    paymentDate: '29-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, []),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-037',
+    code: 'G07',
+    schedule: 'Mar y Jue · 7:00 am',
+    days: ["Mar", "Jue"],
+    time: '07:00',
+    court: 'Cancha 1',
+    client: 'Jacobo Ortiz',
+    paymentDate: '29-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, []),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-038',
+    code: 'G08',
+    schedule: 'Mar y Jue · 8:30 am',
+    days: ["Mar", "Jue"],
+    time: '08:30',
+    court: 'Cancha 1',
+    client: 'Eduardo Salazar',
+    paymentDate: '22-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-039',
+    code: 'G08',
+    schedule: 'Mar y Jue · 8:30 am',
+    days: ["Mar", "Jue"],
+    time: '08:30',
+    court: 'Cancha 1',
+    client: 'Rubén',
+    paymentDate: '22-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-040',
+    code: 'G08',
+    schedule: 'Mar y Jue · 8:30 am',
+    days: ["Mar", "Jue"],
+    time: '08:30',
+    court: 'Cancha 1',
+    client: 'Carlos Beamonte',
+    paymentDate: '24-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-041',
+    code: 'G09',
+    schedule: 'Mar y Jue · 3:00 pm / 5:00 pm',
+    days: ["Mar", "Jue"],
+    time: '15:00',
+    court: 'Cancha 1',
+    client: 'Yunuen Higareda',
+    paymentDate: 'Pendiente',
+    paymentStatus: 'PENDIENTE',
+    amount: 3000,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas"]),
+    situation: 'EN CURSO',
+    notes: 'Pago pendiente'
+  },
+  {
+    id: 'ATT-042',
+    code: 'G09',
+    schedule: 'Mar y Jue · 3:00 pm / 5:00 pm',
+    days: ["Mar", "Jue"],
+    time: '15:00',
+    court: 'Cancha 1',
+    client: 'Ethan Arollo',
+    paymentDate: '6-oct',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "emiliano"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-043',
+    code: 'G09',
+    schedule: 'Mar y Jue · 3:00 pm / 5:00 pm',
+    days: ["Mar", "Jue"],
+    time: '17:00',
+    court: 'Cancha 1',
+    client: 'Max Garduño',
+    paymentDate: 'Pendiente',
+    paymentStatus: 'PENDIENTE',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["emiliano"]),
+    situation: 'EN CURSO',
+    notes: 'Pago pendiente'
+  },
+  {
+    id: 'ATT-044',
+    code: 'G09',
+    schedule: 'Mar y Jue · 3:00 pm / 5:00 pm',
+    days: ["Mar", "Jue"],
+    time: '17:00',
+    court: 'Cancha 1',
+    client: 'Juan Niño',
+    paymentDate: '13-oct',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["emiliano"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-045',
+    code: 'G10',
+    schedule: 'Jue y Vie · 6:00 pm',
+    days: ["Jue", "Vie"],
+    time: '18:00',
+    court: 'Cancha 1',
+    client: 'Iker',
+    paymentDate: '4-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-046',
+    code: 'G10',
+    schedule: 'Jue y Vie · 6:00 pm',
+    days: ["Jue", "Vie"],
+    time: '18:00',
+    court: 'Cancha 1',
+    client: 'George',
+    paymentDate: '4-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-047',
+    code: 'G10',
+    schedule: 'Jue y Vie · 6:00 pm',
+    days: ["Jue", "Vie"],
+    time: '18:00',
+    court: 'Cancha 1',
+    client: 'Gerardo',
+    paymentDate: '4-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-048',
+    code: 'G11',
+    schedule: 'Mié y Vie · 2:00 pm',
+    days: ["Mi\u00e9", "Vie"],
+    time: '14:00',
+    court: 'Cancha 1',
+    client: 'Don César',
+    paymentDate: '27-ago',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'TERMINADO / RENOVAR',
+    notes: '8 sesiones concluidas'
+  },
+  {
+    id: 'ATT-049',
+    code: 'G11',
+    schedule: 'Mié y Vie · 2:00 pm',
+    days: ["Mi\u00e9", "Vie"],
+    time: '14:00',
+    court: 'Cancha 1',
+    client: 'César hijo',
+    paymentDate: '27-ago',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'TERMINADO / RENOVAR',
+    notes: '8 sesiones concluidas'
+  },
+  {
+    id: 'ATT-050',
+    code: 'G12',
+    schedule: 'Particulares · Horario variable',
+    days: ["Lun", "Mi\u00e9", "Vie"],
+    time: 'Variable',
+    court: 'Cancha 1',
+    client: 'David Beamonte',
+    paymentDate: '14-sep',
+    paymentStatus: 'PAGADO',
+    amount: 3000,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-051',
+    code: 'G12',
+    schedule: 'Particulares · Horario variable',
+    days: ["Lun", "Mi\u00e9", "Vie"],
+    time: 'Variable',
+    court: 'Cancha 1',
+    client: 'Gonzalo Sámano',
+    paymentDate: '5-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1350,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'TERMINADO / RENOVAR',
+    notes: '8 sesiones concluidas'
+  },
+  {
+    id: 'ATT-052',
+    code: 'G12',
+    schedule: 'Particulares · Horario variable',
+    days: ["Lun", "Mi\u00e9", "Vie"],
+    time: 'Variable',
+    court: 'Cancha 1',
+    client: 'Leo Estefan',
+    paymentDate: '27-ago',
+    paymentStatus: 'PAGADO',
+    amount: 2000,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'TERMINADO / RENOVAR',
+    notes: '8 sesiones concluidas'
+  },
+  {
+    id: 'ATT-053',
+    code: 'G12',
+    schedule: 'Particulares · Horario variable',
+    days: ["Lun", "Mi\u00e9", "Vie"],
+    time: 'Variable',
+    court: 'Cancha 1',
+    client: 'Memo Estefan',
+    paymentDate: '27-ago',
+    paymentStatus: 'PAGADO',
+    amount: 3000,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'TERMINADO / RENOVAR',
+    notes: '8 sesiones concluidas'
+  },
+  {
+    id: 'ATT-054',
+    code: 'G12',
+    schedule: 'Particulares · Horario variable',
+    days: ["Lun", "Mi\u00e9", "Vie"],
+    time: 'Variable',
+    court: 'Cancha 1',
+    client: 'Gustavo Estrada Ocampo',
+    paymentDate: '27-ago',
+    paymentStatus: 'PAGADO',
+    amount: 3000,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, ["lucas", "lucas", "lucas", "lucas", "lucas", "lucas"]),
+    situation: 'EN CURSO',
+    notes: ''
+  },
+  {
+    id: 'ATT-055',
+    code: 'G13',
+    schedule: 'Sin Horario Registrado',
+    days: ["Lun"],
+    time: 'Por Definir',
+    court: 'Cancha 1',
+    client: 'Richie',
+    paymentDate: '30-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1500,
+    packageSessions: 8,
+    sessions: makeAttendanceSessions(8, []),
+    situation: 'EN CURSO',
+    notes: 'Pendiente horario'
+  },
+  {
+    id: 'ATT-056',
+    code: 'G13',
+    schedule: 'Muestra Especial',
+    days: ["Lun"],
+    time: 'Por Definir',
+    court: 'Cancha 1',
+    client: 'Jose Eduardo Orihuela',
+    paymentDate: '22-sep',
+    paymentStatus: 'PAGADO',
+    amount: 1200,
+    packageSessions: 4,
+    sessions: makeAttendanceSessions(4, ["lucas"]),
+    situation: 'VALIDAR MUESTRA',
+    notes: 'Paquete muestra 4 sesiones'
+  }
+];
+
+function getAttendanceStudents() {
+  try {
+    const raw = localStorage.getItem('vital_attendance_students');
+    if (!raw) {
+      localStorage.setItem('vital_attendance_students', JSON.stringify(DEFAULT_ATTENDANCE_STUDENTS));
+      return JSON.parse(JSON.stringify(DEFAULT_ATTENDANCE_STUDENTS));
+    }
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : DEFAULT_ATTENDANCE_STUDENTS;
+  } catch (e) {
+    console.error('Error reading attendance students:', e);
+    return DEFAULT_ATTENDANCE_STUDENTS;
+  }
+}
+
+function saveAttendanceStudents(list) {
+  try {
+    localStorage.setItem('vital_attendance_students', JSON.stringify(list));
+  } catch (e) {
+    console.error('Error saving attendance students:', e);
+  }
+}
+
+function getStudentAttended(student) {
+  if (!student.sessions || !Array.isArray(student.sessions)) return 0;
+  return student.sessions.filter(s => s.attended).length;
+}
+
+function getStudentSaldo(student) {
+  const total = Number(student.packageSessions || 8);
+  const attended = getStudentAttended(student);
+  return Math.max(0, total - attended);
+}
+
+function getStudentLM(student) {
+  if (!student.sessions) return 0;
+  return student.sessions.filter(s => s.attended && s.coach === 'lucas').length;
+}
+
+function getStudentNuevo(student) {
+  if (!student.sessions) return 0;
+  return student.sessions.filter(s => s.attended && (s.coach === 'emiliano' || s.coach === 'leo')).length;
+}
+
+function getStudentOtro(student) {
+  if (!student.sessions) return 0;
+  return student.sessions.filter(s => s.attended && s.coach === 'otro').length;
+}
+
+function populateAttendanceGroupFilter() {
+  const sel = document.getElementById('att-filter-group');
+  if (!sel) return;
+  const students = getAttendanceStudents();
+  const groups = Array.from(new Set(students.map(s => s.code))).sort();
+  const currentVal = sel.value || 'all';
+
+  sel.innerHTML = '<option value="all">Todos los Grupos (G01 - G13)</option>' +
+    groups.map(g => `<option value="${g}">${g} · ${students.find(s => s.code === g)?.schedule || ''}</option>`).join('');
+  
+  if (groups.includes(currentVal)) {
+    sel.value = currentVal;
+  }
+}
+
+function renderAttendanceKPIs(students) {
+  const container = document.getElementById('attendance-kpi-summary');
+  if (!container) return;
+
+  const list = students || getAttendanceStudents();
+  const totalStudents = list.length;
+  const enCurso = list.filter(s => s.situation === 'EN CURSO').length;
+  const porRenovar = list.filter(s => s.situation === 'TERMINADO / RENOVAR' || getStudentSaldo(s) === 0).length;
+  const pendientesPago = list.filter(s => s.paymentStatus === 'PENDIENTE' || String(s.paymentDate).toUpperCase().includes('PENDIENTE')).length;
+  
+  let totalLM = 0;
+  let totalNuevo = 0;
+  let totalOtro = 0;
+  list.forEach(s => {
+    totalLM += getStudentLM(s);
+    totalNuevo += getStudentNuevo(s);
+    totalOtro += getStudentOtro(s);
+  });
+  const totalDadas = totalLM + totalNuevo + totalOtro;
+
+  container.innerHTML = `
+    <div class="p-3.5 rounded-2xl bg-vital-cream border border-vital-900/10">
+      <span class="text-[10px] uppercase font-bold tracking-wider text-stone-500 block">Total Alumnos</span>
+      <p class="text-2xl font-brand font-bold text-vital-900 mt-0.5">${totalStudents}</p>
+      <span class="text-[10px] text-stone-500">13 grupos oficiales</span>
+    </div>
+    <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200">
+      <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-800 block">En Curso</span>
+      <p class="text-2xl font-brand font-bold text-emerald-950 mt-0.5">${enCurso}</p>
+      <span class="text-[10px] text-emerald-700">Paquetes activos</span>
+    </div>
+    <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200">
+      <span class="text-[10px] uppercase font-bold tracking-wider text-amber-800 block">Por Renovar</span>
+      <p class="text-2xl font-brand font-bold text-amber-950 mt-0.5">${porRenovar}</p>
+      <span class="text-[10px] text-amber-700">0 sesiones restantes</span>
+    </div>
+    <div class="p-3.5 rounded-2xl bg-red-50 border border-red-200">
+      <span class="text-[10px] uppercase font-bold tracking-wider text-red-800 block">⚠️ Pendientes Pago</span>
+      <p class="text-2xl font-brand font-bold text-red-950 mt-0.5">${pendientesPago}</p>
+      <span class="text-[10px] text-red-700">Cobro urgente</span>
+    </div>
+    <div class="p-3.5 rounded-2xl bg-vital-900 text-vital-cream col-span-2 sm:col-span-4 lg:col-span-1 border border-vital-900">
+      <span class="text-[10px] uppercase font-bold tracking-wider text-vital-lime block">Sesiones Impartidas</span>
+      <p class="text-2xl font-brand font-bold text-white mt-0.5">${totalDadas}</p>
+      <span class="text-[10px] text-vital-cream/80 block">LM: ${totalLM} · Nuevo: ${totalNuevo}</span>
+    </div>
+  `;
+}
+
+function renderAttendanceTable() {
+  const body = document.getElementById('attendance-table-body');
+  if (!body) return;
+
+  const allStudents = getAttendanceStudents();
+  populateAttendanceGroupFilter();
+  renderAttendanceKPIs(allStudents);
+
+  const query = (document.getElementById('att-search-input')?.value || '').trim().toLowerCase();
+  const filterGroup = document.getElementById('att-filter-group')?.value || 'all';
+  const filterStatus = document.getElementById('att-filter-status')?.value || 'all';
+  const filterCoach = document.getElementById('att-filter-coach')?.value || 'all';
+
+  let filtered = allStudents.filter(s => {
+    if (query) {
+      const matchName = s.client.toLowerCase().includes(query);
+      const matchGroup = s.code.toLowerCase().includes(query);
+      const matchSched = s.schedule.toLowerCase().includes(query);
+      if (!matchName && !matchGroup && !matchSched) return false;
+    }
+    if (filterGroup !== 'all' && s.code !== filterGroup) return false;
+    if (filterStatus !== 'all' && s.situation !== filterStatus) return false;
+    if (filterCoach !== 'all') {
+      const hasCoach = s.sessions.some(ses => ses.attended && ses.coach === filterCoach);
+      if (!hasCoach) return false;
+    }
+    return true;
+  });
+
+  const counterBadge = document.getElementById('att-counter-badge');
+  if (counterBadge) {
+    counterBadge.textContent = `Mostrando ${filtered.length} de ${allStudents.length} alumnos`;
+  }
+
+  if (filtered.length === 0) {
+    body.innerHTML = `
+      <tr>
+        <td colspan="11" class="py-12 text-center text-stone-400">
+          <p class="text-base font-semibold text-stone-600">No se encontraron alumnos con los filtros seleccionados</p>
+          <p class="text-xs mt-1">Prueba cambiando el grupo o término de búsqueda.</p>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  body.innerHTML = filtered.map(s => {
+    const attended = getStudentAttended(s);
+    const total = Number(s.packageSessions || 8);
+    const saldo = Math.max(0, total - attended);
+    const lm = getStudentLM(s);
+    const nuevo = getStudentNuevo(s);
+
+    const isPendingPayment = s.paymentStatus === 'PENDIENTE' || String(s.paymentDate).toUpperCase().includes('PENDIENTE');
+    const paymentBadge = isPendingPayment
+      ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-800 border border-red-200 animate-pulse">⚠️ PENDIENTE</span>`
+      : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">✓ ${s.paymentDate}</span>`;
+
+    let situationBadge = '';
+    if (s.situation === 'TERMINADO / RENOVAR' || saldo === 0) {
+      situationBadge = `<span class="px-2 py-1 rounded-lg text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300">TERMINADO / RENOVAR</span>`;
+    } else if (s.situation === 'VALIDAR MUESTRA') {
+      situationBadge = `<span class="px-2 py-1 rounded-lg text-[10px] font-bold bg-purple-100 text-purple-900 border border-purple-300">VALIDAR MUESTRA</span>`;
+    } else if (isPendingPayment) {
+      situationBadge = `<span class="px-2 py-1 rounded-lg text-[10px] font-bold bg-red-50 text-red-800 border border-red-200">PENDIENTE DE PAGO</span>`;
+    } else {
+      situationBadge = `<span class="px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">EN CURSO</span>`;
+    }
+
+    // Days pill strip
+    const daysBadges = (s.days || []).map(d => `<span class="px-1 py-0.2 rounded text-[9px] font-bold bg-vital-900/10 text-vital-900">${d}</span>`).join(' ');
+
+    // Render 8 session cells
+    const sessionPills = (s.sessions || []).map(ses => {
+      let cls = 'bg-stone-50 text-stone-400 border-dashed border-stone-300 hover:border-stone-400';
+      let text = `○ ${ses.num}`;
+      let title = `Sesión ${ses.num}: Pendiente`;
+
+      if (ses.attended) {
+        if (ses.coach === 'lucas') {
+          cls = 'bg-purple-100 text-purple-900 border-purple-300 hover:bg-purple-200 font-bold';
+          text = `LM ${ses.num}`;
+          title = `Sesión ${ses.num}: Impartida por Lucas Morilla (Head Coach)`;
+        } else if (ses.coach === 'emiliano') {
+          cls = 'bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200 font-bold';
+          text = `EM ${ses.num}`;
+          title = `Sesión ${ses.num}: Impartida por Emiliano Matta`;
+        } else if (ses.coach === 'leo') {
+          cls = 'bg-emerald-100 text-emerald-900 border-emerald-300 hover:bg-emerald-200 font-bold';
+          text = `ALM ${ses.num}`;
+          title = `Sesión ${ses.num}: Impartida por Ángel Leonardo Marín`;
+        } else {
+          cls = 'bg-sky-100 text-sky-900 border-sky-300 hover:bg-sky-200 font-bold';
+          text = `OT ${ses.num}`;
+          title = `Sesión ${ses.num}: Impartida por Coach Anterior / Suplente`;
+        }
+      }
+
+      return `
+        <button type="button" onclick="openAttendanceSessionModal('${s.id}', ${ses.num})" class="px-1.5 py-1 rounded-md border text-[10px] transition cursor-pointer shrink-0 ${cls}" title="${title}">
+          ${text}
+        </button>
+      `;
+    }).join('');
+
+    return `
+      <tr class="hover:bg-vital-cream/40 transition">
+        <!-- Grupo & Horario -->
+        <td class="py-3 px-3">
+          <div class="flex items-center gap-1.5">
+            <span class="px-2 py-0.5 rounded-md bg-vital-900 text-white font-brand font-bold text-[11px]">${s.code}</span>
+            <span class="font-medium text-stone-700">${s.schedule}</span>
+          </div>
+          <div class="flex items-center gap-1 mt-1">
+            ${daysBadges}
+            <span class="text-[10px] text-stone-400">· ${s.court || 'Cancha 1'}</span>
+          </div>
+        </td>
+
+        <!-- Alumno -->
+        <td class="py-3 px-3 font-bold text-vital-900">
+          <div class="flex items-center gap-1.5">
+            <span>${s.client}</span>
+          </div>
+          ${s.notes ? `<p class="text-[10px] font-normal text-stone-400 italic">${s.notes}</p>` : ''}
+        </td>
+
+        <!-- Estatus Pago -->
+        <td class="py-3 px-2 text-center whitespace-nowrap">
+          ${paymentBadge}
+        </td>
+
+        <!-- Importe -->
+        <td class="py-3 px-2 text-center font-bold text-stone-800">
+          $${Number(s.amount || 0).toLocaleString()}
+        </td>
+
+        <!-- Sesiones 1 a 8 -->
+        <td class="py-3 px-3 text-center">
+          <div class="flex items-center justify-center gap-1 flex-nowrap">
+            ${sessionPills}
+          </div>
+        </td>
+
+        <!-- Dadas LM -->
+        <td class="py-3 px-2 text-center">
+          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-purple-900 border border-purple-200">${lm}</span>
+        </td>
+
+        <!-- Dadas Nuevo -->
+        <td class="py-3 px-2 text-center">
+          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-900 border border-amber-200">${nuevo}</span>
+        </td>
+
+        <!-- Asistencias Totales -->
+        <td class="py-3 px-2 text-center font-bold text-vital-900">
+          ${attended} / ${total}
+        </td>
+
+        <!-- Saldo -->
+        <td class="py-3 px-2 text-center">
+          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${saldo === 0 ? 'bg-stone-100 text-stone-500' : 'bg-emerald-100 text-emerald-900 border border-emerald-300'}">
+            ${saldo}
+          </span>
+        </td>
+
+        <!-- Situación -->
+        <td class="py-3 px-3 text-center whitespace-nowrap">
+          ${situationBadge}
+        </td>
+
+        <!-- Acciones -->
+        <td class="py-3 px-3 text-right whitespace-nowrap">
+          <div class="flex items-center justify-end gap-1.5">
+            <button onclick="openEditAttendanceModal('${s.id}')" class="px-2.5 py-1 rounded-lg bg-vital-cream hover:bg-vital-sand text-vital-900 font-bold text-[11px] transition border border-vital-900/10" title="Editar datos y horario del alumno">
+              ✏️ Editar
+            </button>
+            <button onclick="reserveCourtForAttendanceGroup('${s.id}')" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] transition shadow-xs" title="Bloquear cancha en calendario maestro para este horario">
+              📅 Reservar Cancha
+            </button>
+            <button onclick="renewAttendancePackage('${s.id}')" class="px-2 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-[11px] transition" title="Renovar nuevo ciclo de 8 sesiones">
+              🔄
+            </button>
+            <button onclick="deleteAttendanceStudent('${s.id}')" class="px-2 py-1 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 font-semibold text-[11px] transition" title="Eliminar alumno">
+              🗑️
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// ----------------------------------------------------------------------------
+// MODAL PARA EDITAR SESIÓN INDIVIDUAL (ASIGNAR COACH Y FECHA)
+// ----------------------------------------------------------------------------
+function openAttendanceSessionModal(studentId, sessionNum) {
+  const students = getAttendanceStudents();
+  const student = students.find(s => s.id === studentId);
+  if (!student) return;
+
+  const ses = student.sessions.find(x => x.num === sessionNum) || { num: sessionNum, attended: false, coach: null, date: '' };
+  const currentCoach = ses.coach || (ses.attended ? 'lucas' : 'none');
+
+  const html = `
+    <div class="space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-vital-900/10">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-vital-orange">Control de Asistencia</span>
+          <h3 class="font-brand text-xl text-vital-900">Sesión #${sessionNum} · ${student.client}</h3>
+          <p class="text-xs text-stone-500">Grupo: <strong>${student.code}</strong> (${student.schedule})</p>
+        </div>
+        <button onclick="closeModal()" class="text-stone-400 hover:text-stone-700 text-lg">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <label class="block font-bold text-stone-700">Seleccionar Coach que impartió la sesión:</label>
+        
+        <div class="space-y-2">
+          <label class="flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition ${currentCoach === 'lucas' ? 'bg-purple-50 border-purple-400 text-purple-950 font-bold ring-1 ring-purple-400' : 'bg-white border-stone-200 hover:bg-stone-50'}">
+            <input type="radio" name="att_session_coach" value="lucas" ${currentCoach === 'lucas' ? 'checked' : ''} class="text-purple-600" />
+            <span class="w-3 h-3 rounded-full bg-purple-600 shrink-0"></span>
+            <div class="flex-1">
+              <span class="font-bold">Coach Lucas Morilla (Head Coach)</span>
+              <p class="text-[10px] text-stone-500">Registrar como sesión impartida por Lucas (LM)</p>
+            </div>
+          </label>
+
+          <label class="flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition ${currentCoach === 'emiliano' ? 'bg-amber-50 border-amber-400 text-amber-950 font-bold ring-1 ring-amber-400' : 'bg-white border-stone-200 hover:bg-stone-50'}">
+            <input type="radio" name="att_session_coach" value="emiliano" ${currentCoach === 'emiliano' ? 'checked' : ''} class="text-amber-600" />
+            <span class="w-3 h-3 rounded-full bg-amber-500 shrink-0"></span>
+            <div class="flex-1">
+              <span class="font-bold">Coach Emiliano Matta (Nuevo Coach)</span>
+              <p class="text-[10px] text-stone-500">Registrar como sesión impartida por Emiliano (EM)</p>
+            </div>
+          </label>
+
+          <label class="flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition ${currentCoach === 'leo' ? 'bg-emerald-50 border-emerald-400 text-emerald-950 font-bold ring-1 ring-emerald-400' : 'bg-white border-stone-200 hover:bg-stone-50'}">
+            <input type="radio" name="att_session_coach" value="leo" ${currentCoach === 'leo' ? 'checked' : ''} class="text-emerald-600" />
+            <span class="w-3 h-3 rounded-full bg-emerald-600 shrink-0"></span>
+            <div class="flex-1">
+              <span class="font-bold">Coach Leonardo Marín (Segundo Coach)</span>
+              <p class="text-[10px] text-stone-500">Registrar como sesión impartida por Leo Marín (ALM)</p>
+            </div>
+          </label>
+
+          <label class="flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition ${currentCoach === 'otro' ? 'bg-sky-50 border-sky-400 text-sky-950 font-bold ring-1 ring-sky-400' : 'bg-white border-stone-200 hover:bg-stone-50'}">
+            <input type="radio" name="att_session_coach" value="otro" ${currentCoach === 'otro' ? 'checked' : ''} class="text-sky-600" />
+            <span class="w-3 h-3 rounded-full bg-sky-500 shrink-0"></span>
+            <div class="flex-1">
+              <span class="font-bold">Coach Anterior / Suplente</span>
+              <p class="text-[10px] text-stone-500">Registrar como sesión impartida por coach externo u otro (OT)</p>
+            </div>
+          </label>
+
+          <label class="flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition ${currentCoach === 'none' ? 'bg-stone-100 border-stone-400 text-stone-800 font-bold' : 'bg-white border-stone-200 hover:bg-stone-50'}">
+            <input type="radio" name="att_session_coach" value="none" ${currentCoach === 'none' ? 'checked' : ''} class="text-stone-600" />
+            <span class="w-3 h-3 rounded-full bg-stone-300 shrink-0"></span>
+            <div class="flex-1">
+              <span class="font-bold">Sin Asistir (Pendiente)</span>
+              <p class="text-[10px] text-stone-500">Desmarcar sesión para que vuelva a estar pendiente</p>
+            </div>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 pt-2">
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Fecha de la Sesión:</label>
+            <input type="text" id="att-ses-date" value="${ses.date || getTodayISO(0)}" placeholder="Ej: 15-oct" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+          </div>
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Nota opcional:</label>
+            <input type="text" id="att-ses-note" value="${ses.note || ''}" placeholder="Ej: Recuperación" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-3 border-t border-vital-900/10">
+        <button onclick="closeModal()" class="px-4 py-2 rounded-xl bg-vital-cream hover:bg-vital-sand text-vital-900 text-xs font-bold transition">
+          Cancelar
+        </button>
+        <button onclick="saveAttendanceSession('${student.id}', ${sessionNum})" class="px-5 py-2 rounded-xl bg-vital-900 hover:bg-black text-vital-cream text-xs font-bold transition shadow-md">
+          Guardar Sesión
+        </button>
+      </div>
+    </div>
+  `;
+
+  openModal(html);
+}
+
+function saveAttendanceSession(studentId, sessionNum) {
+  const students = getAttendanceStudents();
+  const student = students.find(s => s.id === studentId);
+  if (!student) return;
+
+  const selectedCoach = document.querySelector('input[name="att_session_coach"]:checked')?.value || 'none';
+  const dateVal = document.getElementById('att-ses-date')?.value.trim() || '';
+  const noteVal = document.getElementById('att-ses-note')?.value.trim() || '';
+
+  const ses = student.sessions.find(x => x.num === sessionNum);
+  if (ses) {
+    if (selectedCoach === 'none') {
+      ses.attended = false;
+      ses.coach = null;
+      ses.date = '';
+      ses.note = '';
+    } else {
+      ses.attended = true;
+      ses.coach = selectedCoach;
+      ses.date = dateVal;
+      ses.note = noteVal;
+    }
+  }
+
+  // Update situation if completed
+  const attendedCount = getStudentAttended(student);
+  if (attendedCount >= Number(student.packageSessions || 8)) {
+    student.situation = 'TERMINADO / RENOVAR';
+  } else if (student.situation === 'TERMINADO / RENOVAR' && attendedCount < Number(student.packageSessions || 8)) {
+    student.situation = 'EN CURSO';
+  }
+
+  saveAttendanceStudents(students);
+  closeModal();
+  renderAttendanceTable();
+  showToast(`Sesión #${sessionNum} de ${student.client} actualizada.`);
+}
+
+// ----------------------------------------------------------------------------
+// MODAL PARA EDITAR ALUMNO COMPLETO / HORARIOS
+// ----------------------------------------------------------------------------
+function openEditAttendanceModal(studentId) {
+  const students = getAttendanceStudents();
+  const student = students.find(s => s.id === studentId);
+  if (!student) return;
+
+  const allWeekDays = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+  const curDays = student.days || [];
+
+  const dayButtons = allWeekDays.map(d => {
+    const isAct = curDays.includes(d);
+    return `
+      <button type="button" onclick="toggleEditDayPill(this, '${d}')" data-day="${d}" class="att-day-pill px-3 py-1.5 rounded-xl text-xs font-bold transition ${isAct ? 'bg-vital-900 text-vital-cream ring-2 ring-vital-lime' : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'}">
+        ${d}
+      </button>
+    `;
+  }).join('');
+
+  const html = `
+    <div class="space-y-4 max-w-xl">
+      <div class="flex items-center justify-between pb-3 border-b border-vital-900/10">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-vital-orange">Ficha Oficial de Alumno</span>
+          <h3 class="font-brand text-2xl text-vital-900">${student.client}</h3>
+          <p class="text-xs text-stone-500">Código Grupo: ${student.code}</p>
+        </div>
+        <button onclick="closeModal()" class="text-stone-400 hover:text-stone-700 text-lg">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Nombre Completo:</label>
+            <input type="text" id="edit-att-client" value="${student.client}" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+          </div>
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Código de Grupo:</label>
+            <input type="text" id="edit-att-code" value="${student.code}" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-stone-700 mb-1">Días de Clase (Selecciona los días):</label>
+          <div id="edit-att-days-container" class="flex flex-wrap gap-1.5">
+            ${dayButtons}
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Horario Oficial:</label>
+            <input type="text" id="edit-att-schedule" value="${student.schedule}" placeholder="Ej: Lun y mié · 7:00 am" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+          </div>
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Hora inicio:</label>
+            <input type="text" id="edit-att-time" value="${student.time || '07:00'}" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+          </div>
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Cancha Asignada:</label>
+            <select id="edit-att-court" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold">
+              <option value="Cancha 1" ${student.court === 'Cancha 1' ? 'selected' : ''}>Cancha 1 Techada</option>
+              <option value="Cancha 2" ${student.court === 'Cancha 2' ? 'selected' : ''}>Cancha 2 Techada</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Importe Cobrado ($):</label>
+            <input type="number" id="edit-att-amount" value="${student.amount || 1500}" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
+          </div>
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Estatus Pago:</label>
+            <select id="edit-att-paystatus" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold">
+              <option value="PAGADO" ${student.paymentStatus === 'PAGADO' ? 'selected' : ''}>✓ PAGADO</option>
+              <option value="PENDIENTE" ${student.paymentStatus === 'PENDIENTE' ? 'selected' : ''}>⚠️ PENDIENTE DE PAGO</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Fecha Pago / Referencia:</label>
+            <input type="text" id="edit-att-paydate" value="${student.paymentDate || ''}" placeholder="Ej: 30-sep" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Situación del Paquete:</label>
+            <select id="edit-att-situation" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold">
+              <option value="EN CURSO" ${student.situation === 'EN CURSO' ? 'selected' : ''}>EN CURSO</option>
+              <option value="TERMINADO / RENOVAR" ${student.situation === 'TERMINADO / RENOVAR' ? 'selected' : ''}>TERMINADO / RENOVAR</option>
+              <option value="PENDIENTE DE PAGO" ${student.situation === 'PENDIENTE DE PAGO' ? 'selected' : ''}>PENDIENTE DE PAGO</option>
+              <option value="VALIDAR MUESTRA" ${student.situation === 'VALIDAR MUESTRA' ? 'selected' : ''}>VALIDAR MUESTRA</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Sesiones del Paquete:</label>
+            <select id="edit-att-pkg-sessions" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold">
+              <option value="8" ${student.packageSessions === 8 ? 'selected' : ''}>8 Sesiones (Paquete Estándar)</option>
+              <option value="4" ${student.packageSessions === 4 ? 'selected' : ''}>4 Sesiones (Muestra)</option>
+              <option value="12" ${student.packageSessions === 12 ? 'selected' : ''}>12 Sesiones (Intensivo)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-stone-700 mb-1">Notas Administrativas:</label>
+          <input type="text" id="edit-att-notes" value="${student.notes || ''}" placeholder="Comentarios de pagos, acuerdos, etc." class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-2 pt-3 border-t border-vital-900/10">
+        <button onclick="reserveCourtForAttendanceGroup('${student.id}')" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition flex items-center gap-1.5 shadow-sm">
+          📅 Bloquear Horario en Calendario
+        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="closeModal()" class="px-4 py-2 rounded-xl bg-vital-cream hover:bg-vital-sand text-vital-900 text-xs font-bold transition">
+            Cancelar
+          </button>
+          <button onclick="saveAttendanceStudentDetails('${student.id}')" class="px-5 py-2 rounded-xl bg-vital-900 hover:bg-black text-vital-cream text-xs font-bold transition shadow-md">
+            Guardar Cambios
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  openModal(html);
+}
+
+function toggleEditDayPill(btn, day) {
+  const isAct = btn.classList.contains('bg-vital-900');
+  if (isAct) {
+    btn.className = 'att-day-pill px-3 py-1.5 rounded-xl text-xs font-bold transition bg-white border border-stone-200 text-stone-600 hover:bg-stone-50';
+  } else {
+    btn.className = 'att-day-pill px-3 py-1.5 rounded-xl text-xs font-bold transition bg-vital-900 text-vital-cream ring-2 ring-vital-lime';
+  }
+}
+
+function saveAttendanceStudentDetails(studentId) {
+  const students = getAttendanceStudents();
+  const student = students.find(s => s.id === studentId);
+  if (!student) return;
+
+  const client = document.getElementById('edit-att-client')?.value.trim();
+  const code = document.getElementById('edit-att-code')?.value.trim();
+  const schedule = document.getElementById('edit-att-schedule')?.value.trim();
+  const time = document.getElementById('edit-att-time')?.value.trim();
+  const court = document.getElementById('edit-att-court')?.value;
+  const amount = Number(document.getElementById('edit-att-amount')?.value || 0);
+  const paymentStatus = document.getElementById('edit-att-paystatus')?.value;
+  const paymentDate = document.getElementById('edit-att-paydate')?.value.trim();
+  const situation = document.getElementById('edit-att-situation')?.value;
+  const packageSessions = Number(document.getElementById('edit-att-pkg-sessions')?.value || 8);
+  const notes = document.getElementById('edit-att-notes')?.value.trim();
+
+  // Gather active days
+  const activeDays = [];
+  document.querySelectorAll('.att-day-pill.bg-vital-900').forEach(btn => {
+    activeDays.push(btn.getAttribute('data-day'));
+  });
+
+  if (!client) {
+    alert('El nombre del alumno es obligatorio');
+    return;
+  }
+
+  student.client = client;
+  student.code = code || 'G01';
+  student.schedule = schedule || student.schedule;
+  student.time = time || '07:00';
+  student.court = court || 'Cancha 1';
+  student.amount = amount;
+  student.paymentStatus = paymentStatus;
+  student.paymentDate = paymentDate;
+  student.situation = situation;
+  student.notes = notes;
+  student.days = activeDays.length > 0 ? activeDays : student.days;
+
+  // Adjust sessions length if package size changed
+  if (student.packageSessions !== packageSessions) {
+    student.packageSessions = packageSessions;
+    while (student.sessions.length < packageSessions) {
+      student.sessions.push({
+        num: student.sessions.length + 1,
+        attended: false,
+        coach: null,
+        date: '',
+        note: ''
+      });
+    }
+    if (student.sessions.length > packageSessions) {
+      student.sessions = student.sessions.slice(0, packageSessions);
+    }
+  }
+
+  saveAttendanceStudents(students);
+  closeModal();
+  renderAttendanceTable();
+  showToast(`Ficha de ${client} actualizada.`);
+}
+
+// ----------------------------------------------------------------------------
+// MODAL PARA NUEVO ALUMNO
+// ----------------------------------------------------------------------------
+function openNewAttendanceModal() {
+  const html = `
+    <div class="space-y-4 max-w-xl">
+      <div class="flex items-center justify-between pb-3 border-b border-vital-900/10">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-vital-orange">Inscripción Oficial</span>
+          <h3 class="font-brand text-2xl text-vital-900">Agregar Nuevo Alumno</h3>
+          <p class="text-xs text-stone-500">Inscribe a un alumno a un grupo de clínicas o clase particular.</p>
+        </div>
+        <button onclick="closeModal()" class="text-stone-400 hover:text-stone-700 text-lg">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Nombre Completo:</label>
+            <input type="text" id="new-att-client" placeholder="Ej: Roberto Gómez" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+          </div>
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Grupo / Código:</label>
+            <input type="text" id="new-att-code" placeholder="Ej: G01" value="G01" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Horario Descripción:</label>
+            <input type="text" id="new-att-schedule" placeholder="Ej: Lun y mié · 7:00 am" value="Lun y mié · 7:00 am" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+          </div>
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Hora Inicio:</label>
+            <input type="text" id="new-att-time" value="07:00" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+          </div>
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Cancha:</label>
+            <select id="new-att-court" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold">
+              <option value="Cancha 1">Cancha 1 Techada</option>
+              <option value="Cancha 2">Cancha 2 Techada</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Importe ($):</label>
+            <input type="number" id="new-att-amount" value="1500" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
+          </div>
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Estatus Pago:</label>
+            <select id="new-att-paystatus" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold">
+              <option value="PAGADO">✓ PAGADO</option>
+              <option value="PENDIENTE">⚠️ PENDIENTE DE PAGO</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Fecha Pago:</label>
+            <input type="text" id="new-att-paydate" value="Hoy" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-stone-700 mb-1">Sesiones del Paquete:</label>
+          <select id="new-att-pkg-sessions" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold">
+            <option value="8">8 Sesiones (Paquete Estándar)</option>
+            <option value="4">4 Sesiones (Muestra)</option>
+            <option value="12">12 Sesiones (Intensivo)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-3 border-t border-vital-900/10">
+        <button onclick="closeModal()" class="px-4 py-2 rounded-xl bg-vital-cream hover:bg-vital-sand text-vital-900 text-xs font-bold transition">
+          Cancelar
+        </button>
+        <button onclick="createNewAttendanceStudent()" class="px-5 py-2 rounded-xl bg-vital-900 hover:bg-black text-vital-cream text-xs font-bold transition shadow-md">
+          Crear e Inscribir Alumno
+        </button>
+      </div>
+    </div>
+  `;
+
+  openModal(html);
+}
+
+function createNewAttendanceStudent() {
+  const client = document.getElementById('new-att-client')?.value.trim();
+  const code = document.getElementById('new-att-code')?.value.trim() || 'G01';
+  const schedule = document.getElementById('new-att-schedule')?.value.trim() || 'Horario a convenir';
+  const time = document.getElementById('new-att-time')?.value.trim() || '07:00';
+  const court = document.getElementById('new-att-court')?.value || 'Cancha 1';
+  const amount = Number(document.getElementById('new-att-amount')?.value || 1500);
+  const paymentStatus = document.getElementById('new-att-paystatus')?.value || 'PAGADO';
+  const paymentDate = document.getElementById('new-att-paydate')?.value.trim() || 'Hoy';
+  const pkgSessions = Number(document.getElementById('new-att-pkg-sessions')?.value || 8);
+
+  if (!client) {
+    alert('Por favor introduce el nombre del alumno');
+    return;
+  }
+
+  const students = getAttendanceStudents();
+  const newStudent = {
+    id: `ATT-${Date.now()}`,
+    code,
+    schedule,
+    days: ['Lun', 'Mié'],
+    time,
+    court,
+    client,
+    paymentDate,
+    paymentStatus,
+    amount,
+    packageSessions: pkgSessions,
+    sessions: makeAttendanceSessions(pkgSessions, []),
+    situation: paymentStatus === 'PENDIENTE' ? 'PENDIENTE DE PAGO' : 'EN CURSO',
+    notes: 'Inscrito desde panel de administración'
+  };
+
+  students.push(newStudent);
+  saveAttendanceStudents(students);
+  closeModal();
+  renderAttendanceTable();
+  showToast(`Alumno ${client} inscrito con éxito.`);
+}
+
+// ----------------------------------------------------------------------------
+// BLOQUEAR CANCHA EN CALENDARIO MAESTRO DESDE ASISTENCIA
+// ----------------------------------------------------------------------------
+function reserveCourtForAttendanceGroup(studentId) {
+  const students = getAttendanceStudents();
+  const student = students.find(s => s.id === studentId);
+  if (!student) return;
+
+  let h = 7;
+  const match = String(student.time).match(/(\d+)/);
+  if (match) {
+    h = parseInt(match[1], 10);
+    if (h < 6) h = 7;
+    if (h > 21) h = 21;
+  }
+
+  const court = student.court || 'Cancha 1';
+  const today = getTodayISO(0);
+
+  const exists = state.reservations.some(r => r.date === today && r.court === court && r.hour === h);
+  if (exists) {
+    showToast(`El espacio en ${court} a las ${formatHourLabel(h)} ya está ocupado en el calendario.`);
+    return;
+  }
+
+  const newRes = {
+    id: `RES-CLN-${Date.now()}`,
+    date: today,
+    court: court,
+    hour: h,
+    duration: 1,
+    service: 'Clínica',
+    customer: `Clínica ${student.code} (${student.client})`,
+    phone: '-',
+    amount: 0,
+    prestadorAmount: 0,
+    clienteAmount: 0,
+    coachId: 'COACH-1',
+    coachName: 'Lucas Morilla',
+    paymentMethod: 'Paquete Clínicas',
+    notes: `Bloqueado desde Control de Asistencia para ${student.schedule}`
+  };
+
+  state.reservations.push(newRes);
+  if (typeof dbInsertReservation === 'function') {
+    dbInsertReservation(newRes);
+  }
+  saveState();
+  renderCourtsGrid();
+  renderAdminMasterCalendar();
+  showToast(`¡${court} bloqueada exitosamente a las ${formatHourLabel(h)} para ${student.client}!`);
+}
+
+// ----------------------------------------------------------------------------
+// RENOVAR PAQUETE
+// ----------------------------------------------------------------------------
+function renewAttendancePackage(studentId) {
+  const students = getAttendanceStudents();
+  const student = students.find(s => s.id === studentId);
+  if (!student) return;
+
+  const conf = confirm(`¿Deseas renovar el paquete para ${student.client}? Se reiniciarán las sesiones a pendientes para el nuevo ciclo de 8 sesiones.`);
+  if (!conf) return;
+
+  student.sessions = makeAttendanceSessions(student.packageSessions || 8, []);
+  student.situation = 'EN CURSO';
+  student.paymentDate = getTodayISO(0);
+  student.paymentStatus = 'PAGADO';
+
+  saveAttendanceStudents(students);
+  renderAttendanceTable();
+  showToast(`Paquete renovado exitosamente para ${student.client}.`);
+}
+
+// ----------------------------------------------------------------------------
+// ELIMINAR ALUMNO
+// ----------------------------------------------------------------------------
+function deleteAttendanceStudent(studentId) {
+  const students = getAttendanceStudents();
+  const student = students.find(s => s.id === studentId);
+  if (!student) return;
+
+  const conf = confirm(`¿Seguro que deseas eliminar el registro de ${student.client}?`);
+  if (!conf) return;
+
+  const updated = students.filter(s => s.id !== studentId);
+  saveAttendanceStudents(updated);
+  renderAttendanceTable();
+  showToast(`Registro de ${student.client} eliminado.`);
+}
+
+// ----------------------------------------------------------------------------
+// EXPORTAR A CSV (EXCEL COMPATIBLE)
+// ----------------------------------------------------------------------------
+function exportAttendanceToCSV() {
+  const students = getAttendanceStudents();
+  const headers = [
+    'Código',
+    'Horario',
+    'Cliente',
+    'Fecha de Pago',
+    'Importe Anotado',
+    'Sesiones Paquete',
+    'Sesión 1',
+    'Sesión 2',
+    'Sesión 3',
+    'Sesión 4',
+    'Sesión 5',
+    'Sesión 6',
+    'Sesión 7',
+    'Sesión 8',
+    'Dadas Coach Lucas',
+    'Dadas Nuevo Coach',
+    'Dadas Otro Coach',
+    'Asistencias Totales',
+    'Saldo Cliente',
+    'Situación'
+  ];
+
+  const rows = [headers];
+
+  students.forEach(s => {
+    const sesMap = (s.sessions || []).map(ses => {
+      if (!ses.attended) return 'Pendiente';
+      if (ses.coach === 'lucas') return 'Lucas Morilla';
+      if (ses.coach === 'emiliano') return 'Emiliano Matta';
+      if (ses.coach === 'leo') return 'Leonardo Marín';
+      return 'Otro Coach';
+    });
+    while (sesMap.length < 8) sesMap.push('-');
+
+    rows.push([
+      `"${s.code}"`,
+      `"${s.schedule}"`,
+      `"${s.client}"`,
+      `"${s.paymentDate}"`,
+      s.amount || 0,
+      s.packageSessions || 8,
+      `"${sesMap[0]}"`,
+      `"${sesMap[1]}"`,
+      `"${sesMap[2]}"`,
+      `"${sesMap[3]}"`,
+      `"${sesMap[4]}"`,
+      `"${sesMap[5]}"`,
+      `"${sesMap[6]}"`,
+      `"${sesMap[7]}"`,
+      getStudentLM(s),
+      getStudentNuevo(s),
+      getStudentOtro(s),
+      getStudentAttended(s),
+      getStudentSaldo(s),
+      `"${s.situation}"`
+    ]);
+  });
+
+  const csvContent = '\uFEFF' + rows.map(r => r.join(',')).join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', `vital_club_control_asistencias_${getTodayISO(0)}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+// ----------------------------------------------------------------------------
+// RESTABLECER A DATOS OFICIALES DE EXCEL
+// ----------------------------------------------------------------------------
+function resetAttendanceToOfficialExcel() {
+  const conf = confirm('¿Deseas restablecer la lista de asistencia a los 56 alumnos del archivo Excel original? Todos los cambios manuales se reiniciarán.');
+  if (!conf) return;
+
+  localStorage.removeItem('vital_attendance_students');
+  const initial = getAttendanceStudents();
+  renderAttendanceTable();
+  showToast('Lista de asistencia restablecida con éxito al Excel oficial.');
+}
+
+
 function renderAllAdminViews() {
   renderAdminDashboard();
   renderPosCatalog();
   renderPosCart();
   renderAdminMasterCalendar();
   renderAdminIncomeTable();
+  renderAttendanceTable();
 }
 
 // ============================================================================

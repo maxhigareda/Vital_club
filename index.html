@@ -97,8 +97,10 @@
             Juega. Come. <span class="text-vital-lime">Conecta.</span>
           </h1>
 
-          <p class="text-vital-cream/75 text-base sm:text-lg max-w-xl leading-relaxed">
-            Pádel techado sin pretexto en Zitácuaro. Renta tu cancha, únete a retas organizadas o entrena en clases y clínicas con nuestros coaches oficiales.
+          <p class="text-base sm:text-lg font-bold text-vital-lime mt-2">Vive Vital.</p>
+          <p class="text-vital-cream/85 text-sm sm:text-base max-w-xl leading-relaxed mt-1">
+            Ven con amigos, comparte en familia y disfruta de un lugar donde el partido es solo el comienzo. Siente la emoción del pádel, comparte algo rico en la mesa y alarga esos momentos que se disfrutan más juntos.<br><br>
+            <strong class="text-white">Todo en un mismo lugar.</strong>
           </p>
 
           <div class="flex flex-wrap items-center gap-3 pt-1">
@@ -234,7 +236,7 @@
               </div>
               <div class="p-3 rounded-2xl bg-white/5 border border-white/5">
                 <span class="text-[10px] uppercase tracking-wider text-vital-cream/50 block font-bold">Techo Autoportante</span>
-                <span class="font-bold text-vital-lime">8.5 m Altura Libre</span>
+                <span class="font-bold text-vital-lime">10 m al centro y 7 a las orillas</span>
               </div>
               <div class="p-3 rounded-2xl bg-white/5 border border-white/5">
                 <span class="text-[10px] uppercase tracking-wider text-vital-cream/50 block font-bold">Iluminación LED</span>
@@ -434,7 +436,7 @@
           </p>
         </div>
 
-        <div id="client-coaches-grid" class="grid sm:grid-cols-2 gap-8"></div>
+        <div id="client-coaches-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
       </div>
     </section>
@@ -524,6 +526,7 @@
         </div>
         <div class="flex flex-wrap gap-2">
           <button onclick="switchAdminTab('dashboard')" data-admin-tab="dashboard" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-vital-900 text-vital-cream transition">Dashboard</button>
+          <button onclick="switchAdminTab('asistencia')" data-admin-tab="asistencia" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand transition flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Asistencia & Paquetes</button>
           <button onclick="switchAdminTab('pos')" data-admin-tab="pos" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand transition">Punto de Venta</button>
           <button onclick="switchAdminTab('registro')" data-admin-tab="registro" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand transition">Control Canchas</button>
           <button onclick="switchAdminTab('ingresos')" data-admin-tab="ingresos" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-vital-cream text-vital-900 hover:bg-vital-sand transition">Ingresos y Comisiones</button>
@@ -725,6 +728,119 @@
         </div>
       </section>
 
+      <!-- TAB 5: ASISTENCIA Y PAQUETES DE CLÍNICAS -->
+      <section id="admin-tab-asistencia" class="is-hidden space-y-6">
+        
+        <div class="card-luxury rounded-3xl p-6 space-y-5">
+          <!-- Top bar -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider mb-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Control Oficial de Clínicas & Paquetes (8 Sesiones)
+              </div>
+              <h2 class="font-brand text-2xl sm:text-3xl text-vital-900">Control de Asistencia & Estatus de Alumnos</h2>
+              <p class="text-xs text-stone-500 mt-0.5">Seguimiento de sesiones 1 a 8, coach asignado por sesión, saldos pendientes y bloqueo de canchas en calendario.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <button onclick="openNewAttendanceModal()" class="px-3.5 py-2 rounded-xl bg-vital-900 hover:bg-black text-vital-cream text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                <span>➕</span> Nuevo Alumno
+              </button>
+              <button onclick="exportAttendanceToCSV()" class="px-3.5 py-2 rounded-xl bg-vital-cream hover:bg-vital-sand text-xs font-bold text-vital-900 transition flex items-center gap-1.5 border border-vital-900/10">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i> Exportar CSV
+              </button>
+              <button onclick="resetAttendanceToOfficialExcel()" class="px-3 py-2 rounded-xl bg-white hover:bg-stone-100 text-xs text-stone-600 transition border border-stone-200" title="Restablecer lista a datos originales de Excel">
+                <span>🔄</span> Restaurar Excel
+              </button>
+            </div>
+          </div>
+
+          <!-- KPI Summary Strip -->
+          <div id="attendance-kpi-summary" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 pt-2"></div>
+
+          <!-- Coach Color Legend -->
+          <div class="p-3.5 rounded-2xl bg-vital-cream/60 border border-vital-900/10 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <span class="font-bold text-[11px] uppercase tracking-wider text-vital-900/70">Código de Coaches por Sesión:</span>
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-100 border border-purple-200 text-purple-900 font-semibold text-[11px]">
+                <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span> <strong>LM</strong>: Coach Lucas Morilla
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-100 border border-amber-200 text-amber-900 font-semibold text-[11px]">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> <strong>EM</strong>: Coach Emiliano Matta
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-100 border border-emerald-200 text-emerald-900 font-semibold text-[11px]">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span> <strong>ALM</strong>: Coach Leo Marín
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sky-100 border border-sky-200 text-sky-900 font-semibold text-[11px]">
+                <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span> <strong>OT</strong>: Coach Anterior / Suplente
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-dashed border-stone-300 text-stone-500 text-[11px]">
+                <span class="w-2.5 h-2.5 rounded-full bg-stone-300"></span> <strong>○</strong>: Pendiente
+              </span>
+            </div>
+          </div>
+
+          <!-- Filters Bar -->
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 pt-1">
+            <div class="sm:col-span-5 relative">
+              <input type="text" id="att-search-input" oninput="renderAttendanceTable()" placeholder="Buscar alumno, grupo o coach..." class="w-full px-3.5 py-2.5 pl-9 rounded-xl bg-vital-cream text-xs font-medium focus:outline-none focus:ring-2 focus:ring-vital-lime border border-vital-900/10" />
+              <span class="absolute left-3 top-2.5 text-stone-400 text-xs">🔍</span>
+            </div>
+            <div class="sm:col-span-3">
+              <select id="att-filter-group" onchange="renderAttendanceTable()" class="w-full px-3 py-2.5 rounded-xl bg-vital-cream text-xs font-bold border border-vital-900/10">
+                <option value="all">Todos los Grupos (G01 - G13)</option>
+              </select>
+            </div>
+            <div class="sm:col-span-2">
+              <select id="att-filter-status" onchange="renderAttendanceTable()" class="w-full px-3 py-2.5 rounded-xl bg-vital-cream text-xs font-bold border border-vital-900/10">
+                <option value="all">Toda Situación</option>
+                <option value="EN CURSO">En Curso</option>
+                <option value="TERMINADO / RENOVAR">Terminado / Renovar</option>
+                <option value="PENDIENTE DE PAGO">Pendiente de Pago</option>
+                <option value="VALIDAR MUESTRA">Validar Muestra</option>
+              </select>
+            </div>
+            <div class="sm:col-span-2">
+              <select id="att-filter-coach" onchange="renderAttendanceTable()" class="w-full px-3 py-2.5 rounded-xl bg-vital-cream text-xs font-bold border border-vital-900/10">
+                <option value="all">Cualquier Coach</option>
+                <option value="lucas">Coach Lucas</option>
+                <option value="emiliano">Coach Emiliano</option>
+                <option value="leo">Coach Leo Marín</option>
+                <option value="otro">Otro Coach</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Matrix Table -->
+          <div class="overflow-x-auto rounded-2xl border border-vital-900/10 shadow-sm">
+            <table class="w-full text-left text-xs bg-white min-w-[950px]">
+              <thead class="bg-vital-900 text-vital-cream uppercase tracking-wider font-bold text-[10px]">
+                <tr>
+                  <th class="py-3 px-3">Grupo & Días</th>
+                  <th class="py-3 px-3">Alumno</th>
+                  <th class="py-3 px-2 text-center">Pago</th>
+                  <th class="py-3 px-2 text-center">Importe</th>
+                  <th class="py-3 px-3 text-center">Sesiones 1 a 8 (Click para interactuar)</th>
+                  <th class="py-3 px-2 text-center">LM</th>
+                  <th class="py-3 px-2 text-center">Nuevo</th>
+                  <th class="py-3 px-2 text-center">Total</th>
+                  <th class="py-3 px-2 text-center">Saldo</th>
+                  <th class="py-3 px-3 text-center">Situación</th>
+                  <th class="py-3 px-3 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="attendance-table-body" class="divide-y divide-vital-900/5"></tbody>
+            </table>
+          </div>
+
+          <!-- Bottom Notice -->
+          <div class="flex flex-col sm:flex-row items-center justify-between text-[11px] text-stone-500 pt-2 gap-2">
+            <span>💡 <strong>Tip para el Administrador:</strong> Haz clic en cualquier sesión (1 a 8) para registrar asistencia o cambiar el coach. Usa "Reservar Cancha" para bloquear el horario en el Calendario Maestro.</span>
+            <span id="att-counter-badge" class="font-bold text-vital-900 bg-vital-cream px-2.5 py-1 rounded-lg">Mostrando 0 alumnos</span>
+          </div>
+
+        </div>
+
     </div>
   </main>
 
@@ -793,6 +909,6 @@
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=11"></script>
+  <script src="app.js?v=12"></script>
 </body>
 </html>
