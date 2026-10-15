@@ -825,16 +825,15 @@ function showToast(message) {
 }
 
 // ============================================================================
-// SISTEMA DE ACCESO POR PIN (STAFF & DIRECCIÓN)
-// Lucas: 1111 · Leo: 2222 · Admin Jesús: 0000 o 9999
+// SISTEMA DE ACCESO POR PIN CONFIDENCIAL (STAFF & DIRECCIÓN)
 // ============================================================================
 
 const STAFF_PINS = {
-  '1111': { role: 'coach', coachId: 'COACH-1', name: 'Lucas Morilla', title: 'Head Coach' },
-  '2222': { role: 'coach', coachId: 'COACH-2', name: 'Emiliano Matta', title: 'Coach en Formación' },
-  '3333': { role: 'coach', coachId: 'COACH-3', name: 'Ángel Leonardo Marín', title: 'Segundo Coach' },
-  '0000': { role: 'admin', coachId: 'ADMIN', name: 'Jesús Higareda', title: 'Dirección General' },
-  '9999': { role: 'admin', coachId: 'ADMIN', name: 'Jesús Higareda', title: 'Dirección General' }
+  '5910': { role: 'coach', coachId: 'COACH-1', name: 'Lucas Morilla', title: 'Head Coach' },
+  '9105': { role: 'coach', coachId: 'COACH-2', name: 'Emiliano Matta', title: 'Coach en Formación' },
+  '7513': { role: 'coach', coachId: 'COACH-3', name: 'Ángel Leonardo Marín', title: 'Segundo Coach' },
+  '2412': { role: 'admin', coachId: 'ADMIN', name: 'Jesús Higareda', title: 'Dirección General' },
+  '6756': { role: 'admin', coachId: 'ADMIN', name: 'Camila', title: 'Administración & Staff' }
 };
 
 function getActiveStaffSession() {
@@ -855,7 +854,7 @@ function openStaffPinModal() {
       <div>
         <span class="text-[10px] font-extrabold uppercase tracking-widest text-vital-orange block">Acceso Colaboradores & Dirección</span>
         <h3 class="font-brand text-2xl text-vital-900 mt-1">Portal Staff Vital Club</h3>
-        <p class="text-xs text-stone-500 mt-1">Ingresa tu PIN de 4 dígitos para acceder a tu agenda o panel.</p>
+        <p class="text-xs text-stone-500 mt-1">Ingresa tu PIN confidencial de 4 dígitos para acceder a tu panel.</p>
       </div>
 
       <form id="staff-pin-form" onsubmit="handleStaffPinSubmit(event)" class="space-y-4 max-w-xs mx-auto">
@@ -876,11 +875,8 @@ function openStaffPinModal() {
         </div>
       </form>
 
-      <div class="p-3 rounded-xl bg-stone-100 text-[11px] text-stone-500 space-y-0.5 text-left border border-stone-200/80">
-        <span class="font-bold text-stone-700 block mb-0.5">PINs configurados:</span>
-        <p>• <strong>1111:</strong> Lucas Morilla (Head Coach · Portal)</p>
-        <p>• <strong>2222:</strong> Leo Marín (Coach · Portal)</p>
-        <p>• <strong>0000 / 9999:</strong> Administración General (Dashboard & POS)</p>
+      <div class="pt-2 text-[11px] text-stone-400">
+        <span>🔒 Acceso privado y confidencial para personal autorizado de Vital Club.</span>
       </div>
     </div>
   `);
