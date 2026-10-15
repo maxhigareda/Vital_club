@@ -567,8 +567,8 @@ function buildInitialState() {
       phone: '715 131 7443',
       instagram: 'https://www.instagram.com/vitalclub.zit/',
       facebook: 'https://web.facebook.com/profile.php?id=61584920653779&sk=about',
-      openHour: 8,
-      closeHour: 20,
+      openHour: 7,
+      closeHour: 22,
       courts: [
         {
           id: 'cancha-1',
@@ -797,6 +797,14 @@ function loadState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
       return seed;
     }
+    // Asegurar apertura a las 7:00 am y horario completo hasta las 22:00
+    if (!parsed.settings.openHour || parsed.settings.openHour > 7) {
+      parsed.settings.openHour = 7;
+    }
+    if (!parsed.settings.closeHour || parsed.settings.closeHour < 21) {
+      parsed.settings.closeHour = 22;
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
     return parsed;
   } catch (e) {
     return buildInitialState();
@@ -1889,7 +1897,7 @@ function openClassBookingModal(classId) {
           <div>
             <label class="block font-bold text-vital-900 uppercase tracking-wider mb-1">Horario Deseado</label>
             <select id="modal-cls-hour" class="w-full px-3 py-2 rounded-xl bg-vital-cream border border-vital-900/10 font-bold">
-              ${[9, 10, 11, 12, 16, 17, 18, 19].map(h => `<option value="${h}">${formatHourLabel(h)}</option>`).join('')}
+              ${[7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17].map(h => `<option value="${h}">${formatHourLabel(h)}</option>`).join('')}
             </select>
           </div>
         </div>
@@ -2177,8 +2185,8 @@ function renderCoachView() {
   const timeline = document.getElementById('coach-hourly-timeline');
   if (!timeline) return;
 
-  const openH = state.settings.openHour;
-  const closeH = state.settings.closeHour;
+  const openH = 7;
+  const closeH = 18; // Horario de entrenadores: 7:00 am a 6:00 pm
 
   const hoursList = [];
   for (let h = openH; h < closeH; h++) {
@@ -2574,7 +2582,7 @@ function openAdminCreateSlotModal(courtId = 'cancha-1', hour = 10) {
           <div>
             <label class="block font-bold mb-1">Hora</label>
             <select id="adm-slot-hour" class="w-full px-3 py-2 rounded-xl bg-vital-cream border font-bold">
-              ${[8,9,10,11,12,13,14,15,16,17,18,19].map(h => `<option value="${h}" ${h === hour ? 'selected' : ''}>${formatHourLabel(h)}</option>`).join('')}
+              ${[7,8,9,10,11,12,13,14,15,16,17,18,19,20,21].map(h => `<option value="${h}" ${h === hour ? 'selected' : ''}>${formatHourLabel(h)}</option>`).join('')}
             </select>
           </div>
         </div>
@@ -3915,37 +3923,32 @@ function renderAttendanceTable() {
     // Days pill strip
     const daysBadges = (s.days || ['Lun']).map(d => `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-vital-900/10 text-vital-900 border border-vital-900/10">${d}</span>`).join(' ');
 
-    // Render 8 session cells with informative hover tooltip
+    // Render 8 session cells cleanly with number only and coach color code
     const sessionPills = (s.sessions || []).map(ses => {
-      let cls = 'bg-stone-50 text-stone-400 border-dashed border-stone-300 hover:border-stone-400';
-      let text = `○ ${ses.num}`;
+      let cls = 'bg-stone-50 text-stone-400 border border-dashed border-stone-300 hover:border-stone-400 font-semibold';
       let coachName = 'Sin Asignar';
       let title = `Sesión ${ses.num}: Pendiente por cursar (Haz clic para asignar)`;
 
       if (ses.attended) {
         if (ses.coach === 'lucas') {
-          cls = 'bg-purple-100 text-purple-900 border-purple-300 hover:bg-purple-200 font-bold';
-          text = `LM ${ses.num}`;
+          cls = 'bg-purple-100 text-purple-950 border-purple-300 hover:bg-purple-200 font-black shadow-2xs';
           coachName = 'Lucas Morilla (Head Coach)';
         } else if (ses.coach === 'emiliano') {
-          cls = 'bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200 font-bold';
-          text = `EM ${ses.num}`;
+          cls = 'bg-amber-100 text-amber-950 border-amber-300 hover:bg-amber-200 font-black shadow-2xs';
           coachName = 'Emiliano Matta (Coach en Formación)';
         } else if (ses.coach === 'leo') {
-          cls = 'bg-emerald-100 text-emerald-900 border-emerald-300 hover:bg-emerald-200 font-bold';
-          text = `ALM ${ses.num}`;
+          cls = 'bg-emerald-100 text-emerald-950 border-emerald-300 hover:bg-emerald-200 font-black shadow-2xs';
           coachName = 'Ángel Leonardo Marín (Segundo Coach)';
         } else {
-          cls = 'bg-sky-100 text-sky-900 border-sky-300 hover:bg-sky-200 font-bold';
-          text = `OT ${ses.num}`;
+          cls = 'bg-sky-100 text-sky-950 border-sky-300 hover:bg-sky-200 font-black shadow-2xs';
           coachName = 'Coach Anterior / Suplente';
         }
-        title = `Sesión ${ses.num}: ${ses.date || 'Fecha registrada'} · ${coachName} (Haz clic para editar)`;
+        title = `Sesión ${ses.num}: ${ses.date || 'Registrada'} · ${coachName} (Haz clic para editar)`;
       }
 
       return `
-        <button type="button" onclick="openAttendanceSessionModal('${s.id}', ${ses.num})" class="px-2 py-1 rounded-md border text-[10px] transition cursor-pointer shrink-0 ${cls}" title="${title}">
-          ${text}
+        <button type="button" onclick="openAttendanceSessionModal('${s.id}', ${ses.num})" class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg border text-xs transition cursor-pointer shrink-0 flex items-center justify-center ${cls}" title="${title}">
+          ${ses.num}
         </button>
       `;
     }).join('');
@@ -3959,7 +3962,6 @@ function renderAttendanceTable() {
               ${daysBadges}
             </div>
             <span class="font-bold text-xs text-stone-800">${s.time || s.schedule}</span>
-            <button type="button" onclick="openQuickDaysModal('${s.id}')" class="p-1 rounded-md text-stone-400 hover:text-vital-900 hover:bg-stone-100 text-[11px] transition" title="Cambiar días de la semana y horario">✏️</button>
           </div>
         </td>
 
@@ -3968,7 +3970,6 @@ function renderAttendanceTable() {
           <button type="button" onclick="openEditAttendanceModal('${s.id}')" class="font-bold text-vital-900 hover:text-vital-orange text-left text-xs transition cursor-pointer" title="Ver ficha completa">
             ${s.client}
           </button>
-          ${s.notes ? `<p class="text-[10px] font-normal text-stone-400 italic">${s.notes}</p>` : ''}
         </td>
 
         <!-- Estatus Pago -->
@@ -4011,8 +4012,8 @@ function renderAttendanceTable() {
             <button onclick="openEditAttendanceModal('${s.id}')" class="px-2.5 py-1 rounded-lg bg-vital-cream hover:bg-vital-sand text-vital-900 font-bold text-[11px] transition border border-vital-900/10" title="Editar datos y horario del alumno">
               ✏️ Editar
             </button>
-            <button onclick="reserveCourtForAttendanceGroup('${s.id}')" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] transition shadow-xs" title="Bloquear cancha en calendario maestro para este horario">
-              📅 Reservar Cancha
+            <button onclick="openReserveAttendanceCourtModal('${s.id}')" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] transition shadow-xs" title="Reservar cancha en el calendario maestro">
+              📅 Reservar
             </button>
             <button onclick="renewAttendancePackage('${s.id}')" class="px-2 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-[11px] transition" title="Renovar nuevo ciclo de 8 sesiones">
               🔄
@@ -4236,43 +4237,43 @@ function openAttendanceSessionModal(studentId, sessionNum) {
         <div class="space-y-2">
           <label class="flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition ${currentCoach === 'lucas' ? 'bg-purple-50 border-purple-400 text-purple-950 font-bold ring-1 ring-purple-400' : 'bg-white border-stone-200 hover:bg-stone-50'}">
             <input type="radio" name="att_session_coach" value="lucas" ${currentCoach === 'lucas' ? 'checked' : ''} class="text-purple-600" />
-            <span class="w-3 h-3 rounded-full bg-purple-600 shrink-0"></span>
+            <span class="w-3.5 h-3.5 rounded-md bg-purple-600 shrink-0"></span>
             <div class="flex-1">
               <span class="font-bold">Coach Lucas Morilla (Head Coach)</span>
-              <p class="text-[10px] text-stone-500">Registrar como sesión impartida por Lucas (LM)</p>
+              <p class="text-[10px] text-stone-500">Sesión impartida por Lucas Morilla</p>
             </div>
           </label>
 
           <label class="flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition ${currentCoach === 'emiliano' ? 'bg-amber-50 border-amber-400 text-amber-950 font-bold ring-1 ring-amber-400' : 'bg-white border-stone-200 hover:bg-stone-50'}">
             <input type="radio" name="att_session_coach" value="emiliano" ${currentCoach === 'emiliano' ? 'checked' : ''} class="text-amber-600" />
-            <span class="w-3 h-3 rounded-full bg-amber-500 shrink-0"></span>
+            <span class="w-3.5 h-3.5 rounded-md bg-amber-500 shrink-0"></span>
             <div class="flex-1">
               <span class="font-bold">Coach Emiliano Matta (Nuevo Coach)</span>
-              <p class="text-[10px] text-stone-500">Registrar como sesión impartida por Emiliano (EM)</p>
+              <p class="text-[10px] text-stone-500">Sesión impartida por Emiliano Matta</p>
             </div>
           </label>
 
           <label class="flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition ${currentCoach === 'leo' ? 'bg-emerald-50 border-emerald-400 text-emerald-950 font-bold ring-1 ring-emerald-400' : 'bg-white border-stone-200 hover:bg-stone-50'}">
             <input type="radio" name="att_session_coach" value="leo" ${currentCoach === 'leo' ? 'checked' : ''} class="text-emerald-600" />
-            <span class="w-3 h-3 rounded-full bg-emerald-600 shrink-0"></span>
+            <span class="w-3.5 h-3.5 rounded-md bg-emerald-600 shrink-0"></span>
             <div class="flex-1">
               <span class="font-bold">Coach Leonardo Marín (Segundo Coach)</span>
-              <p class="text-[10px] text-stone-500">Registrar como sesión impartida por Leo Marín (ALM)</p>
+              <p class="text-[10px] text-stone-500">Sesión impartida por Leo Marín</p>
             </div>
           </label>
 
           <label class="flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition ${currentCoach === 'otro' ? 'bg-sky-50 border-sky-400 text-sky-950 font-bold ring-1 ring-sky-400' : 'bg-white border-stone-200 hover:bg-stone-50'}">
             <input type="radio" name="att_session_coach" value="otro" ${currentCoach === 'otro' ? 'checked' : ''} class="text-sky-600" />
-            <span class="w-3 h-3 rounded-full bg-sky-500 shrink-0"></span>
+            <span class="w-3.5 h-3.5 rounded-md bg-sky-500 shrink-0"></span>
             <div class="flex-1">
               <span class="font-bold">Coach Anterior / Suplente</span>
-              <p class="text-[10px] text-stone-500">Registrar como sesión impartida por coach externo u otro (OT)</p>
+              <p class="text-[10px] text-stone-500">Sesión impartida por coach externo u otro</p>
             </div>
           </label>
 
           <label class="flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition ${currentCoach === 'none' ? 'bg-stone-100 border-stone-400 text-stone-800 font-bold' : 'bg-white border-stone-200 hover:bg-stone-50'}">
             <input type="radio" name="att_session_coach" value="none" ${currentCoach === 'none' ? 'checked' : ''} class="text-stone-600" />
-            <span class="w-3 h-3 rounded-full bg-stone-300 shrink-0"></span>
+            <span class="w-3.5 h-3.5 rounded-md bg-stone-300 shrink-0"></span>
             <div class="flex-1">
               <span class="font-bold">Sin Asistir (Pendiente)</span>
               <p class="text-[10px] text-stone-500">Desmarcar sesión para que vuelva a estar pendiente</p>
@@ -4280,15 +4281,28 @@ function openAttendanceSessionModal(studentId, sessionNum) {
           </label>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 pt-2">
-          <div>
-            <label class="block font-bold text-stone-700 mb-1">Día y Fecha de la Sesión:</label>
-            <input type="text" id="att-ses-date" value="${ses.date || getTodayISO(0)}" placeholder="Ej: Lun 02-oct" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
+        <div class="space-y-2 pt-2 border-t border-vital-900/10">
+          <label class="block font-bold text-stone-700">Fecha de la Sesión (Calendario o Texto):</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <span class="text-[10px] font-bold text-stone-500 block mb-1">📅 Seleccionar en Calendario:</span>
+              <input type="date" id="att-ses-date-picker" onchange="syncAttSessionDate(this.value)" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold text-vital-900" />
+            </div>
+            <div>
+              <span class="text-[10px] font-bold text-stone-500 block mb-1">✏️ O Escribir Fecha Libre (Texto):</span>
+              <input type="text" id="att-ses-date" value="${ses.date || getTodayISO(0)}" placeholder="Ej: Lun 02-oct o 2026-10-15" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
+            </div>
           </div>
-          <div>
-            <label class="block font-bold text-stone-700 mb-1">Nota opcional:</label>
-            <input type="text" id="att-ses-note" value="${ses.note || ''}" placeholder="Ej: Recuperación de clase" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
+          <div class="flex items-center gap-1.5 pt-0.5">
+            <span class="text-[10px] text-stone-400">Atajos rápidos:</span>
+            <button type="button" onclick="setAttSesDateDirect('Hoy', '${getTodayISO(0)}')" class="px-2 py-0.5 rounded text-[10px] font-bold bg-stone-100 hover:bg-stone-200 text-stone-700 transition">Hoy</button>
+            <button type="button" onclick="setAttSesDateDirect('Ayer', '${getTodayISO(-1)}')" class="px-2 py-0.5 rounded text-[10px] font-bold bg-stone-100 hover:bg-stone-200 text-stone-700 transition">Ayer</button>
           </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-stone-700 mb-1">Nota opcional:</label>
+          <input type="text" id="att-ses-note" value="${ses.note || ''}" placeholder="Ej: Recuperación de clase, reposición o cambio de turno" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-medium" />
         </div>
       </div>
 
@@ -4306,13 +4320,27 @@ function openAttendanceSessionModal(studentId, sessionNum) {
   openModal(html);
 }
 
+function syncAttSessionDate(val) {
+  const txt = document.getElementById('att-ses-date');
+  if (txt && val) txt.value = val;
+}
+
+function setAttSesDateDirect(txt, isoVal) {
+  const textEl = document.getElementById('att-ses-date');
+  const pickerEl = document.getElementById('att-ses-date-picker');
+  if (textEl) textEl.value = txt;
+  if (pickerEl && isoVal) pickerEl.value = isoVal;
+}
+
 function saveAttendanceSession(studentId, sessionNum) {
   const students = getAttendanceStudents();
   const student = students.find(s => s.id === studentId);
   if (!student) return;
 
   const selectedCoach = document.querySelector('input[name="att_session_coach"]:checked')?.value || 'none';
-  const dateVal = document.getElementById('att-ses-date')?.value.trim() || '';
+  const datePickerVal = document.getElementById('att-ses-date-picker')?.value.trim() || '';
+  const dateTextVal = document.getElementById('att-ses-date')?.value.trim() || '';
+  const dateVal = dateTextVal || datePickerVal || 'Hoy';
   const noteVal = document.getElementById('att-ses-note')?.value.trim() || '';
 
   const ses = student.sessions.find(x => x.num === sessionNum);
@@ -4661,49 +4689,191 @@ function createNewAttendanceStudent() {
 }
 
 // ----------------------------------------------------------------------------
-// BLOQUEAR CANCHA EN CALENDARIO MAESTRO DESDE ASISTENCIA
+// MODAL INTERACTIVO PARA RESERVAR CANCHA DESDE ASISTENCIA
 // ----------------------------------------------------------------------------
-function reserveCourtForAttendanceGroup(studentId) {
+function openReserveAttendanceCourtModal(studentId) {
   const students = getAttendanceStudents();
   const student = students.find(s => s.id === studentId);
   if (!student) return;
 
+  // Extraer hora habitual registrada del alumno
   let h = 7;
-  const match = String(student.time).match(/(\d+)/);
+  const match = String(student.time || student.schedule || '').match(/(\d+)/);
   if (match) {
     h = parseInt(match[1], 10);
-    if (String(student.time).toLowerCase().includes('pm') && h < 12) {
+    if (String(student.time || student.schedule || '').toLowerCase().includes('pm') && h < 12) {
       h += 12;
     }
-    if (h < 6) h = 7;
+    if (h < 7) h = 7;
     if (h > 21) h = 21;
   }
 
-  const court = student.court || 'Cancha 1';
-  const today = getTodayISO(0);
+  // Mapear días de clase a números JS (0: Dom, 1: Lun, 2: Mar, 3: Mié, 4: Jue, 5: Vie, 6: Sáb)
+  const dayMap = {
+    'dom': 0, 'lun': 1, 'mar': 2, 'mié': 3, 'mie': 3, 'jue': 4, 'vie': 5, 'sáb': 6, 'sab': 6
+  };
+  const targetDayNums = (student.days || []).map(d => dayMap[d.toLowerCase()] !== undefined ? dayMap[d.toLowerCase()] : -1).filter(n => n >= 0);
 
-  const exists = state.reservations.some(r => r.date === today && r.court === court && r.hour === h);
+  // Calcular las próximas 3 fechas coincidentes con el horario semanal del alumno
+  const upcomingDates = [];
+  const now = new Date();
+  for (let i = 0; i < 21 && upcomingDates.length < 3; i++) {
+    const candidate = new Date();
+    candidate.setDate(now.getDate() + i);
+    const dayOfWeek = candidate.getDay();
+    if (targetDayNums.length === 0 || targetDayNums.includes(dayOfWeek)) {
+      const iso = candidate.toISOString().split('T')[0];
+      const dayName = i === 0 ? 'Hoy' : i === 1 ? 'Mañana' : candidate.toLocaleDateString('es-MX', { weekday: 'short' });
+      const label = `${dayName} ${candidate.getDate()} ${candidate.toLocaleDateString('es-MX', { month: 'short' })}`;
+      upcomingDates.push({ iso, label });
+    }
+  }
+
+  const defaultDate = upcomingDates[0]?.iso || getTodayISO(0);
+
+  const quickDatePills = upcomingDates.map(item => `
+    <button type="button" onclick="selectReserveCourtDate('${item.iso}')" class="res-date-pill px-3 py-1.5 rounded-xl border text-xs font-bold transition ${item.iso === defaultDate ? 'bg-vital-900 text-vital-cream border-vital-900' : 'bg-white hover:bg-stone-50 border-stone-200 text-stone-700'}">
+      ${item.label}
+    </button>
+  `).join('');
+
+  const hoursOptions = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21].map(hourVal => `
+    <option value="${hourVal}" ${hourVal === h ? 'selected' : ''}>${formatHourLabel(hourVal)}</option>
+  `).join('');
+
+  const html = `
+    <div class="space-y-4 max-w-lg">
+      <div class="flex items-center justify-between pb-3 border-b border-vital-900/10">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-vital-orange">Bloqueo de Cancha</span>
+          <h3 class="font-brand text-2xl text-vital-900">Reservar para ${student.client}</h3>
+          <p class="text-xs text-stone-500">Horario oficial: <strong>${(student.days || []).join(' y ')} · ${student.time || student.schedule}</strong></p>
+        </div>
+        <button onclick="closeModal()" class="text-stone-400 hover:text-stone-700 text-lg">✕</button>
+      </div>
+
+      <div class="p-3 rounded-2xl bg-vital-cream/80 border border-vital-900/10 text-xs text-vital-900 space-y-1">
+        <div class="flex items-center gap-1.5 font-bold text-vital-950">
+          <span>💡</span> <span>Detección inteligente de horario</span>
+        </div>
+        <p class="text-[11px] text-stone-600">
+          El sistema detectó los días <strong>${(student.days || []).join(' y ')}</strong> a las <strong>${student.time || student.schedule}</strong> de este alumno. Puedes confirmar el próximo día de su ciclo o escoger cualquier fecha en el calendario:
+        </p>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-stone-700 mb-1">Próximas Fechas de su Horario:</label>
+          <div id="res-court-quick-dates" class="flex flex-wrap gap-1.5 mb-2">
+            ${quickDatePills}
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-bold text-stone-500 whitespace-nowrap">📅 O selecciona en calendario:</span>
+            <input type="date" id="res-court-date-input" value="${defaultDate}" onchange="selectReserveCourtDate(this.value)" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Cancha a Reservar:</label>
+            <select id="res-court-id" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold">
+              <option value="cancha-1">Cancha Techada 1 · Central</option>
+              <option value="cancha-2">Cancha Techada 2 · Familiar</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Hora de Sesión:</label>
+            <select id="res-court-hour" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold">
+              ${hoursOptions}
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Coach Responsable:</label>
+            <select id="res-court-coach" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold">
+              <option value="COACH-1">Lucas Morilla (Head Coach)</option>
+              <option value="COACH-2">Emiliano Matta (Coach en Formación)</option>
+              <option value="COACH-3">Ángel Leonardo Marín (Segundo Coach)</option>
+              <option value="NONE">Staff / Sin Coach Específico</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Concepto en Calendario:</label>
+            <input type="text" id="res-court-concept" value="Clínica / Paquete Alumno" class="w-full px-3 py-2 rounded-xl bg-vital-cream text-xs border border-vital-900/10 font-bold" />
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-3 border-t border-vital-900/10">
+        <button onclick="closeModal()" class="px-4 py-2 rounded-xl bg-vital-cream hover:bg-vital-sand text-vital-900 text-xs font-bold transition">
+          Cancelar
+        </button>
+        <button onclick="confirmAttendanceCourtReservation('${student.id}')" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-md flex items-center gap-1.5">
+          <span>✓</span> Confirmar Reserva
+        </button>
+      </div>
+    </div>
+  `;
+
+  openModal(html);
+}
+
+function selectReserveCourtDate(iso) {
+  const input = document.getElementById('res-court-date-input');
+  if (input) input.value = iso;
+  const buttons = document.querySelectorAll('.res-date-pill');
+  buttons.forEach(btn => {
+    if (btn.getAttribute('onclick')?.includes(iso)) {
+      btn.className = 'res-date-pill px-3 py-1.5 rounded-xl border text-xs font-bold transition bg-vital-900 text-vital-cream border-vital-900';
+    } else {
+      btn.className = 'res-date-pill px-3 py-1.5 rounded-xl border text-xs font-bold transition bg-white hover:bg-stone-50 border-stone-200 text-stone-700';
+    }
+  });
+}
+
+function confirmAttendanceCourtReservation(studentId) {
+  const students = getAttendanceStudents();
+  const student = students.find(s => s.id === studentId);
+  if (!student) return;
+
+  const dateVal = document.getElementById('res-court-date-input')?.value || getTodayISO(0);
+  const courtId = document.getElementById('res-court-id')?.value || 'cancha-1';
+  const hourVal = parseInt(document.getElementById('res-court-hour')?.value || '7', 10);
+  const coachId = document.getElementById('res-court-coach')?.value || 'COACH-1';
+  const concept = document.getElementById('res-court-concept')?.value || 'Clínica';
+
+  const coachObj = (state.coaches || []).find(c => c.id === coachId);
+  const coachName = coachObj ? coachObj.name : 'Lucas Morilla';
+  const courtName = courtId === 'cancha-1' ? 'Cancha Techada 1' : 'Cancha Techada 2';
+
+  // Verificar si ya existe reserva en esa cancha, fecha y hora
+  const exists = state.reservations.some(r => r.date === dateVal && r.courtId === courtId && r.hour === hourVal);
   if (exists) {
-    showToast(`El espacio en ${court} a las ${formatHourLabel(h)} ya está ocupado en el calendario.`);
-    return;
+    const override = confirm(`⚠️ El horario de las ${formatHourLabel(hourVal)} en ${courtName} para el día ${dateVal} ya tiene una reserva.\n\n¿Deseas reemplazarla en el calendario?`);
+    if (!override) return;
+    state.reservations = state.reservations.filter(r => !(r.date === dateVal && r.courtId === courtId && r.hour === hourVal));
   }
 
   const newRes = {
     id: `RES-CLN-${Date.now()}`,
-    date: today,
-    court: court,
-    hour: h,
+    date: dateVal,
+    courtId: courtId,
+    hour: hourVal,
     duration: 1,
     service: 'Clínica',
-    customer: `Clínica ${(student.days || []).join('/')} (${student.client})`,
+    customer: `${concept} · ${student.client}`,
     phone: '-',
     amount: 0,
     prestadorAmount: 0,
     clienteAmount: 0,
-    coachId: 'COACH-1',
-    coachName: 'Lucas Morilla',
+    coachId: coachId,
+    coachName: coachName,
+    students: [student.client],
+    attendanceChecked: false,
     paymentMethod: 'Paquete Clínicas',
-    notes: `Bloqueado desde Control de Asistencia para ${student.schedule}`
+    notes: `Reservado desde Control de Asistencia para ${student.client} (${(student.days || []).join(' y ')} ${formatHourLabel(hourVal)})`
   };
 
   state.reservations.push(newRes);
@@ -4711,9 +4881,16 @@ function reserveCourtForAttendanceGroup(studentId) {
     dbInsertReservation(newRes);
   }
   saveState();
+  closeModal();
   renderCourtsGrid();
   renderAdminMasterCalendar();
-  showToast(`¡${court} bloqueada exitosamente a las ${formatHourLabel(h)} para ${student.client}!`);
+  if (typeof renderHeroLiveStatus === 'function') renderHeroLiveStatus();
+  showToast(`¡${courtName} reservada exitosamente para ${student.client} el ${dateVal} a las ${formatHourLabel(hourVal)}!`);
+}
+
+// Alias de retrocompatibilidad
+function reserveCourtForAttendanceGroup(studentId) {
+  openReserveAttendanceCourtModal(studentId);
 }
 
 // ----------------------------------------------------------------------------

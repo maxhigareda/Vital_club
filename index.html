@@ -761,18 +761,18 @@
           <!-- Coach Color Legend with Live Counters -->
           <div class="p-4 rounded-2xl bg-vital-cream/70 border border-vital-900/10 space-y-2.5 text-xs">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <span class="font-bold text-[11px] uppercase tracking-wider text-vital-900/80">Código de Coaches & Sesiones Impartidas:</span>
-              <span class="text-[11px] text-stone-500 font-medium">Pasa el cursor sobre cada sesión (ej. LM 1) para ver la fecha exacta</span>
+              <span class="font-bold text-[11px] uppercase tracking-wider text-vital-900/80">Código de Color de Coaches & Sesiones Impartidas:</span>
+              <span class="text-[11px] text-stone-500 font-medium">Pasa el cursor sobre el número de sesión (1 a 8) para ver la fecha y detalles</span>
             </div>
             
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
               <!-- Lucas Morilla -->
               <div class="p-2.5 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                  <span class="w-3 h-3 rounded-full bg-purple-600 shrink-0"></span>
+                  <span class="w-3.5 h-3.5 rounded-md bg-purple-600 shrink-0"></span>
                   <div>
-                    <span class="font-bold text-purple-950 text-xs block">LM · Lucas Morilla</span>
-                    <span class="text-[10px] text-purple-700">Head Coach</span>
+                    <span class="font-bold text-purple-950 text-xs block">Lucas Morilla</span>
+                    <span class="text-[10px] text-purple-700 font-semibold">Head Coach</span>
                   </div>
                 </div>
                 <span id="legend-count-lucas" class="px-2 py-0.5 rounded-lg bg-purple-200 text-purple-950 font-brand font-bold text-sm">0</span>
@@ -781,10 +781,10 @@
               <!-- Emiliano Matta -->
               <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                  <span class="w-3 h-3 rounded-full bg-amber-500 shrink-0"></span>
+                  <span class="w-3.5 h-3.5 rounded-md bg-amber-500 shrink-0"></span>
                   <div>
-                    <span class="font-bold text-amber-950 text-xs block">EM · Emiliano Matta</span>
-                    <span class="text-[10px] text-amber-700">Coach en Formación</span>
+                    <span class="font-bold text-amber-950 text-xs block">Emiliano Matta</span>
+                    <span class="text-[10px] text-amber-700 font-semibold">Coach en Formación</span>
                   </div>
                 </div>
                 <span id="legend-count-emiliano" class="px-2 py-0.5 rounded-lg bg-amber-200 text-amber-950 font-brand font-bold text-sm">0</span>
@@ -793,10 +793,10 @@
               <!-- Leo Marín -->
               <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                  <span class="w-3 h-3 rounded-full bg-emerald-600 shrink-0"></span>
+                  <span class="w-3.5 h-3.5 rounded-md bg-emerald-600 shrink-0"></span>
                   <div>
-                    <span class="font-bold text-emerald-950 text-xs block">ALM · Leo Marín</span>
-                    <span class="text-[10px] text-emerald-700">Segundo Coach</span>
+                    <span class="font-bold text-emerald-950 text-xs block">Ángel Leonardo Marín</span>
+                    <span class="text-[10px] text-emerald-700 font-semibold">Segundo Coach</span>
                   </div>
                 </div>
                 <span id="legend-count-leo" class="px-2 py-0.5 rounded-lg bg-emerald-200 text-emerald-950 font-brand font-bold text-sm">0</span>
@@ -805,10 +805,10 @@
               <!-- Otro Coach -->
               <div class="p-2.5 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                  <span class="w-3 h-3 rounded-full bg-sky-500 shrink-0"></span>
+                  <span class="w-3.5 h-3.5 rounded-md bg-sky-500 shrink-0"></span>
                   <div>
-                    <span class="font-bold text-sky-950 text-xs block">OT · Otro Coach</span>
-                    <span class="text-[10px] text-sky-700">Anterior / Suplente</span>
+                    <span class="font-bold text-sky-950 text-xs block">Otro Coach</span>
+                    <span class="text-[10px] text-sky-700 font-semibold">Anterior / Suplente</span>
                   </div>
                 </div>
                 <span id="legend-count-otro" class="px-2 py-0.5 rounded-lg bg-sky-200 text-sky-950 font-brand font-bold text-sm">0</span>
@@ -817,9 +817,9 @@
               <!-- Pendiente -->
               <div class="p-2.5 rounded-xl bg-white border border-dashed border-stone-300 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                  <span class="w-3 h-3 rounded-full bg-stone-300 shrink-0"></span>
+                  <span class="w-3.5 h-3.5 rounded-md bg-stone-300 shrink-0"></span>
                   <div>
-                    <span class="font-bold text-stone-700 text-xs block">○ · Pendientes</span>
+                    <span class="font-bold text-stone-700 text-xs block">Pendientes</span>
                     <span class="text-[10px] text-stone-400">Por cursar</span>
                   </div>
                 </div>
@@ -828,35 +828,40 @@
             </div>
           </div>
 
-          <!-- Filters Bar -->
-          <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 pt-1">
-            <div class="sm:col-span-5 relative">
-              <input type="text" id="att-search-input" oninput="renderAttendanceTable()" placeholder="Buscar alumno o horario..." class="w-full px-3.5 py-2.5 pl-9 rounded-xl bg-vital-cream text-xs font-medium focus:outline-none focus:ring-2 focus:ring-vital-lime border border-vital-900/10" />
-              <span class="absolute left-3 top-2.5 text-stone-400 text-xs">🔍</span>
+          <!-- Filters & Action Bar -->
+          <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 pt-1">
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 flex-1">
+              <div class="sm:col-span-4 relative">
+                <input type="text" id="att-search-input" oninput="renderAttendanceTable()" placeholder="Buscar alumno o horario..." class="w-full px-3.5 py-2.5 pl-9 rounded-xl bg-vital-cream text-xs font-medium focus:outline-none focus:ring-2 focus:ring-vital-lime border border-vital-900/10" />
+                <span class="absolute left-3 top-2.5 text-stone-400 text-xs">🔍</span>
+              </div>
+              <div class="sm:col-span-3">
+                <select id="att-filter-group" onchange="renderAttendanceTable()" class="w-full px-3 py-2.5 rounded-xl bg-vital-cream text-xs font-bold border border-vital-900/10">
+                  <option value="all">Todos los Horarios</option>
+                </select>
+              </div>
+              <div class="sm:col-span-3">
+                <select id="att-filter-status" onchange="renderAttendanceTable()" class="w-full px-3 py-2.5 rounded-xl bg-vital-cream text-xs font-bold border border-vital-900/10">
+                  <option value="all">Toda Situación</option>
+                  <option value="EN CURSO">En Curso</option>
+                  <option value="TERMINADO / RENOVAR">Terminado / Renovar</option>
+                  <option value="PENDIENTE DE PAGO">Pendiente de Pago</option>
+                  <option value="VALIDAR MUESTRA">Validar Muestra</option>
+                </select>
+              </div>
+              <div class="sm:col-span-2">
+                <select id="att-filter-coach" onchange="renderAttendanceTable()" class="w-full px-3 py-2.5 rounded-xl bg-vital-cream text-xs font-bold border border-vital-900/10">
+                  <option value="all">Cualquier Coach</option>
+                  <option value="lucas">Coach Lucas</option>
+                  <option value="emiliano">Coach Emiliano</option>
+                  <option value="leo">Coach Leo Marín</option>
+                  <option value="otro">Otro Coach</option>
+                </select>
+              </div>
             </div>
-            <div class="sm:col-span-3">
-              <select id="att-filter-group" onchange="renderAttendanceTable()" class="w-full px-3 py-2.5 rounded-xl bg-vital-cream text-xs font-bold border border-vital-900/10">
-                <option value="all">Todos los Horarios</option>
-              </select>
-            </div>
-            <div class="sm:col-span-2">
-              <select id="att-filter-status" onchange="renderAttendanceTable()" class="w-full px-3 py-2.5 rounded-xl bg-vital-cream text-xs font-bold border border-vital-900/10">
-                <option value="all">Toda Situación</option>
-                <option value="EN CURSO">En Curso</option>
-                <option value="TERMINADO / RENOVAR">Terminado / Renovar</option>
-                <option value="PENDIENTE DE PAGO">Pendiente de Pago</option>
-                <option value="VALIDAR MUESTRA">Validar Muestra</option>
-              </select>
-            </div>
-            <div class="sm:col-span-2">
-              <select id="att-filter-coach" onchange="renderAttendanceTable()" class="w-full px-3 py-2.5 rounded-xl bg-vital-cream text-xs font-bold border border-vital-900/10">
-                <option value="all">Cualquier Coach</option>
-                <option value="lucas">Coach Lucas</option>
-                <option value="emiliano">Coach Emiliano</option>
-                <option value="leo">Coach Leo Marín</option>
-                <option value="otro">Otro Coach</option>
-              </select>
-            </div>
+            <button onclick="openNewAttendanceModal()" class="px-4 py-2.5 rounded-xl bg-vital-900 hover:bg-black text-vital-cream text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md whitespace-nowrap shrink-0">
+              <span>➕</span> Inscribir Alumno
+            </button>
           </div>
 
           <!-- Matrix Table -->
@@ -955,6 +960,6 @@
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=14"></script>
+  <script src="app.js?v=16"></script>
 </body>
 </html>
